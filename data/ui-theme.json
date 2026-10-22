@@ -1,0 +1,70 @@
+{
+  "_source": "UI palette extracted from code literals (doctrine lint shrink slice 1, plan SE-COMPLETE-1012 W8-H). Single data home for the colors previously inlined in src/ui/setup.js, src/ui/settings.js, src/ui/scoreboard.js, src/ui/store.js, src/ui/weaponPicker.js, scripts/ui_menu_render.js, scripts/ui_top_panel_render.js. Values are byte-identical to the literals they replaced. Read ONLY via src/ui/theme.js (themeColor/themeValue — fail-loud, no fallbacks). Structured by ROLE; each role group carries its own _source provenance note.",
+  "text": {
+    "_source": "Text/fill colors used across all seven surfaces. body #eef3ea was the base color on every overlay (setup.js panel, settings/store/scoreboard/menu sheets, weaponPicker strip); gold #e8c547 = setup H1 + weaponPicker head; green #9fdc7f = settings labels/active tab, scoreboard mode/hull-fill/score, store cash/column heads, menu hover + help dt, wp qty; cash #d8c86a = scoreboard rank/cash + store cost; softGreen #cfe8c5 = store row buttons + menu rows + wp store button; dim #6f8f6a = settings idle tabs + store bundle sizes (also menu archetype dim default); dimmer #4c5a48 = store disabled buttons (also topPanel dim default); blueDim #6f8f9a = wp key hints (also a topPanel editor choice); label #9fb4cc = setup section headers/row labels; error #ff6b5e = setup/settings error lists + wp status; disabledInput #8b99a9 = setup disabled legacy option inputs.",
+    "body": "#eef3ea",
+    "gold": "#e8c547",
+    "green": "#9fdc7f",
+    "cash": "#d8c86a",
+    "softGreen": "#cfe8c5",
+    "dim": "#6f8f6a",
+    "dimmer": "#4c5a48",
+    "blueDim": "#6f8f9a",
+    "label": "#9fb4cc",
+    "error": "#ff6b5e",
+    "disabledInput": "#8b99a9"
+  },
+  "panels": {
+    "_source": "Panel chrome: sheet backgrounds/borders/headers of the four retro sheets (settings.js, scoreboard.js, store.js, ui_menu_render.js incl. the help overlay) plus the BLUE setup box (setup.js) and the scoreboard hull bar track. sheetBg #0d130d, sheetBorder #3a5a3a, headerBg #12200f (header AND footer strips), tabStripBg #0f1a0c (settings tab strip), blueBorder #3a4a5e (setup box + weaponPicker strip borders), hullTrack #182512 (scoreboard hull bar).",
+    "sheetBg": "#0d130d",
+    "sheetBorder": "#3a5a3a",
+    "headerBg": "#12200f",
+    "tabStripBg": "#0f1a0c",
+    "blueBorder": "#3a4a5e",
+    "blueBoxBg": "#131a24",
+    "hullTrack": "#182512"
+  },
+  "rows": {
+    "_source": "Row/list-item surfaces: dotted row separators #1e331a (scoreboard + store rows), store column divider #24401f, blue row chrome #22303f border + #0f1620 background (setup roster rows + weaponPicker items), winner/active row background #1b2f17 (scoreboard data-winner row).",
+    "dotted": "#1e331a",
+    "colDivider": "#24401f",
+    "blueRowBorder": "#22303f",
+    "blueRowBg": "#0f1620",
+    "activeBg": "#1b2f17"
+  },
+  "buttons": {
+    "_source": "Button styling: primaryBg/primaryText #e8c547-on-#131a24 = setup START BATTLE; actionBg/actionText/actionBorder #1b2f17-#cfe8c5-on-#3a5a3a = store per-row buy/sell buttons; doneBg/doneText/doneBorder #2a4a20-#eef3ea-on-#6a9a55 = the DONE/CLOSE footer buttons (store, scoreboard, settings); disabledText #4c5a48 = disabled store row buttons.",
+    "primaryBg": "#e8c547",
+    "primaryText": "#131a24",
+    "actionBg": "#1b2f17",
+    "actionText": "#cfe8c5",
+    "actionBorder": "#3a5a3a",
+    "doneBg": "#2a4a20",
+    "doneText": "#eef3ea",
+    "doneBorder": "#6a9a55",
+    "disabledText": "#4c5a48"
+  },
+  "inputs": {
+    "_source": "Form fields: fieldBg #0a0e14 (setup pickers/inputs, settings number+select, menu row buttons), fieldText #eef3ea, fieldBorderBlue #3a4a5e (setup fields), fieldBorderGreen #3a5a3a (settings fields).",
+    "fieldBg": "#0a0e14",
+    "fieldText": "#eef3ea",
+    "fieldBorderBlue": "#3a4a5e",
+    "fieldBorderGreen": "#3a5a3a"
+  },
+  "states": {
+    "_source": "Interactive/selection states: selectedBorder #e8c547 + selectedBg #1d2634 (weaponPicker selected weapon); hoverText #9fdc7f (menu row hover, settings active tab text); activeBg #1b2f17 (menu hover + settings active tab bg — same value as rows.activeBg, one state); activeLine #6a9a55 (settings slider accent + tab underline, scoreboard winner inset, menu focus outline, DONE button borders read via buttons.doneBorder).",
+    "selectedBorder": "#e8c547",
+    "selectedBg": "#1d2634",
+    "hoverText": "#9fdc7f",
+    "activeBg": "#1b2f17",
+    "activeLine": "#6a9a55"
+  },
+  "archetype": {
+    "_source": "Editor-facing archetype param data (per-element doctrine: these colors ride on the ui_menu / ui_top_panel ROOT script params — see assets/archetypes/ui_menu.json, which already carries accent/dim). topPanelColorChoices = the editor dropdown choices for ui_top_panel_render accent/status/dim params (was COLOR_CHOICES); topPanelAccentDefault #e8c547 / topPanelStatusDefault #9fdc7f / topPanelDimDefault #4c5a48 = PANEL_PARAM_DEFAULTS; menuDimDefault #6f8f6a = ui_menu_render params.dim default.",
+    "topPanelColorChoices": ["#e8c547", "#9fdc7f", "#eef3ea", "#6f8f9a", "#4c5a48"],
+    "topPanelAccentDefault": "#e8c547",
+    "topPanelStatusDefault": "#9fdc7f",
+    "topPanelDimDefault": "#4c5a48",
+    "menuDimDefault": "#6f8f6a"
+  }
+}

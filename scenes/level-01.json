@@ -1,0 +1,372 @@
+{
+  "version": 3,
+  "nextEntityId": 27,
+  "materials": {
+    "ground": {
+      "type": "standard",
+      "color": "#6b8f3d",
+      "roughness": 0.9,
+      "metalness": 0
+    },
+    "tank": {
+      "type": "standard",
+      "color": "#ffffff",
+      "roughness": 0.6,
+      "metalness": 0
+    },
+    "glass": {
+      "type": "physical",
+      "color": "#cfe8f7",
+      "roughness": 0.1,
+      "metalness": 0.1,
+      "transparent": true,
+      "opacity": 0.2
+    },
+    "fx_blast": {
+      "type": "basic",
+      "color": "#ffffff",
+      "transparent": true,
+      "opacity": 1,
+      "_note": "SE-FX blast-series base: per-sphere COLOR comes from data/blast-fx.json via render.materialParams at spawn; the render hook (main.js) drives opacity + additive blending."
+    }
+  },
+  "systems": [],
+  "entities": [
+    {
+      "id": "ground",
+      "name": "ground",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": -0.5,
+          "z": 0,
+          "scale": [
+            80,
+            1,
+            24
+          ]
+        },
+        "render": {
+          "mesh": "box",
+          "material": "ground",
+          "visible": true
+        },
+        "collider": {
+          "hx": 40,
+          "hy": 0.5,
+          "hz": 12
+        },
+        "tags": [
+          "floor"
+        ]
+      },
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "archetypeId": "ui_top_panel",
+      "id": "ui_top_panel",
+      "name": "ui_top_panel"
+    },
+    {
+      "archetypeId": "tank",
+      "id": "tank1",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": -8,
+            "y": 0,
+            "z": 0,
+            "yaw": 1.5707963267948966,
+            "scale": 1
+          }
+        },
+        "children": {
+          "Scene": {
+            "components": {
+              "transform": {
+                "x": -0.0001036524772644043,
+                "y": -0.009156275540590286,
+                "z": -0.20827990770339966
+              }
+            }
+          },
+          "Scene_Hull": {
+            "components": {
+              "transform": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            }
+          },
+          "Scene_Hull_Barrel": {
+            "components": {
+              "transform": {
+                "x": -0.023956511169672012,
+                "y": 1.11103355884552,
+                "z": 0.27105912566185,
+                "rot": {
+                  "x": 0.005313325003629333,
+                  "y": 0,
+                  "z": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "tank",
+      "id": "tank2",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 8,
+            "y": 0,
+            "z": 0,
+            "yaw": -1.5707963267948966
+          }
+        },
+        "children": {
+          "Scene_Hull_Barrel": {
+            "components": {
+              "transform": {
+                "x": -0.023956511169672012,
+                "y": 1.11103355884552,
+                "z": 0.27105912566185,
+                "rot": {
+                  "x": 3.0509128697337347,
+                  "y": 4.3860081493313587e-16,
+                  "z": 1.3103626631326436e-16
+                },
+                "scale": {
+                  "x": 1,
+                  "y": 1,
+                  "z": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "weather_storm_front",
+      "name": "weather_storm_front",
+      "archetypeId": "storm_front",
+      "overrides": {},
+      "components": {},
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "storm_front",
+      "name": "storm_front",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 67.5,
+          "z": 0,
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "scripts": [
+          {
+            "name": "volumetric-cloud",
+            "params": {
+              "sizeX": 520,
+              "sizeY": 25,
+              "sizeZ": 520,
+              "density": 1,
+              "noiseScale": 0.045,
+              "detailOctaves": 3,
+              "litColor": "#23272e",
+              "driftSpeedX": 1,
+              "windCoupling": 1,
+              "_source": "CLOUD-TOOL T7 (plans/CLOUD-MIGRATION.md): moved VERBATIM from dressing.fog.stormEvent + weather.volumetric (both retired in data/physics-presets.json with pointer notes). sizeX/Z = stormEvent.area.spanXZ 520 (W8-J footprint, square centered on the field); sizeY 25 = billboard altitude band 55-80 centered (transform y 67.5); density 1.0 = weather.volumetric.stormDensity; noiseScale 0.045 + detailOctaves 3 = volumetric.noiseScale/noiseOctaves; litColor #23272e = W8-J dark storm gray (billboards.color + volumetric.stormColor); driftSpeedX 1.0 = billboards.speed; windCoupling 1.0 = weather.wind.coupling.",
+              "renderer": "none"
+            }
+          }
+        ],
+        "tags": [
+          "weather"
+        ]
+      },
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "clouds_calm",
+      "name": "clouds_calm",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 33,
+          "z": 0,
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "scripts": [
+          {
+            "name": "volumetric-cloud",
+            "params": {
+              "sizeX": 304,
+              "sizeY": 14,
+              "sizeZ": 124,
+              "density": 0.06,
+              "noiseScale": 0.045,
+              "detailOctaves": 3,
+              "litColor": "#e8eef6",
+              "driftSpeedX": 0.6,
+              "windCoupling": 1,
+              "steps": 48,
+              "stepsMin": 16,
+              "stepsMax": 96,
+              "noiseSize": 32,
+              "noiseSeed": 131,
+              "noisePeriod": 8,
+              "threshold": 0.34,
+              "softness": 0.22,
+              "opacityPerStep": 0.045,
+              "earlyExit": 0.985,
+              "heightFade": 0.35,
+              "_source": "CLOUD-TOOL T7 (plans/CLOUD-MIGRATION.md): moved VERBATIM from weather.volumetric (retired in data/physics-presets.json). sizeX 304 = default field span 240 + 2x slabPad 32; sizeZ 124 = field span 60 + 2x slabPad 32; sizeY 14 = slabYMin 26..slabYMax 40 band centered (transform y 33); litColor #e8eef6 = calmColor; noiseScale 0.045; detailOctaves 3 = noiseOctaves; driftSpeedX 0.6 = driftSpeed; windCoupling 1.0 = weather.wind.coupling. T8: steps 48 / stepsMin 16 / stepsMax 96, noiseSize 32, noiseSeed 131, noisePeriod 8, threshold 0.34, softness 0.22, opacityPerStep 0.045, earlyExit 0.985, heightFade 0.35 = the remaining retired volumetric algorithm constants, moved VERBATIM so the game-side slab renderer consumes the region params as its SINGLE data source. FOG-ALWAYS-ON-FIX (plans/FOG-ALWAYS-ON-FIX.md, 2026-10-14): density 0.3 -> 0.06 — calm baseline is WISPY (thin faint clouds); the storm_front ramp (density 1 at event peak) is the only thick-cloud path.",
+              "renderer": "none"
+            }
+          }
+        ],
+        "tags": [
+          "weather"
+        ]
+      },
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "weather_storm_lightning",
+      "name": "weather_storm_lightning",
+      "archetypeId": "storm_lightning",
+      "overrides": {},
+      "components": {},
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "arena_wall",
+      "name": "arena_wall",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scripts": [
+          {
+            "name": "wall_band",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_left",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": -80.5,
+            "y": 120,
+            "z": 0,
+            "scale": [
+              0.1,
+              240,
+              41
+            ]
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_right",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 80.5,
+            "y": 120,
+            "z": 0,
+            "scale": [
+              0.1,
+              240,
+              41
+            ]
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_back",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 120,
+            "z": -20.5,
+            "scale": [
+              161,
+              240,
+              0.1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_front",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 120,
+            "z": 20.5,
+            "scale": [
+              161,
+              240,
+              0.1
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "render": {
+    "post": {
+      "enabled": false
+    },
+    "shadows": {
+      "type": "PCFSoftShadowMap"
+    }
+  },
+  "scatter": {
+    "layers": []
+  }
+}

@@ -1,0 +1,799 @@
+{
+  "_note": "Physics Menu (manual L1824-L1908) + Landscape Menu wind/terrain rows (manual L1910-L1965). NOTE: the brief names Play Options as 'L1990-L2060' but the Play Options Menu heading is actually at L1968 and its table spans L1973-L2047; that is the data in play-options.json.",
+  "blast": {
+    "softGroundMaxRadiusFrac": {
+      "label": "Soft Ground Max. Blast Radius",
+      "range": { "min": 1.0, "max": 3.0 },
+      "default": 1.25,
+      "description": "Cap on how far a soft-ground crater spreads. A blast carves r/hardness, but the AABB clip turned the bigger soft-soil sphere into a square hole; this bounds the effective radius at SOFT_MAX*r so grass/dirt carve a round crater (rock is unchanged).",
+      "_source": "blast.js HARDNESS FLOOR — the AABB-clip square-footprint bug fix: effective radius r*clamp(1/hardness,1,SOFT_MAX); the old unscaled AABB clipped the bigger soft-ground sphere into a square hole (~2.18x the voxels of the round rock crater). Bounded data so JS carries no literal; default 1.25 keeps soft craters only slightly larger than rock.",
+      "_note": "Data-bounded scalar. hardness >= 1/SOFT_MAX is unchanged (rock hardness 1.0 stays byte-identical, round radius rCells); hardness below the floor is raised so the radius is capped at SOFT_MAX*r. The AABB loop bounds grow by the same SOFT_MAX (more cells TEST, fewer CARVE — net perf win; blast() runs once per impact, not per frame).",
+      "consumer": "src/voxel3d/blast.js:BLAST_SOFT_MAX_RADIUS"
+    }
+  },
+  "physics": {
+    "_source": "manual:L1831-L1907",
+    "airViscosity": {
+      "label": "Air Viscosity",
+      "range": {
+        "min": 0,
+        "max": 20
+      },
+      "default": 0,
+      "description": "Whether air slows projectiles; with viscous air, ballistic guidance and some computer players misbehave.",
+      "dragK": 0.05,
+      "_dragKNote": "W2-A (plan SE-COMPLETE-1012): per-unit linear drag coefficient — dv/dt = -viscosity * dragK * v (world u/s^2 per u/s). The manual (L1834-L1839) publishes no magnitude; data-bounded so JS carries no literal. viscosity 20 => k = 1.0/s. dragK 0 is FORBIDDEN (monotonicity pin in test/unit/physics-rest.test.js).",
+      "_source": "manual:L1834-L1839",
+      "consumer": "src/gameplay/ballistics3d.js:airViscosity"
+    },
+    "gravity": {
+      "label": "Gravity",
+      "range": {
+        "min": 12,
+        "max": 2450
+      },
+      "default": 49,
+      "description": "Force of gravity in pixels/sec (original SE pixel units).",
+      "seUnit": true,
+      "gameMapping": "TODO-X3c: scale to world units",
+      "_source": "manual:L1841-L1842",
+      "consumer": "systems/projectiles3d.js:gravity",
+      "_defaultNote": "FPS-1012h REBALANCE: the manual default 0.2 SE px/s^2 -> 0.04 world u/s^2 through the 0.2 anchor — physically absurd next to wind (40 u/s^2). 49 SE px/s^2 = 9.8 world u/s^2 = the pinned live value; conversion unchanged.",
+      "rangeNote": "FPS-1012h: rescaled with the default (49 SE px/s^2 = 9.8 world) — the manual 0.05..10 band was in the same inconsistent units as the 0.2 default."
+    },
+    "suspendDirt": {
+      "label": "Suspend Dirt",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 0,
+      "description": "Percent chance per shot that all airborne dirt falls; Earth Disrupters only matter when > 0.",
+      "_source": "manual:L1844-L1851",
+      "consumer": "src/gameplay/settle3d.js:suspendDirt"
+    },
+    "tanksFall": {
+      "label": "Tanks Fall",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "description": "If off, tanks do not fall when the ground is destroyed beneath them.",
+      "_source": "manual:L1853-L1856",
+      "consumer": "src/gameplay/impact.js:tanksFall"
+    },
+    "bordersExtend": {
+      "label": "Borders Extend",
+      "range": {
+        "min": 0,
+        "max": 10000
+      },
+      "default": 75,
+      "description": "How far off-screen projectiles are tracked before counting as a miss.",
+      "_source": "manual:L1858-L1868",
+      "consumer": "src/gameplay/ballistics3d.js:bordersExtend"
+    },
+    "wallMode": {
+      "label": "Effect of Walls",
+      "enum": [
+        "CONCRETE",
+        "PADDED",
+        "RUBBER",
+        "SPRING",
+        "WRAP",
+        "RANDOM",
+        "ERRATIC",
+        "NONE"
+      ],
+      "default": "NONE",
+      "modes": {
+        "CONCRETE": "Blocks shots from going off screen in any direction.",
+        "PADDED": "Reflects shots but absorbs some energy first.",
+        "RUBBER": "Projectiles bounce off (Poolsharks exploit this).",
+        "SPRING": "Like RUBBER but kicks the projectile on reflection, pinball-style.",
+        "WRAP": "Left/right edges wrap: off right, on left (manual: 'WRAPAROUND').",
+        "RANDOM": "Computer picks one of the above methods at the start of each round.",
+        "ERRATIC": "Computer picks a method before each shot.",
+        "NONE": "Walls have no effect (screen edges are gray)."
+      },
+      "_source": "manual:L1875-L1906",
+      "consumer": "src/gameplay/walls.js:wallMode"
+    },
+    "impactDamage": {
+      "label": "Impact Damage",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "description": "If on, tanks take damage from a fall when they hit the ground; if off, while falling. Total damage is the same either way (manual:L2156-L2161, Archaic Options — cfg-file analog). (Archaic Options menu in the OG — cfg-file analog.)",
+      "_source": "manual:L2156-L2161",
+      "consumer": "src/gameplay/impact.js:impactDamage"
+    }
+  },
+  "wallPhysics": {
+    "_source": "W2-B (plan SE-COMPLETE-1012) — magnitudes the manual (L1875-L1906) publishes no numbers for; data-bounded so JS carries no literals.",
+    "padded": {
+      "energyRetain": 0.6,
+      "_note": "PADDED 'reflect shots, but absorb some of their energy first' (manual:L1880-L1881) — retained speed fraction on reflection."
+    },
+    "spring": {
+      "kick": 1.5,
+      "_note": "SPRING 'gives the projectile a kick ... as pinball machines do' (manual:L1885-L1888) — speed multiplier on reflection; bounded to (1, 2]."
+    },
+    "erratic": {
+      "speedMin": 0.5,
+      "speedMax": 2.0,
+      "_note": "ERRATIC chaotic kick bounds (plan W2-B brief: 0.5-2.0x speed, data-bounded) applied when the per-shot picked method reflects."
+    }
+  },
+  "wallVisuals": {
+    "_source": "W2-B (plan SE-COMPLETE-1012). Colors per manual:L1899-L1906 (Gray/White/Green/Red/Cyan/Yellow); RANDOM/ERRATIC have no manual color — magenta/orange placeholders. Opacity/height are editor-tunable data (no manual numbers).",
+    "defaultHeight": 6.0,
+    "modes": {
+      "NONE": {
+        "color": "#888888",
+        "opacity": 0.08,
+        "height": 6.0
+      },
+      "CONCRETE": {
+        "color": "#ffffff",
+        "opacity": 0.55,
+        "height": 6.0
+      },
+      "PADDED": {
+        "color": "#00ff00",
+        "opacity": 0.5,
+        "height": 6.0
+      },
+      "RUBBER": {
+        "color": "#ff0000",
+        "opacity": 0.5,
+        "height": 6.0
+      },
+      "SPRING": {
+        "color": "#00ffff",
+        "opacity": 0.5,
+        "height": 6.0
+      },
+      "WRAP": {
+        "color": "#ffff00",
+        "opacity": 0.35,
+        "height": 6.0
+      },
+      "RANDOM": {
+        "color": "#ff00ff",
+        "opacity": 0.3,
+        "height": 6.0
+      },
+      "ERRATIC": {
+        "color": "#ff8800",
+        "opacity": 0.3,
+        "height": 6.0
+      }
+    }
+  },
+  "landscape": {
+    "_source": "manual:L1919-L1965",
+    "sky": {
+      "label": "Sky",
+      "enum": [
+        "PLAIN",
+        "STORMY",
+        "STARS",
+        "SHADED",
+        "SUNSET",
+        "CAVERN",
+        "BLACK",
+        "RANDOM"
+      ],
+      "default": "RANDOM",
+      "description": "Background sky; some skies are hostile and attack (e.g. lightning). RANDOM picks per round (any type except BLACK).",
+      "_source": "manual:L1922-L1929",
+      "consumer": "src/main.js:mountSky("
+    },
+    "maxWind": {
+      "label": "Max. Wind",
+      "range": {
+        "min": 0,
+        "max": 500
+      },
+      "default": 15,
+      "description": "Maximum wind velocity; 0 means no wind.",
+      "_source": "manual:L1931-L1932",
+      "consumer": "src/main.js:rollWind(window.__se",
+      "_defaultNote": "FPS-1012h REBALANCE: manual default 200 SE px/s -> 40 world u/s^2 = 4x gravity, shells blow straight away (user-verified). 15 SE px/s -> 3 world u/s^2 = ~0.3g — strong but playable. Range 0-500 kept."
+    },
+    "changingWind": {
+      "label": "Changing Wind",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "Wind changes slightly between each shot.",
+      "deltaRange": {
+        "min": -2,
+        "max": 2
+      },
+      "_source": "manual:L1934-L1937",
+      "consumer": "src/main.js:rollWindTurn",
+      "deltaRangeNote": "FPS-1012h: rescaled with maxWind (was +-25 SE px/s against a 15 default)."
+    },
+    "hostileEnvironment": {
+      "label": "Hostile Environment",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "description": "If off, hostile background actions still occur but deal no damage.",
+      "_source": "manual:L1939-L1943",
+      "storage_reason": "W2-C lightning keys strikes off the STORMY sky style; the manual hostile on/off gate (manual:L1939-L1943) is not consulted by systems/lightning.js — storage + validation only (named gap).",
+      "wired": false
+    },
+    "bumpiness": {
+      "label": "Bumpiness",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 20,
+      "description": "How smooth or bumpy the landscape is.",
+      "_source": "manual:L1945-L1946",
+      "consumer": "src/voxel3d/generator.js:LANDSCAPE_DEFAULTS"
+    },
+    "slope": {
+      "label": "Slope",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 20,
+      "description": "How steep hills and valleys are.",
+      "_source": "manual:L1948-L1949",
+      "consumer": "src/voxel3d/generator.js:LANDSCAPE_DEFAULTS"
+    },
+    "flattenPeaks": {
+      "label": "Flatten Peaks",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "Forces hills to flatten at a certain steepness, preventing crags.",
+      "_source": "manual:L1951-L1953",
+      "consumer": "src/voxel3d/generator.js:LANDSCAPE_DEFAULTS"
+    },
+    "randomLand": {
+      "label": "Random Land",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "Computer randomizes bumpiness/slope/flatten each round; those three are then unused.",
+      "_source": "manual:L1955-L1960",
+      "consumer": "src/main.js:rollLandscape"
+    },
+    "percentScannedMountains": {
+      "label": "Percent Scanned Mountains",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 20,
+      "description": "How often scanned mountains are used instead of random ones. (Last landscape row at L1962-L1965; the brief's 'L1958-L2010 map shape / base level' rows do not exist in this manual — the Landscape Menu ends here and Play Options begins at L1968.)",
+      "_source": "manual:L1962-L1965",
+      "storage_reason": "Registered-version scanned-ranges feature deferred (plan Q7) — descriptor + validation only.",
+      "wired": false
+    },
+    "fog": {
+      "label": "Fog",
+      "enum": [
+        "off",
+        "on"
+      ],
+      "default": "off",
+      "description": "Fog fills the whole battlefield including the play area; off keeps fog exterior-only (outside the cage).",
+      "_source": "W8-K (plan SE-COMPLETE-1012, user-directed): the manual's Fog weather switch as the interior-fog gate — OFF (default) fog stays EXTERIOR-only (never inside the play area); ON fog occupies ALL 3D terrain including the play area (interior pinned at storm-level density, no event needed). No manual row numbers beyond the switch itself.",
+      "consumer": "systems/weather.js:interiorFogOn"
+    },
+    "treeDensity": {
+      "label": "Tree Density",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 100,
+      "description": "Percentage of the tuned tree scatter density (0 = no trees, 100 = the current default scatter). Spacing stays random (deterministic per terrain seed).",
+      "_source": "plan SE-FIXUP-1012 contract C1/C2 (task-directed, no manual row)",
+      "_note": "Default 100 = the current tuned scatter (data/tree.json scatter.density 0.0018/u^2) expressed as %. Stored typed number se.settings.treeDensity; the 0-100 -> scatter-density mapping rule lives in data/tree.json (contract C2, W2 consumer reads window.__se.settings.treeDensity).",
+      "consumer": "src/gameplay/settingsApply.js:se.settings"
+    },
+    "rockAmount": {
+      "label": "Rock Amount",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 100,
+      "description": "Percentage of the rock scatter density (0 = no rocks, 100 = the tuned default). Scales both the noise-shaped boulders and the embedded pebbles.",
+      "_source": "plan SETTLE-PACE-1015 §P3 (user: no rock-amount control)",
+      "_note": "Stored write-through: routes through applyTerrainKnob('rockAmount') onto the voxelTerrain component, then the field rebuilds at the SAME seed. The generator consumes params.rockAmount (0-100); undefined reads as 100 (identity).",
+      "consumer": "src/main.js:terrainCfg.rockAmount = value"
+    },
+    "terrainType": {
+      "label": "Terrain Type",
+      "enum": [
+        "classic",
+        "rocky",
+        "alpine",
+        "plains"
+      ],
+      "default": "classic",
+      "description": "Landscape variety preset: shape overrides + seeded random rocks embedded in the soil. classic = the historical surface (byte-identical).",
+      "_source": "data/voxel-terrain.json .terrainTypes (the type table is THE data contract; this row only exposes the picker). Consumer: src/voxel3d/generator.js terrainTypeFor via generate(seed, { terrainType }).",
+      "storage_reason": "WIRING SEAM (scope guard): live regeneration lives in main.js applyTerrainKnob/terrainLandscape - add a 'terrainType' branch there that writes terrainCfg.terrainType and passes params.terrainType through to generate(). Until that seam lands the row validates and stores typed on se.settings.terrainType (fail-loud on unknown names happens in the generator either way).",
+      "wired": false
+    },
+    "_presetRetiredNote": "FPS-1012d USER DECISION: the .MTN landscapePreset row was REMOVED — the user read presets as visual, not shape; terrain is the pure 3D noise surface for every value. data/landscapes.json stays as reference for a future visual (colors/sky) use. Stored values are ignored with a loud console note."
+  },
+  "lightning": {
+    "_source": "plan SE-COMPLETE-1012 W2-Cb — the manual publishes NO lightning numbers (hostileEnvironment manual:L1939-L1943, STORMY manual:L1922-L1929 'some skies are hostile and attack, e.g. lightning'); magnitudes are _placeholder data-bounded so JS carries no literals.",
+    "hostileSkies": {
+      "STORMY": {
+        "strikeChance": 0.35,
+        "damage": 40,
+        "blastRpx": 10,
+        "_note": "strikeChance = per-turn strike probability (deterministic per battle seed + turn index — same seed+turn, same strikes). damage = hull points delivered through the ONE blast pipeline (damage.js via battleLoop.onBlast): the strike lands at a data-derived standoff distance so the linear falloff yields exactly `damage` at the tank's position; blastRpx sets the falloff radii (record pixels)."
+      }
+    },
+    "vfx": {
+      "boltColor": "#cfe8ff",
+      "flashColor": "#eaf4ff",
+      "boltHeight": 30,
+      "boltWidth": 0.12,
+      "life": 0.35,
+      "levels": 5,
+      "roughness": 0.38,
+      "branchChance": 0.18,
+      "branchDecay": 0.55,
+      "segmentMinLen": 0.6,
+      "bias": 0.3,
+      "branchWidthFrac": 0.5,
+      "maxSegments": 96,
+      "_note": "W8-G (plan SE-COMPLETE-1012, user-directed): Lichtenberg bolt — the single straight column became a jagged midpoint-displacement channel (systems/boltPath.js, pure math, built ONCE per strike). levels/roughness = subdivision depth + perpendicular jitter decay per level; branchChance/branchDecay = decaying branch spawn probability; segmentMinLen stops subdividing short segments; bias = jitter direction leaned toward the target (field-gradient flavor); branchWidthFrac = branch thinning; maxSegments = per-strike budget. boltColor/flashColor/width/height/life unchanged (W2-Cb VFX path: one thin box per segment + the flash sphere)."
+    }
+  },
+  "damagePower": {
+    "_source": "plan SE-COMPLETE-1012 W2-Cb — the general damage->maxPower law; the manual publishes no numbers, the break point (maxPower at HALF its original value) is the plan pin.",
+    "maxPower": 1.0,
+    "maxHull": 100,
+    "reductionPerHullFraction": 1.0,
+    "floor": 0.5,
+    "_note": "every damage event drains maxPower by reductionPerHullFraction * (damage / maxHull), clamped at floor (default 1.0 internal / 1000 display). Effective shot power = min(aim.power, maxPower). maxPower <= floor (half the 1.0 original) = the barrel break point: the front barrel segment (Barrel.001) detaches and falls. TOMBSTONE: brokenBarrelMaxAngleDeg (was 60, post-break elevation clamp) retired 2026-10-15 — the damaged barrel aims the full arc; the damage penalty is the maxPower law alone."
+  },
+  "skyStyles": {
+    "_note": "W2-Ca (plan SE-COMPLETE-1012): the 8 OG sky styles (manual:L1922-L1929) as DATA — palettes, fog/haze, sun/moon/stars flags. HARD DOCTRINE: style palettes = DATA; nothing style-shaped may live in systems/skybox.js. Required fields per style: mechanism ('gradient'|'solid'), colors {zenith,horizon,nadir} OR seeded:true (PLAIN keeps the classic-SE seeded per-round family, commit 3a14e4b), haze.density (0..1, fog-system seam), sun/moon/stars booleans. RANDOM is a picker: excludes names styles it never picks.",
+    "_source": "manual:L1922-L1929",
+    "PLAIN": {
+      "label": "Plain",
+      "mechanism": "gradient",
+      "colors": null,
+      "seeded": true,
+      "haze": {
+        "density": 0.0
+      },
+      "sun": true,
+      "moon": false,
+      "stars": false,
+      "_source": "manual:L1922-L1929",
+      "_note": "default-style sky; renders via the seeded classic-SE family (skyVariation) — byte-identical to the pre-W2-Ca default"
+    },
+    "STORMY": {
+      "label": "Stormy",
+      "mechanism": "gradient",
+      "colors": {
+        "zenith": "#232833",
+        "horizon": "#4a5058",
+        "nadir": "#101216"
+      },
+      "haze": {
+        "density": 0.9
+      },
+      "sun": false,
+      "moon": false,
+      "stars": false,
+      "_source": "manual:L1922-L1929",
+      "_note": "hostile sky — dark palette + heavy haze; lightning behavior is sibling leaf W2-Cb"
+    },
+    "STARS": {
+      "label": "Stars",
+      "mechanism": "gradient",
+      "colors": {
+        "zenith": "#05070f",
+        "horizon": "#101a2e",
+        "nadir": "#03040a"
+      },
+      "haze": {
+        "density": 0.1
+      },
+      "sun": false,
+      "moon": false,
+      "stars": true,
+      "_source": "manual:L1922-L1929",
+      "_note": "night sky with visible stars"
+    },
+    "SHADED": {
+      "label": "Shaded",
+      "mechanism": "gradient",
+      "colors": {
+        "zenith": "#3a6ea5",
+        "horizon": "#a8c4dc",
+        "nadir": "#1c3350"
+      },
+      "haze": {
+        "density": 0.2
+      },
+      "sun": true,
+      "moon": false,
+      "stars": false,
+      "_source": "manual:L1922-L1929"
+    },
+    "SUNSET": {
+      "label": "Sunset",
+      "mechanism": "gradient",
+      "colors": {
+        "zenith": "#452a63",
+        "horizon": "#ff8c42",
+        "nadir": "#241428"
+      },
+      "haze": {
+        "density": 0.25
+      },
+      "sun": true,
+      "moon": false,
+      "stars": false,
+      "_source": "manual:L1922-L1929"
+    },
+    "CAVERN": {
+      "label": "Cavern",
+      "mechanism": "gradient",
+      "colors": {
+        "zenith": "#1a120c",
+        "horizon": "#4a3626",
+        "nadir": "#0d0806"
+      },
+      "haze": {
+        "density": 0.5
+      },
+      "sun": false,
+      "moon": false,
+      "stars": false,
+      "_source": "manual:L1922-L1929"
+    },
+    "BLACK": {
+      "label": "Black",
+      "mechanism": "solid",
+      "colors": {
+        "zenith": "#000000",
+        "horizon": "#000000",
+        "nadir": "#000000"
+      },
+      "haze": {
+        "density": 0.0
+      },
+      "sun": false,
+      "moon": false,
+      "stars": false,
+      "_source": "manual:L1922-L1929",
+      "_note": "flat black; RANDOM never picks it"
+    },
+    "RANDOM": {
+      "label": "Random",
+      "picker": true,
+      "excludes": [
+        "BLACK"
+      ],
+      "_source": "manual:L1922-L1929",
+      "_note": "RANDOM tells the computer to decide at the beginning of each round what kind of background it should use (any type except BLACK)"
+    }
+  },
+  "weather": {
+    "_source": "W2-G (plan SE-COMPLETE-1012) — user brief: 'STORMY heavy, PLAIN light' cloud cover + ground fog per sky style. No manual numbers exist for cloud/fog magnitudes -> editor-tunable data with _placeholder defaults. Fog density/color per style CONSUMES the skybox getFogParams() seam (systems/skybox.js, W2-Ca); only cover/count/drift/heights live here.",
+    "cloudAltitude": {
+      "min": 24,
+      "max": 34,
+      "_placeholder": true,
+      "_note": "world-y band clouds drift in; arena is 240x60u, camera far 1000"
+    },
+    "cloudScale": {
+      "min": 6,
+      "max": 14,
+      "_placeholder": true
+    },
+    "fog": {
+      "_placeholder": true,
+      "maxLayers": 6,
+      "layerHeight": 1.2,
+      "layerSpan": 30.0,
+      "layerColorFallback": "#c8ccd4",
+      "_note": "layerColorFallback is used when the getFogParams seam color is null (PLAIN seeded palette)",
+      "layerOpacityMax": 0.22
+    },
+    "styles": {
+      "PLAIN": {
+        "cloudCover": 0.15,
+        "cloudCount": 3,
+        "cloudDrift": 1.0,
+        "cloudColor": "#ffffff",
+        "_note": "light fair-weather cover"
+      },
+      "STORMY": {
+        "cloudCover": 0.9,
+        "cloudCount": 14,
+        "cloudDrift": 2.2,
+        "cloudColor": "#3a3f47",
+        "_note": "heavy rolling storm cover"
+      },
+      "STARS": {
+        "cloudCover": 0.1,
+        "cloudCount": 2,
+        "cloudDrift": 0.6,
+        "cloudColor": "#1c2436",
+        "_note": "thin night wisps"
+      },
+      "SHADED": {
+        "cloudCover": 0.35,
+        "cloudCount": 5,
+        "cloudDrift": 1.2,
+        "cloudColor": "#dfe8f0"
+      },
+      "SUNSET": {
+        "cloudCover": 0.3,
+        "cloudCount": 4,
+        "cloudDrift": 0.9,
+        "cloudColor": "#e8a06a"
+      },
+      "CAVERN": {
+        "cloudCover": 0.5,
+        "cloudCount": 7,
+        "cloudDrift": 0.5,
+        "cloudColor": "#4a3626",
+        "_note": "hanging haze, slow"
+      },
+      "BLACK": {
+        "cloudCover": 0.05,
+        "cloudCount": 1,
+        "cloudDrift": 0.3,
+        "cloudColor": "#101010"
+      },
+      "RANDOM": {
+        "cloudCover": 0.4,
+        "cloudCount": 6,
+        "cloudDrift": 1.2,
+        "cloudColor": "#c8ccd4",
+        "_note": "fallback; RANDOM resolves via se.sky.style at runtime"
+      }
+    },
+    "volumetric": {
+      "_source": "RETIRED (CLOUD-TOOL T7, plans/CLOUD-MIGRATION.md): the W8-C raymarch slab block is replaced by the engine's volumetric-cloud REGION scripts — ALL of the slab's numbers moved VERBATIM to the scene entity clouds_calm (scenes/level-01.json) and the storm numbers to storm_front (see also stormEvent.billboards). T8 LANDED: the slab mount (systems/stormClouds.js) stays as the game-side renderer and CONSUMES THE REGION PARAMS as its single data source (engine region renderer is not mountable in standalone game boot — decision record in plans/CLOUD-MIGRATION.md). This tombstone keeps the legacy values purely as a record so external readers find the decision — never silently dropped; NO code reads it.",
+      "_retired": true,
+      "_placeholder": true,
+      "enabled": true,
+      "steps": 48,
+      "stepsNote": "raymarch samples per pixel; PERF LAW: data-capped by [stepsMin, stepsMax] — moved to the clouds_calm region params (scenes/level-01.json)",
+      "stepsMin": 16,
+      "stepsMax": 96,
+      "noiseSize": 32,
+      "noiseOctaves": 3,
+      "noisePeriod": 8,
+      "noisePeriodNote": "lattice wrap period of the value noise (tiles the field seamlessly)",
+      "noiseSeed": 131,
+      "noiseSeedNote": "DATA seed for the procedural field — same seed = bit-identical texture",
+      "noiseScale": 0.045,
+      "noiseScaleNote": "world-units -> noise-space frequency — moved to the region params",
+      "slabYMin": 26,
+      "slabYMax": 40,
+      "slabPad": 32,
+      "slabPadNote": "world-units the slab overhangs the play area on each horizontal side — moved into clouds_calm sizeX/Y/Z + transform y",
+      "threshold": 0.34,
+      "softness": 0.22,
+      "opacityPerStep": 0.045,
+      "earlyExit": 0.985,
+      "earlyExitNote": "opacity saturation point for the marching early-exit (PERF LAW)",
+      "driftSpeed": 0.6,
+      "calmDensity": 0.3,
+      "stormDensity": 1.0,
+      "calmColor": "#e8eef6",
+      "stormColor": "#23272e",
+      "heightFade": 0.35,
+      "heightFadeNote": "0..1 how strongly density fades toward the slab top/bottom (rounded cloud edges)"
+    },
+    "fire": {
+      "_placeholder": true,
+      "_note": "burning-terrain state. Manual L1035-L1044 pins napalm pooling/heat but no burn seconds or spread rate -> data defaults marked _placeholder. Lightning sibling (W2-Cb) fires ignite via the se.weather.ignite() seam.",
+      "burnSeconds": 6.0,
+      "spread": 0.0,
+      "spreadNote": "cells ignited per burning cell per second; manual pins no rate -> 0 until pinned",
+      "cellScale": 0.5,
+      "coreColor": "#ff7a00",
+      "midColor": "#ffd400"
+    },
+    "wallClock": {
+      "_source": "RETIRED (W6-scrub, plans/SE-SCRUB-W6/INVENTORY.md): the storm-event fog/cloud ramp clock now runs on SIM time (wx.t, fixed steps) so editor scrub pause/step freezes it deterministically — the W8-E wall-clock accrual and this block's only consumer (the fail-loud gate) are gone. Kept as a tombstone so external readers find the decision, never read by code.",
+      "_retired": true,
+      "maxDeltaSeconds": 0.5
+    },
+    "wind": {
+      "_source": "W-A (fixup 2026-10-13, user-reported 'storms and fog should appear to move in the direction of the wind'): storm-billboard/fog/cloud drift DIRECTION and relative SPEED follow the live wind (se.wind = {x,z} world u/s^2, rolled deterministically per round/turn by settingsApply.rollWind). coupling multiplies the wind into the drift speed (u/s per u/s^2 of wind); wind 0 -> the old per-seed seeded drift byte-identically. _placeholder until the manual pins a coupling.",
+      "_placeholder": true,
+      "coupling": 1.0,
+      "couplingNote": "driftSpeed += wind.x|z * coupling; default wind max ~3 u/s^2 -> up to ~3 u/s of extra drift (comparable to the seeded cloudDrift 0.3-2.2)"
+    }
+  },
+  "liquid": {
+    "_source": "W2-G napalm pooling (OG behavior: napalm 'splashes around ... forms deep pools' — manual L1035-L1040). Pure model src/gameplay/liquid.js. No manual numbers for flow/depth/burn -> _placeholder data.",
+    "_placeholder": true,
+    "depthPerUnit": 0.05,
+    "depthPerUnitNote": "world pool height per unit quantity",
+    "maxDepth": 1.5,
+    "maxDepthNote": "hard cap on pool depth (world units)",
+    "settleIterations": 60,
+    "settleIterationsNote": "max downhill-flow passes per settle",
+    "burnPerSecond": 0.2,
+    "burnPerSecondNote": "quantity burned per second while a pool burns",
+    "poolColor": "#ff5a00",
+    "settleHz": 5,
+    "settleHzNote": "FPS-1012: pool settle runs at this rate (per second), not per frame — pooling is a slow visual; the deterministic model (pass count/order) is unchanged. 5 = 12x cheaper than 60Hz with visually identical pooling."
+  },
+  "dressing": {
+    "_source": "W2-H world dressing (plan SE-COMPLETE-1012): deco terrain skirt on -X/+X/-Z, +Z cut-face extension below the floor, distance fog swallow. Fog CONSUMES the skybox getFogParams() seam; the numbers here are the dressing-side overrides only.",
+    "skirt": {
+      "enabled": false,
+      "enabledSource": "W10 (plan SE-FIXUP-1012 item 4, user decision 2026-10-13): ONE terrain — the field itself already extends past the panes on all four sides; the multi-part deco skirt is retired (flag kept so the exterior ring can be re-enabled as data). Cut face + fog always mount.",
+      "widthWorld": 96,
+      "widthWorldNote": "how far the deco terrain extends beyond the field edge (world units). Measured boot cost at 96: ~1.5s total (48-cell fill + mesher) — inside the 3s budget.",
+      "fillCells": 48,
+      "fillCellsNote": "FPS-1012g: vertical fill per column, capped below the surface top — deeper is fog/invisible. The skirt is a TRUE VOXEL EXTENSION (same V, same mesher, same band colors), so this is the only depth knob left."
+    },
+    "cutFace": {
+      "depthWorld": 16,
+      "depthWorldNote": "how far the +Z cut face extends below the field floor (y=0) — a SHALLOW band (DEEPEN-1015 R6: the REAL VOXEL FIELD itself extends deep below — .floorExtension — so the deep drop below the strata band is real terrain voxels)",
+      "depthWorldSource": "CUTFACE-REWORK-1014 (user 2026-10-14: 'lower the starting terrain instead of it falling all the way down'): 128 -> 16 — just past the visible strata band (grass ~3 + dirt 12 + dark 24 cells at V=0.25 reads ~10u), so the brown dirt portion under the surface no longer falls all the way down. The terrace dither (ditherWorld) was REMOVED same-day as user-rejected ('get rid of that hideous thing')."
+    },
+    "underSlab": {
+      "_source": "W4C (plan SE-FIXUP-1012, user 2026-10-13 'i want the 3d terrain to extend further down in the -y direction'): NON-PLAYABLE deep under-slab — perimeter walls at the -x/+x/-z field edges from y=0 down to depthWorld (the +z side is the aquarium cut face). Depth is DATA; zero sim cost (THREE meshes, never voxels — solidAt/blast/spawns can't touch them). Built by src/voxel3d/skirt.js underSlabPlan/buildSkirtGroup. REMOVED 2026-10-14 (user 'tall brown tower below the play area — remove it completely'): enabled false — the under-slab perimeter walls no longer mount; the block and underSlabPlan stay for the editor toggle. The +Z cutaway face is untouched.",
+      "enabled": false,
+      "depthWorld": 128,
+      "depthWorldNote": "how deep the visible terrain shell extends below the field floor (y=0) at the field edges, in world units"
+    },
+    "underField": {
+      "_tombstone": "DEEPEN-1015 R6 RETIRED (2026-10-16, user directive: 'I JUST WANT THE VOXELS TO EXTEND DOWN FURTHER' — no second object): the grey organic under-field MESH (buildUnderFieldGroup, 'se_underfield'/'underfield_rock', depthWorld/marginWorld/topBaseY/topAmpWorld/topFreq/topOctaves/sideWobbleWorld/bottomWobbleWorld/sideFreq/segsX/segsZ) is REMOVED entirely, code and data. The ground below the playable surface is now REAL TERRAIN VOXELS: the field depth grew by data/voxel-terrain.json .floorExtension.floorCells (520 cells = 130 world units, the old depthWorld parity) below the unchanged playable floor plane, filled by generator.js with the SAME strata law. WHY: the user rejected a second auxiliary object outright — voxels are the honest ground. Consumers: none (src/voxel3d/host.js mount() mounts only the field + se_dressing)."
+    },
+    "fog": {
+      "defaultStyle": "PLAIN",
+      "densityScale": 0.01,
+      "densityScaleNote": "FogExp2 density = seam density x this scale. FOG-ALWAYS-ON-FIX (plans/FOG-ALWAYS-ON-FIX.md, user-reported 2026-10-14): the seamlessDensity FLOOR is retired — a zero-haze style gets density 0 and mountDressing mounts NO scene fog (the deep dressing fades via skirtFade instead).",
+      "seamlessDensity": 0.9,
+      "seamlessDensityNote": "RETIRED (FOG-ALWAYS-ON-FIX, 2026-10-14): no longer read by skirt.js dressingFog — zero-haze styles now get density 0 (no scene fog). Kept as a tombstone so external readers find the decision — never silently dropped.",
+      "colorFallback": "#aab6c4",
+      "styleOverrides": {
+        "_source": "FOG-ALWAYS-ON-FIX (plans/FOG-ALWAYS-ON-FIX.md, 2026-10-14): the PLAIN override (density 0.009, color #aab6c4) is RETIRED — PLAIN's seam haze is 0, so dressingFog('PLAIN') is now density 0 and mountDressing mounts NO scene fog on clear skies. Tombstone keeps the legacy values so external readers find the decision: density 0.009, color #aab6c4. STORMY needs no override (seam 0.9 x densityScale 0.01 = 0.009, unchanged)."
+      },
+      "skirtFade": {
+        "_source": "FOG-ALWAYS-ON-FIX (plans/FOG-ALWAYS-ON-FIX.md, user-reported 2026-10-14 'fog is ALWAYS on'): scene fog no longer hides the deep dressing's vertical cut — the skirt/cut-face/under-slab meshes carry a SKIRT-LOCAL depth fade (material-level mix toward this color by depth below y=0, skirt.js applyDepthFade). This replaces the old always-on scene fog crutch; clear skies keep every play-area object unfogged.",
+        "_placeholder": true,
+        "color": "#aab6c4",
+        "colorNote": "the dressing fog colorFallback — the deep shell still sinks into the same haze it used to be scene-fogged into",
+        "startDepth": 12.0,
+        "startDepthNote": "world units below y=0 where the fade begins (above this the deep shell reads at full color)",
+        "fullDepth": 96.0,
+        "fullDepthNote": "world units below y=0 where the fade completes (fully the fade color); inside startDepth..fullDepth the mix is linear"
+      },
+      "stormEvent": {
+        "_source": "W8-A (plan SE-COMPLETE-1012) — user brief: fog as a HOSTILE-WEATHER EVENT on the storm sky (fog rises during storms and clears after, never a constant). The manual pins no storm-fog numbers -> editor-tunable data with _placeholder defaults.",
+        "_placeholder": true,
+        "style": "STORMY",
+        "styleNote": "which sky style gets the event; keyed by name so weather.js carries no style literals (lightning hostileSkies precedent)",
+        "riseSeconds": 8.0,
+        "holdSeconds": 20.0,
+        "fallSeconds": 12.0,
+        "densityStorm": 0.045,
+        "densityStormNote": "FogExp2 density at event peak; mounted baselines run ~0.007-0.009 (dressing densityScale x seam) so this is a real whiteout escalation",
+        "colorStorm": "#5a636e",
+        "chancePerRound": 0.34,
+        "startMaxSeconds": 25.0,
+        "startMaxSecondsNote": "when the front occurs its arrival time is drawn from the same seed chain within this window — same seed = same storm timing",
+        "area": {
+          "_source": "W8-J (plan SE-COMPLETE-1012, user-reported 'the fog area is MUCH too small'): the storm front's footprint is DATA, a square of side spanXZ (world units) centered on the field, covering the terrain AROUND the play area — not just the cage. Default ~2.2x the default play-area span (240) so billboards + fog dressing span the surrounding terrain. _placeholder until the manual pins it.",
+          "_placeholder": true,
+          "spanXZ": 520.0
+        },
+        "billboards": {
+          "_source": "RETIRED (CLOUD-TOOL T7, plans/CLOUD-MIGRATION.md): the W8-E/W2-G billboard storm front is replaced by the storm_front volumetric-cloud REGION entity (scenes/level-01.json) — its numbers moved VERBATIM into that region's script params with a _source note (count 6 has no region analog — the region is ONE volume). T8 LANDED: the billboard mount (weather.js mountStormBillboards) AND the weather.js fail-loud gate over this block are both removed — retired data is not required; the frontEvent billboard merge path is gone too. Tombstone keeps the legacy values so external readers find the decision — never silently dropped; NO code reads it.",
+          "_retired": true,
+          "count": 6,
+          "altitudeMin": 55.0,
+          "altitudeMax": 80.0,
+          "altitudeSourceNote": "W8-J user correction: the legacy 24-34 band intersected the terrain (restored hill tops reach ~27 world) — the front rides ~2x max terrain height, CLEARLY above every hill. Moved to the storm_front region sizeY 25 + transform y 67.5.",
+          "color": "#23272e",
+          "colorSourceNote": "W8-J user correction: the legacy #ffcf6e yellow was a W2-G tint that read as yellow squares, not a thunderstorm — the front is now DARK STORM GRAY, set exactly to the volumetric slab's stormColor (#23272e) so front + slab read as ONE weather system. Moved to the storm_front region litColor param.",
+          "speed": 1.0,
+          "speedNote": "speed multiplies each mount's deterministic per-seed drift factor (0.7-1.3x from the cloudPlan chain) — moved to the storm_front region driftSpeedX param"
+        }
+      },
+      "boxBottomY": -136.0,
+      "boxBottomYSource": "W8-K (plan SE-COMPLETE-1012, user-directed 'down into the earth'): the fog BOXES' vertical extent anchor — every fog box stacks from this world-Y UP, at/below the LOWEST terrain (floor ~0, W4C under-slab to -128), so valleys and under-slab terrain fill with haze instead of fog floating as a band with clear air under it. W4C: lowered -40 -> -136 to sit BELOW the deep under-slab bottom.",
+      "boxBottomYPlaceholder": true,
+      "exterior": {
+        "_source": "W8-K (plan SE-COMPLETE-1012, user-directed): persistent EXTERIOR FOG layer over the terrain OUTSIDE the play-area cage — a RING of 4 band boxes (-x/+x/-z/+z) hugging the FIELD edges, ZERO footprint over the play area; the +Z band fogs the open cutaway side. FOG-ALWAYS-ON-FIX (plans/FOG-ALWAYS-ON-FIX.md, user-reported 2026-10-14 fog-always-on fix): the layer is OPT-IN — alwaysOn now defaults FALSE; clear skies mount ZERO exterior boxes (storm events still ramp/tint it when present and alwaysOn is enabled). The manual pins no exterior numbers -> editor-tunable data with _placeholder defaults. Consumed by systems/weather.js (exteriorPlan/exteriorBoxes) and mirrored on the storm_front archetype (exteriorAlwaysOn/exteriorDensity/exteriorSpan).",
+        "_placeholder": true,
+        "alwaysOn": false,
+        "density": 0.5,
+        "densityNote": "0..1 fraction of the layers stack mounted (0 = no exterior boxes — mutation-prove pin)",
+        "span": 720.0,
+        "spanNote": "W-A: ring BAND DEPTH in world units — each band reaches this far OUTWARD from the field edge it hugs (x-bands also span the full ring z extent)",
+        "bottomY": -136.0,
+        "topY": 60.0,
+        "bottomTopNote": "volume from below the lowest terrain (W4C under-slab to -128) up past the hill tops (~27 world)",
+        "layers": 4,
+        "color": "#aab6c4"
+      }
+    }
+  },
+  "settleSequence": {
+    "_source": "OG Scorched Earth: destruction first, ~500ms cartoon hold before dirt settles (physics don't apply immediately), then tanks fall and settle, then the fall damage phase, then death animations. holdSteps=30 sim steps = 500ms at fixedDt 1/60. Plan SETTLE-SEQUENCE-1014 (user directive 2026-10-14).",
+    "holdSteps": 30,
+    "_source_pace": "SETTLE-PACE-1015 user verdict: everything too fast — visible dirt, lingering fx, camera waits.",
+    "movesPerStep": 1200,
+    "fallSeconds": 0.35,
+    "fallPool": 512,
+    "fallColor": "#7a6a4f",
+    "fxTimeScale": 1.8,
+    "_source_remesh": "CRATER-DRAIN: the per-sim-step render-mesh drain budget. A shell impact enqueues its dirtyChunks (v3d.enqueueRemesh) instead of building the whole crater render mesh in one frame (~0.06ms/chunk × ~2000 chunks ≈ 120ms = the freeze). settle3d drains a bounded slice each sim step behind the blast-sphere VFX that already grows over growSeconds(≈0.6)×fxTimeScale(1.8)≈1.08s≈65 sim steps: ~2000-chunk crater / 65 ≈ 32 chunks/step. The voxel collider is field-based (columnTop off field.cells, mutated synchronously by blast()), so ONLY the render mesh is deferred — collision is immediate the frame the shell lands.",
+    "remeshPerStep": 32,
+    "_remeshPerStepNote": "KEPT as the count-cap reference (spec crater-drain reads it for the bounded-delta pin); the drain is now TIME-budgeted via remeshBudgetMs below, not chunk-count-bounded — remeshPerStep is no longer passed as the per-step drain count.",
+    "remeshBudgetMs": {
+      "label": "Crater Remesh Budget (ms)",
+      "range": { "min": 1, "max": 20 },
+      "default": 6,
+      "description": "Max milliseconds per sim step the deferred crater render-mesh drain may spend building queued chunks. TIME-bounded (not chunk-count-bounded) so the idle->0FPS frame spike can never recur regardless of how deep the pending queue gets; the queued crater still drains over successive steps.",
+      "_source": "CRATER-DRAIN PERF FIX (idle->0FPS killer): the per-sim-step drain was chunk-count-bounded (remeshPerStep=32), which spikes ~64-96ms in ONE frame when the pending queue is full (32 chunks × ~2-3ms). Replaced with a wall-time budget: settle3d builds queued chunks one at a time (drainRemesh(field,1)) while accumulating performance.now()-t1 < remeshBudgetMs, so the drain spends at most ~6ms/frame. The queued crater still drains across successive steps (bounded, deferred, collision-immediate) — only the pacing law changed (wall-time, not chunk count).",
+      "consumer": "systems/settle3d.js:REMESH_BUDGET_MS"
+    },
+    "stageMinSteps": {
+      "hold": 30,
+      "dirt": 45,
+      "tanks": 20,
+      "fallDamage": 15,
+      "deaths": 0
+    }
+  },
+  "impact": {
+    "_source": "Fall-impact damage magnitudes (manual:L2156-L2161 publishes NO numbers — the fall happens, the total is the same on/off). Drop measured in SE px (SE_PX_TO_WORLD anchor). Damage books through the single damage path (battleLoop.onBlast hostile) via the lightning strikePoint standoff.",
+    "_placeholder": [
+      "minDropPx",
+      "damagePerPx",
+      "maxDamage",
+      "blastRpx"
+    ],
+    "minDropPx": 15,
+    "damagePerPx": 1,
+    "maxDamage": 50,
+    "blastRpx": 40
+  },
+  "buried": {
+    "_source": "SETTLE-PACE-1015 user directive (option 1): dirt on top of a tank buries it — a tank is buried when surface − tank.y >= minCoverU (0.3u ≈ one 0.25u voxel + epsilon). Buried tanks cannot drive but can aim/fire; their own blasts carve the column and the tank falls free (fall damage per the existing .impact path when the carve over-deepens).",
+    "minCoverU": 0.3
+  },
+  "battle": {
+    "_source": "Battle hull constant: every player starts at maxHull (S3D pin; battleLoop MAX_HULL / turnState hull / accessories repair cap all read here).",
+    "_placeholder": [
+      "maxHull"
+    ],
+    "maxHull": 100
+  }
+}

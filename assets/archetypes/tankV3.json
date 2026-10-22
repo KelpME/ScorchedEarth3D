@@ -1,0 +1,517 @@
+{
+  "id": "tankV3",
+  "name": "tankV3",
+  "components": {},
+  "children": [
+    {
+      "name": "tankV3",
+      "offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "render": {
+          "model": "assets/models/tankV3.glb"
+        }
+      },
+      "children": [
+        {
+          "name": "Scene",
+          "offset": {
+            "x": -0.0001036524772644043,
+            "y": -0.009156275540590286,
+            "z": -0.20820343494415283
+          },
+          "components": {
+            "transform": {
+              "x": -0.0001036524772644043,
+              "y": -0.009156275540590286,
+              "z": -0.20820343494415283
+            }
+          },
+          "children": [
+            {
+              "name": "Hull",
+              "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "components": {
+                "transform": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "render": {
+                  "model": "assets/models/tankV3.glb",
+                  "node": "Hull",
+                  "nodePath": "0/0"
+                }
+              },
+              "children": [
+                {
+                  "name": "Armor1",
+                  "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "Armor1",
+                      "nodePath": "0/0/0"
+                    }
+                  }
+                },
+                {
+                  "name": "Armor2",
+                  "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "Armor2",
+                      "nodePath": "0/0/1"
+                    }
+                  }
+                },
+                {
+                  "name": "Armor3",
+                  "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "Armor3",
+                      "nodePath": "0/0/2"
+                    }
+                  }
+                },
+                {
+                  "name": "Armor4",
+                  "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "Armor4",
+                      "nodePath": "0/0/3"
+                    }
+                  }
+                },
+                {
+                  "name": "Barrel",
+                  "offset": {
+                    "x": -0.023956511169672012,
+                    "y": 1.11103355884552,
+                    "z": 0.27105912566185
+                  },
+                  "components": {
+                    "transform": {
+                      "x": -0.023956511169672012,
+                      "y": 1.11103355884552,
+                      "z": 0.27105912566185,
+                      "rot": {
+                        "x": 0.005313325003629333,
+                        "y": 0,
+                        "z": 0
+                      }
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "Barrel",
+                      "nodePath": "0/0/4"
+                    }
+                  },
+                  "children": [
+                    {
+                      "name": "Barrel001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Barrel001",
+                          "nodePath": "0/0/4/0"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "TrackL",
+                  "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "TrackL",
+                      "nodePath": "0/0/5"
+                    }
+                  },
+                  "children": [
+                    {
+                      "name": "Gear1001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear1001",
+                          "nodePath": "0/0/5/0"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear2001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear2001",
+                          "nodePath": "0/0/5/1"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear3001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear3001",
+                          "nodePath": "0/0/5/2"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear4001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear4001",
+                          "nodePath": "0/0/5/3"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear5001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear5001",
+                          "nodePath": "0/0/5/4"
+                        }
+                      }
+                    },
+                    {
+                      "name": "TrackPlayerColor1001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "TrackPlayerColor1001",
+                          "nodePath": "0/0/5/5"
+                        }
+                      }
+                    },
+                    {
+                      "name": "TrackPlayerColor2001",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "TrackPlayerColor2001",
+                          "nodePath": "0/0/5/6"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "TrackR",
+                  "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tankV3.glb",
+                      "node": "TrackR",
+                      "nodePath": "0/0/6"
+                    }
+                  },
+                  "children": [
+                    {
+                      "name": "Gear1",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear1",
+                          "nodePath": "0/0/6/0"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear2",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear2",
+                          "nodePath": "0/0/6/1"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear3",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear3",
+                          "nodePath": "0/0/6/2"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear4",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear4",
+                          "nodePath": "0/0/6/3"
+                        }
+                      }
+                    },
+                    {
+                      "name": "Gear5",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "Gear5",
+                          "nodePath": "0/0/6/4"
+                        }
+                      }
+                    },
+                    {
+                      "name": "TrackPlayerColor1",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "TrackPlayerColor1",
+                          "nodePath": "0/0/6/5"
+                        }
+                      }
+                    },
+                    {
+                      "name": "TrackPlayerColor2",
+                      "offset": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tankV3.glb",
+                          "node": "TrackPlayerColor2",
+                          "nodePath": "0/0/6/6"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

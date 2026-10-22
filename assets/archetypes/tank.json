@@ -1,0 +1,472 @@
+{
+  "id": "tank",
+  "name": "tank",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "render": {
+      "model": "assets/models/tank.glb"
+    },
+    "scripts": [
+      {
+        "name": "aim_control",
+        "params": {
+          "stepDeg": 2,
+          "minDeg": 0,
+          "maxDeg": 180
+        }
+      }
+    ]
+  },
+  "children": [
+    {
+      "name": "tankV3",
+      "parent": "tank",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "render": {
+          "model": "assets/models/tank.glb"
+        }
+      },
+      "children": [
+        {
+          "name": "Scene",
+          "parent": "tankV3",
+          "components": {
+            "transform": {
+              "x": -0.0001036524772644043,
+              "y": -0.009156275540590286,
+              "z": 0
+            }
+          },
+          "children": [
+            {
+              "name": "Hull",
+              "parent": "Scene",
+              "components": {
+                "transform": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "render": {
+                  "model": "assets/models/tank.glb",
+                  "node": "Hull",
+                  "nodePath": "0/0"
+                }
+              },
+              "children": [
+                {
+                  "name": "Armor1",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "Armor1",
+                      "nodePath": "0/0/0"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "name": "Armor2",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "Armor2",
+                      "nodePath": "0/0/1"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "name": "Armor3",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "Armor3",
+                      "nodePath": "0/0/2"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "name": "Armor4",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "Armor4",
+                      "nodePath": "0/0/3"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "name": "Barrel",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "rot": {
+                        "x": 0.005313325003629333,
+                        "y": 0,
+                        "z": 0
+                      },
+                      "x": -0.023956511169672012,
+                      "y": 1.11103355884552,
+                      "z": 0.27105912566185
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "Barrel",
+                      "nodePath": "0/0/4"
+                    }
+                  },
+                  "children": [
+                    {
+                      "name": "Barrel001",
+                      "parent": "Barrel",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Barrel001",
+                          "nodePath": "0/0/4/0"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "ShellSpawn",
+                      "parent": "Barrel",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": -0.0037388987839221954,
+                          "z": -1.3327640295028687
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "ShellSpawn",
+                          "nodePath": "0/0/4/1"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "TrackL",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "TrackL",
+                      "nodePath": "0/0/5"
+                    }
+                  },
+                  "children": [
+                    {
+                      "name": "Gear1001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear1001",
+                          "nodePath": "0/0/5/0"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear2001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear2001",
+                          "nodePath": "0/0/5/1"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear3001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear3001",
+                          "nodePath": "0/0/5/2"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear4001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear4001",
+                          "nodePath": "0/0/5/3"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear5001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear5001",
+                          "nodePath": "0/0/5/4"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "TrackPlayerColor1001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "TrackPlayerColor1001",
+                          "nodePath": "0/0/5/5"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "TrackPlayerColor2001",
+                      "parent": "TrackL",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "TrackPlayerColor2001",
+                          "nodePath": "0/0/5/6"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "TrackR",
+                  "parent": "Hull",
+                  "components": {
+                    "transform": {
+                      "x": 0,
+                      "y": 0,
+                      "z": 0
+                    },
+                    "render": {
+                      "model": "assets/models/tank.glb",
+                      "node": "TrackR",
+                      "nodePath": "0/0/6"
+                    }
+                  },
+                  "children": [
+                    {
+                      "name": "Gear1",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear1",
+                          "nodePath": "0/0/6/0"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear2",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear2",
+                          "nodePath": "0/0/6/1"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear3",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear3",
+                          "nodePath": "0/0/6/2"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear4",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear4",
+                          "nodePath": "0/0/6/3"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "Gear5",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "Gear5",
+                          "nodePath": "0/0/6/4"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "TrackPlayerColor1",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "TrackPlayerColor1",
+                          "nodePath": "0/0/6/5"
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "TrackPlayerColor2",
+                      "parent": "TrackR",
+                      "components": {
+                        "transform": {
+                          "x": 0,
+                          "y": 0,
+                          "z": 0
+                        },
+                        "render": {
+                          "model": "assets/models/tank.glb",
+                          "node": "TrackPlayerColor2",
+                          "nodePath": "0/0/6/6"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

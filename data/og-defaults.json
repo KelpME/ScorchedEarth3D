@@ -1,0 +1,359 @@
+{
+  "source": "SCORCH.CFG (v1.50)",
+  "caveat": "CFG holds the CURRENT save; per the CFG header the bracketed MENU defaults live in code. Values below are the shipped CFG settings, treated as the OG reference defaults.",
+  "settings": {
+    "MAXPLAYERS": {
+      "value": "2",
+      "numeric": 2,
+      "type": "int",
+      "mappedTo": "mainMenuGameplay.players",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "MAXROUNDS": {
+      "value": "10",
+      "numeric": 10,
+      "type": "int",
+      "mappedTo": "mainMenuGameplay.rounds",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "SOUND": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "OG sound toggle; our audio system id TBD",
+      "confidence": "unmapped"
+    },
+    "FLY_SOUND": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "GRAPHICS_MODE": {
+      "value": "360x480",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "DOS video mode; n/a",
+      "confidence": "unmapped"
+    },
+    "BIOS_KEYBOARD": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "LOWMEM": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "POINTER": {
+      "value": "mouse",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "mouse/joystick/none",
+      "confidence": "unmapped"
+    },
+    "MOUSE_RATE": {
+      "value": "0.50",
+      "numeric": 0.5,
+      "type": "float",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "FIRE_DELAY": {
+      "value": "100",
+      "numeric": 100,
+      "type": "int",
+      "mappedTo": null,
+      "note": "adaptive timestep input (dt = 1/(50*FIRE_DELAY*mips/(projectiles*100)))",
+      "confidence": "unmapped"
+    },
+    "FALLING_DELAY": {
+      "value": "10",
+      "numeric": 10,
+      "type": "int",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "INTEREST_RATE": {
+      "value": "0.300000",
+      "numeric": 0.3,
+      "type": "float",
+      "mappedTo": "economy.options.interestRate?",
+      "mappedFile": "data/economy.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "INITIAL_CASH": {
+      "value": "1000000",
+      "numeric": 1000000,
+      "type": "int",
+      "mappedTo": "economy.options.initialCash?",
+      "mappedFile": "data/economy.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "COMPUTERS_BUY": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "AI shopping",
+      "confidence": "unmapped"
+    },
+    "FREE_MARKET": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": "economy.options.freeMarket?",
+      "mappedFile": "data/economy.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "SCORING": {
+      "value": "Standard",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "Standard|Corporate|Vicious",
+      "confidence": "unmapped"
+    },
+    "AIR_VISCOSITY": {
+      "value": "0",
+      "numeric": 0,
+      "type": "int",
+      "mappedTo": "physics.airViscosity",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "GRAVITY": {
+      "value": "0.200000",
+      "numeric": 0.2,
+      "type": "float",
+      "mappedTo": "physics.gravity",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "SUSPEND_DIRT": {
+      "value": "0",
+      "numeric": 0,
+      "type": "int",
+      "mappedTo": "physics.suspendDirt",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "FALLING_TANKS": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": "physics.tanksFall",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "EDGES_EXTEND": {
+      "value": "75",
+      "numeric": 75,
+      "type": "int",
+      "mappedTo": "physics.bordersExtend",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "ELASTIC": {
+      "value": "None",
+      "type": "enum|string",
+      "mappedTo": "physics.wallMode",
+      "mappedFile": "data/physics-presets.json",
+      "note": "None|Wrap-around|Padded|Rubber|Spring|Concrete",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "SKY": {
+      "value": "Random",
+      "type": "enum|string",
+      "mappedTo": "landscape.sky",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "MAX_WIND": {
+      "value": "0",
+      "numeric": 0,
+      "type": "int",
+      "mappedTo": "landscape.maxWind",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "CHANGING_WIND": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": "landscape.changingWind",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "HOSTILE_ENVIRONMENT": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": "landscape.hostileEnvironment",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "LAND1": {
+      "value": "20",
+      "numeric": 20,
+      "type": "int",
+      "mappedTo": "landscape.bumpiness",
+      "mappedFile": "data/physics-presets.json",
+      "note": "LAND1 maps to bumpiness (2..10), LAND2 to slope",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "LAND2": {
+      "value": "20",
+      "numeric": 20,
+      "type": "int",
+      "mappedTo": "landscape.slope",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "FLATLAND": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": "landscape.flattenPeaks",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "RANDOM_LAND": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": "landscape.randomLand",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "MTN_PERCENT": {
+      "value": "80.000000",
+      "numeric": 80,
+      "type": "float",
+      "mappedTo": "landscape.percentScannedMountains",
+      "mappedFile": "data/physics-presets.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "FAST_COMPUTERS": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": "options.fastComputers",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "TALKING_TANKS": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": "options.talkingTanks",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "TALK_PROBABILITY": {
+      "value": "100",
+      "numeric": 100,
+      "type": "int",
+      "mappedTo": "options.talkProbability",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "TALK_DELAY": {
+      "value": "18",
+      "numeric": 18,
+      "type": "int",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "ATTACK_COMMENTS": {
+      "value": "talk1.cfg",
+      "type": "enum|string",
+      "mappedTo": "options.attackFile",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "DIE_COMMENTS": {
+      "value": "talk2.cfg",
+      "type": "enum|string",
+      "mappedTo": "options.dieFile",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "PLAY_MODE": {
+      "value": "Sequential",
+      "type": "enum|string",
+      "mappedTo": "options.mode",
+      "mappedFile": "data/play-options.json",
+      "note": "Sequential|Simultaneous|Synchronous",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "STATUS_BAR": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": "options.statusBar",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "PLAY_ORDER": {
+      "value": "Random",
+      "type": "enum|string",
+      "mappedTo": "options.playOrder",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "TEAM_MODE": {
+      "value": "None",
+      "type": "enum|string",
+      "mappedTo": "options.teams",
+      "mappedFile": "data/play-options.json",
+      "confidence": "medium (name/semantic match, verify against our schema)"
+    },
+    "ARMS": {
+      "value": "4",
+      "numeric": 4,
+      "type": "int",
+      "mappedTo": null,
+      "note": "arms level cap 0-4",
+      "confidence": "unmapped"
+    },
+    "BOMB_ICON": {
+      "value": "Big",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "TUNNELLING": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "digger/sandhog behavior toggle",
+      "confidence": "unmapped"
+    },
+    "EXPLOSION_SCALE": {
+      "value": "Large",
+      "type": "enum|string",
+      "mappedTo": null,
+      "note": "Small|Medium|Large",
+      "confidence": "unmapped"
+    },
+    "TRACE": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "EXTRA_DIRT": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "USELESS_ITEMS": {
+      "value": "Off",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    },
+    "DAMAGE_TANKS_ON_IMPACT": {
+      "value": "On",
+      "type": "enum|string",
+      "mappedTo": null,
+      "confidence": "unmapped"
+    }
+  }
+}

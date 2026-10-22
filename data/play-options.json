@@ -1,0 +1,220 @@
+{
+  "_source": "manual:L1968-L2047",
+  "_note": "Play Options Menu, table L1973-L2047. The brief names region 'L1990-L2060' and expects rounds/sudden-death there: 'Rounds 1-1000 default 10' actually lives in the Main Menu at L1616, and 'sudden death' appears NOWHERE in the manual — both are recorded below (rounds with its true anchor; sudden death as missing, not invented).",
+  "options": {
+    "mapSize": {
+      "label": "Map Size",
+      "enum": [
+        "default",
+        "medium",
+        "large"
+      ],
+      "default": "default",
+      "description": "Battlefield size. Default is the classic field; medium scales both world axes x2.5, large x5. Turn budget and the aquarium panes scale with the map.",
+      "_source": "plan SE-EXPANSION-1012 (user brief 2026-10-11)",
+      "consumer": "src/main.js:setMapSize"
+    },
+    "mode": {
+      "label": "Mode",
+      "enum": [
+        "Sequential",
+        "Synchronous",
+        "Simultaneous"
+      ],
+      "default": "Sequential",
+      "description": "Sequential: turns one after another. Simultaneous: everyone aims and fires at once. Synchronous: all aim at round start, all shots fire together.",
+      "_source": "manual:L1976-L1987",
+      "storage_reason": "Manual Seq/Sync/Simul row — W4-A implemented turn modes as the turnMode row (main.js TURN_MODES); this legacy descriptor persists verbatim, no consumer of its own.",
+      "wired": false
+    },
+    "teams": {
+      "label": "Teams",
+      "enum": [
+        "NONE",
+        "STANDARD",
+        "CORPORATE",
+        "VICIOUS"
+      ],
+      "default": "NONE",
+      "description": "Team play (several tanks ganging up on others).",
+      "_source": "manual:L1989-L1993",
+      "storage_reason": "Consumed via the teamLayout row (W4-A stores it as se.settings.teams); this legacy duplicate descriptor has no consumer of its own.",
+      "wired": false
+    },
+    "turnMode": {
+      "label": "Turn Mode",
+      "enum": [
+        "synchronous",
+        "simultaneous"
+      ],
+      "default": "synchronous",
+      "description": "synchronous: tanks alternate turns (classic). simultaneous: lockstep planning — every alive tank commits one shot, then all shots resolve together in one flight phase. _source: plan SE-COMPLETE-1012 W4-A; manual:L2164-L2212 (Simultaneous), L2214-L2228 (Synchronous).",
+      "_source": "plan SE-COMPLETE-1012 W4-A",
+      "consumer": "src/main.js:TURN_MODES"
+    },
+    "teamLayout": {
+      "label": "Team Layout",
+      "enum": [
+        "NONE",
+        "2V2",
+        "1V2V1"
+      ],
+      "default": "NONE",
+      "description": "Team play: friendly fire between teammates is OFF, and a round ends when the last TEAM stands. 2V2 and 1V2V1 need exactly 4 players. (The manual's classic NONE/STANDARD/CORPORATE/VICIOUS Teams enum above stays the archive option; this build implements the concrete layouts.)",
+      "_source": "manual:L1989-L1993",
+      "_note": "Plan SE-COMPLETE-1012 W4-A: concrete layouts per the brief (2v2 / 1v2v1); Being a Team Player manual:L2233-L2255.",
+      "consumer": "src/main.js:TEAMS_MODES"
+    },
+    "friendlyFire": {
+      "label": "Friendly Fire",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "When ON, damage applies between teammates (and to self). When OFF (default), friendly fire is zeroed at the damage gate.",
+      "_source": "plan SE-FIXUP-1012 contract C1 (task-directed, no manual row)",
+      "_note": "Stored TYPED boolean se.settings.friendlyFire by applySettings (on/off enum -> boolean, same law as tanksFall). Consumer (W9, contract C4) gates at the DAMAGE application site reading window.__se.settings.friendlyFire.",
+      "consumer": "src/gameplay/settingsApply.js:se.settings"
+    },
+    "statusBar": {
+      "label": "Status Bar",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "Second bar under the normal one giving most Tank Control Panel functions.",
+      "_source": "manual:L1995-L1999",
+      "storage_reason": "Second control bar deferred — the existing top-panel HUD carries the status readout (plan 1.7 audit note); storage + validation only.",
+      "wired": false
+    },
+    "playOrder": {
+      "label": "Play Order",
+      "enum": [
+        "RANDOM",
+        "LOSERS-FIRST",
+        "WINNERS-FIRST",
+        "ROUND-ROBIN"
+      ],
+      "default": "RANDOM",
+      "description": "RANDOM: order each turn. LOSERS-FIRST/WINNERS-FIRST: rank-based. ROUND-ROBIN: random turns, but first shot rotates per round.",
+      "_source": "manual:L2001-L2014",
+      "storage_reason": "Director consumes the battle turnOrder array (makeDirector turnOrder param, main.js); the RANDOM/LOSERS-FIRST/WINNERS-FIRST schemes are not consulted yet (W4-A shipped turn modes only).",
+      "wired": false
+    },
+    "fastComputers": {
+      "label": "Fast Computers",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "Speeds up the game while only computers are fighting.",
+      "_source": "manual:L2016-L2021",
+      "storage_reason": "AI speed-up not implemented — storage + validation only.",
+      "wired": false
+    },
+    "talkingTanks": {
+      "label": "Talking Tanks",
+      "enum": [
+        "OFF",
+        "COMPUTERS",
+        "ALL"
+      ],
+      "default": "OFF",
+      "description": "Tanks flash comic-style messages: computers only, or everyone.",
+      "_source": "manual:L2028-L2034",
+      "storage_reason": "systems/talk.js plays taunts unconditionally from data/talk.json (W4-C); the on/off gate is not consulted.",
+      "wired": false
+    },
+    "talkProbability": {
+      "label": "Talk Probability",
+      "range": {
+        "min": 0,
+        "max": 100
+      },
+      "default": 100,
+      "description": "How often tanks say something before firing.",
+      "_source": "manual:L2036-L2038",
+      "storage_reason": "Talk plays are ungated (data/talk.json cooldown rules only); the probability roll is not consulted.",
+      "wired": false
+    },
+    "attackFile": {
+      "label": "Attack file",
+      "type": "file",
+      "default": "talk1.cfg",
+      "description": "ASCII file of messages tanks say when attacking.",
+      "_source": "manual:L2040-L2042",
+      "storage_reason": "Legacy .cfg passthrough (S1 config renderer only); taunt lines ship as data/talk.json (W4-C) — file overrides are not loaded.",
+      "wired": false
+    },
+    "dieFile": {
+      "label": "Die file",
+      "type": "file",
+      "default": "talk2.cfg",
+      "description": "ASCII file of messages tanks say when they die.",
+      "_source": "manual:L2044-L2046",
+      "storage_reason": "Legacy .cfg passthrough (S1 config renderer only); taunt lines ship as data/talk.json (W4-C) — file overrides are not loaded.",
+      "wired": false
+    }
+  },
+  "mainMenuGameplay": {
+    "_note": "Game-length knobs the brief expected inside Play Options but which live in the Main Menu.",
+    "players": {
+      "label": "Players",
+      "range": {
+        "min": 2,
+        "max": 10
+      },
+      "default": 2,
+      "_source": "manual:L1613-L1614",
+      "consumer": "src/ui/setup.js:playerRosterData"
+    },
+    "rounds": {
+      "label": "Rounds",
+      "range": {
+        "min": 1,
+        "max": 1000
+      },
+      "default": 10,
+      "_source": "manual:L1616",
+      "consumer": "src/ui/setup.js:roundsRange"
+    },
+    "suddenDeath": {
+      "present": false,
+      "_note": "No 'sudden death' option exists anywhere in the 1.5 manual (searched); the brief's mention is untranscribable — reported, not invented.",
+      "_source": "manual:L1968-L2047",
+      "wired": false,
+      "storage_reason": "Declared-absent marker row: no Sudden Death option exists in the 1.5 manual (searched; _note) — presence:false keeps the omission visible in data (doctrine: documented omission)."
+    }
+  },
+  "players": {
+    "_source": "plan SE-NPLAYER-1012 (user brief 2026-10-11): 2-4 player support",
+    "count": {
+      "min": 2,
+      "max": 4,
+      "default": 2,
+      "description": "Players in the battle. Drives the setup roster rows and the battle's tank bindings.",
+      "consumer": "src/ui/setup.js:rosterData.count"
+    },
+    "defaultNames": [
+      "PLAYER 1",
+      "PLAYER 2",
+      "PLAYER 3",
+      "PLAYER 4"
+    ],
+    "defaultColors": [
+      "#ff1e3c",
+      "#ff7a00",
+      "#ffe600",
+      "#7dff00",
+      "#00e5ff",
+      "#ff1ecc",
+      "#1f5bff",
+      "#ffffff"
+    ],
+    "spawnRadius": 40,
+    "_spawnRadiusSource": "plan SE-COMPLETE-1012 W1.5 (user brief 2026-10-11): each player's spawn anchor randomizes within this radius (effective radius capped at half the min anchor separation so zones never cross)."
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "ui_menu",
+  "name": "ui_menu",
+  "description": "Start-menu ROOT as a REAL canvas+widget tree (CANVAS-MIGRATION 2026-10; WAVE-3 2026-10-20): the root carries a screen-mode `canvas` component + the ui_menu_bind script, and every visual element is a CHILD WIDGET ENTITY (text / panel + rect). Edit a child's text.string / rect / panel colors in the inspector and the mounted menu follows live (engine renderer reconciles the overlay every frame). ROW ACTIONS are BUTTONS ON THE WIDGETS: a child named menu_row_<action> is an interactive panel (panel.interactive = true — engine WAVE-3 widget interaction seam) that carries the GENERIC ui_menu_row script with its action as the declared param (newbattle | settings | help) — script name + params are visible in the hierarchy + inspector; the engine dispatches a click on the row to the script's onPointerClick hook. The transparent #se-menu DOM hit layer is RETIRED. Its menu_row_<action>_label child carries the row text. The bind script writes LIVE values (version line, the store-composed New Battle label, open/closed visibility) into the widgets from window.__se.menuFeed; labels/colors/layout live ONLY on the entities.",
+  "components": {
+    "transform": { "x": 0, "y": 0, "z": 0 },
+    "canvas": { "renderMode": "screen", "resolution": [1280, 720], "width": 8, "height": 4.5 },
+    "scripts": [
+      {
+        "name": "ui_menu_bind",
+        "params": {
+          "liveLabelTemplate": "{label} ({players} players, {rounds} rounds)"
+        }
+      }
+    ]
+  },
+  "children": [
+    {
+      "name": "menu_backdrop",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0, "y": 0, "w": 1, "h": 1, "anchorX": 0, "anchorY": 0 },
+        "panel": { "backColor": "rgba(0,0,0,0.78)", "borderColor": "rgba(0,0,0,0)", "borderWidth": 0, "cornerRadius": 0 }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_sheet",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.355, "y": 0.175, "w": 0.29, "h": 0.62, "anchorX": 0, "anchorY": 0 },
+        "panel": { "backColor": "#10160c", "borderColor": "#3a5a3a", "borderWidth": 2, "cornerRadius": 0 }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_title",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.375, "y": 0.225, "w": 0, "h": 0.05, "anchorX": 0, "anchorY": 0 },
+        "text": { "string": "SCORCHED EARTH 3D", "color": "#e8c547", "size": 30, "font": "ui-monospace, monospace", "weight": "bold" }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_version",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.375, "y": 0.295, "w": 0, "h": 0.04, "anchorX": 0, "anchorY": 0 },
+        "text": { "string": "v0.1.0", "color": "#6f8f6a", "size": 13, "font": "ui-monospace, monospace" }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_row_newbattle",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.385, "y": 0.355, "w": 0.23, "h": 0.055, "anchorX": 0, "anchorY": 0 },
+        "panel": { "backColor": "#182512", "borderColor": "#3a5a3a", "borderWidth": 1, "cornerRadius": 0, "interactive": true },
+        "scripts": [ { "name": "ui_menu_row", "params": { "action": "newbattle" } } ]
+      },
+      "children": []
+    },
+    {
+      "name": "menu_row_newbattle_label",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.397, "y": 0.367, "w": 0, "h": 0.045, "anchorX": 0, "anchorY": 0 },
+        "text": { "string": "New Battle", "color": "#cfe6c0", "size": 15, "font": "ui-monospace, monospace", "weight": "bold" }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_row_settings",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.385, "y": 0.435, "w": 0.23, "h": 0.055, "anchorX": 0, "anchorY": 0 },
+        "panel": { "backColor": "#182512", "borderColor": "#3a5a3a", "borderWidth": 1, "cornerRadius": 0, "interactive": true },
+        "scripts": [ { "name": "ui_menu_row", "params": { "action": "settings" } } ]
+      },
+      "children": []
+    },
+    {
+      "name": "menu_row_settings_label",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.397, "y": 0.447, "w": 0, "h": 0.045, "anchorX": 0, "anchorY": 0 },
+        "text": { "string": "Settings", "color": "#cfe6c0", "size": 15, "font": "ui-monospace, monospace", "weight": "bold" }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_row_help",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.385, "y": 0.515, "w": 0.23, "h": 0.055, "anchorX": 0, "anchorY": 0 },
+        "panel": { "backColor": "#182512", "borderColor": "#3a5a3a", "borderWidth": 1, "cornerRadius": 0, "interactive": true },
+        "scripts": [ { "name": "ui_menu_row", "params": { "action": "help" } } ]
+      },
+      "children": []
+    },
+    {
+      "name": "menu_row_help_label",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.397, "y": 0.527, "w": 0, "h": 0.045, "anchorX": 0, "anchorY": 0 },
+        "text": { "string": "Help / Controls", "color": "#cfe6c0", "size": 15, "font": "ui-monospace, monospace", "weight": "bold" }
+      },
+      "children": []
+    },
+    {
+      "name": "menu_footer",
+      "parent": "ui_menu",
+      "components": {
+        "transform": { "x": 0, "y": 0, "z": 0 },
+        "rect": { "x": 0.375, "y": 0.705, "w": 0, "h": 0.04, "anchorX": 0, "anchorY": 0 },
+        "text": { "string": "A HermesForge production", "color": "#6f8f6a", "size": 13, "font": "ui-monospace, monospace" }
+      },
+      "children": []
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "_source": "manual:L1640-L1659",
+  "_note": "Sound Menu (manual L1640-L1659): exactly two rows defined \u2014 Sound and Flight Sounds. W3-B (plan SE-COMPLETE-1012): those two rows are now WIRED (wired:true) \u2014 they route through applySettings and land on se.settings.{sound,flightSounds}; the audio system (systems/audio.js) is the live consumer. A Volume row (0..1, no manual source) is ADDED per the W3-B brief \u2014 flagged _source: 'brief:W3-B' (deviation from strict manual-only doctrine, documented). Every option row carries wired:true. The `events` map is NOT a settings section: it is the per-game-event synth-recipe data the audio system reads \u2014 each recipe is editor-editable DATA (osc type, freq sweep, noise mix, envelope, duration, gain). NO raw PCM anywhere: the OG EXE has none (data/og-assets.json audioScan) \u2014 all SFX are WebAudio synthesis of our own.",
+  "options": {
+    "sound": {
+      "label": "Sound",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "wired": true,
+      "description": "If ON, Scorch generates sound effects; if OFF, it makes no sound at all.",
+      "_source": "manual:L1647-L1649",
+      "consumer": "systems/audio.js:s.sound === false"
+    },
+    "volume": {
+      "label": "Volume",
+      "range": {
+        "min": 0,
+        "max": 1
+      },
+      "default": 0.8,
+      "wired": true,
+      "description": "Master output volume for all synthesized sound effects (0 = silent).",
+      "_source": "brief:W3-B (no manual row \u2014 added per plan SE-COMPLETE-1012 W3-B)",
+      "consumer": "systems/audio.js:audio.settings().volume"
+    },
+    "flightSounds": {
+      "label": "Flight Sounds",
+      "enum": [
+        "POS",
+        "VEL",
+        "OFF"
+      ],
+      "default": "OFF",
+      "wired": true,
+      "description": "Sounds weapons make in flight: POS by projectile height, VEL by projectile velocity, OFF for none.",
+      "_source": "manual:L1651-L1659",
+      "consumer": "systems/audio.js:flightSounds"
+    }
+  },
+  "events": {
+    "_note": "Per-event synth recipes. Fields: osc {type, from, to} (Hz sweep, optional), noise 0..1 (white-noise buffer mix), gain 0..1 (recipe peak, scaled by the volume setting), duration seconds, attack seconds. Law: play() schedules (osc?2:0)+(noise>0?2:0) nodes; sound off OR volume 0 -> ZERO nodes.",
+    "fire.small": {
+      "osc": {
+        "type": "square",
+        "from": 140,
+        "to": 55
+      },
+      "noise": 0.55,
+      "gain": 0.5,
+      "duration": 0.18,
+      "attack": 0.005,
+      "_role": "fire \u2014 cannon shot: short noise burst + low thunk"
+    },
+    "fire.large": {
+      "osc": {
+        "type": "square",
+        "from": 110,
+        "to": 35
+      },
+      "noise": 0.7,
+      "gain": 0.75,
+      "duration": 0.45,
+      "attack": 0.005,
+      "_role": "fire \u2014 big gun: longer boom"
+    },
+    "explosion.small": {
+      "osc": {
+        "type": "triangle",
+        "from": 320,
+        "to": 70
+      },
+      "noise": 0.75,
+      "gain": 0.6,
+      "duration": 0.4,
+      "attack": 0.004,
+      "_role": "explosion \u2014 crisp decaying noise burst"
+    },
+    "explosion.large": {
+      "osc": {
+        "type": "sine",
+        "from": 95,
+        "to": 28
+      },
+      "noise": 0.9,
+      "gain": 0.9,
+      "duration": 1.4,
+      "attack": 0.004,
+      "_role": "explosion \u2014 long low rumble"
+    },
+    "projectile.whistle": {
+      "osc": {
+        "type": "sine",
+        "from": 1400,
+        "to": 380
+      },
+      "noise": 0,
+      "gain": 0.25,
+      "duration": 0.8,
+      "attack": 0.01,
+      "_role": "whistle \u2014 falling shell: descending tone"
+    },
+    "projectile.flight": {
+      "osc": {
+        "type": "sawtooth",
+        "from": 160,
+        "to": 160
+      },
+      "noise": 0.15,
+      "gain": 0.2,
+      "duration": 0.1,
+      "attack": 0.01,
+      "_role": "fly \u2014 puttering continuous loop while a projectile is live",
+      "pitch": {
+        "pos": {
+          "min": 0,
+          "max": 30
+        },
+        "vel": {
+          "min": 0,
+          "max": 60
+        },
+        "freq": {
+          "min": 80,
+          "max": 420
+        }
+      }
+    },
+    "bounce": {
+      "osc": {
+        "type": "triangle",
+        "from": 700,
+        "to": 220
+      },
+      "noise": 0.1,
+      "gain": 0.35,
+      "duration": 0.12,
+      "attack": 0.003,
+      "_role": "bounce \u2014 elastic wall bounce blip"
+    },
+    "ui.select": {
+      "osc": {
+        "type": "square",
+        "from": 880,
+        "to": 660
+      },
+      "noise": 0,
+      "gain": 0.2,
+      "duration": 0.06,
+      "attack": 0.002,
+      "_role": "ui \u2014 menu click"
+    },
+    "ui.open": {
+      "osc": {
+        "type": "square",
+        "from": 440,
+        "to": 880
+      },
+      "noise": 0,
+      "gain": 0.18,
+      "duration": 0.12,
+      "attack": 0.002,
+      "_role": "ui \u2014 menu/screen open"
+    },
+    "round.start": {
+      "osc": {
+        "type": "triangle",
+        "from": 300,
+        "to": 600
+      },
+      "noise": 0.05,
+      "gain": 0.3,
+      "duration": 0.5,
+      "attack": 0.01,
+      "_role": "ui \u2014 round start cue (rising two-tone)"
+    },
+    "talk.blip": {
+      "osc": {
+        "type": "square",
+        "from": 500,
+        "to": 480
+      },
+      "noise": 0.05,
+      "gain": 0.15,
+      "duration": 0.05,
+      "attack": 0.002,
+      "_role": "talk \u2014 speech blip (data/og-talk.json feed)"
+    },
+    "splash": {
+      "osc": {
+        "type": "sine",
+        "from": 500,
+        "to": 90
+      },
+      "noise": 0.8,
+      "gain": 0.5,
+      "duration": 0.5,
+      "attack": 0.004,
+      "_role": "water impact"
+    }
+  }
+}

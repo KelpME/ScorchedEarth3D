@@ -1,0 +1,277 @@
+{
+  "version": 3,
+  "nextEntityId": 69,
+  "materials": {
+    "glass": {
+      "type": "physical",
+      "color": "#cfe8f7",
+      "roughness": 0.1,
+      "metalness": 0.1,
+      "transparent": true,
+      "opacity": 0.2
+    },
+    "glass_front": {
+      "type": "physical",
+      "color": "#cfe8f7",
+      "roughness": 0.1,
+      "metalness": 0.1,
+      "transparent": true,
+      "opacity": 0.08
+    },
+    "proj": {
+      "type": "standard",
+      "color": "#101010",
+      "roughness": 0.5,
+      "metalness": 0.2
+    },
+    "fx": {
+      "type": "basic",
+      "color": "#ffcf6e",
+      "emissive": "#ffcf6e",
+      "emissiveIntensity": 1.5
+    },
+    "tank": {
+      "type": "standard",
+      "color": "#8a8f72",
+      "roughness": 0.6,
+      "metalness": 0
+    },
+    "fx_blast": {
+      "type": "basic",
+      "color": "#ffffff",
+      "transparent": true,
+      "opacity": 1,
+      "_note": "SE-FX blast-series base: per-sphere COLOR comes from data/blast-fx.json via render.materialParams at spawn; the render hook (main.js) drives opacity + additive blending."
+    }
+  },
+  "systems": [
+    {
+      "name": "projectiles3d",
+      "params": {
+        "gravity": 9.8
+      }
+    },
+    {
+      "name": "turn_director",
+      "params": {
+        "settleTimeout": 600
+      }
+    }
+  ],
+  "entities": [
+    {
+      "id": "camera_anchor",
+      "name": "camera_anchor",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 12,
+          "z": 0
+        },
+        "director": {
+          "turn": "tank1",
+          "phase": "aim"
+        }
+      }
+    },
+    {
+      "archetypeId": "terrain",
+      "id": "terrain",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "terrain": {
+            "seed": 1936,
+            "voxelSize": 0.25,
+            "width": 160,
+            "height": 96,
+            "depth": 4,
+            "chunk": 32,
+            "fallEvery": 2,
+            "blastRadius": 2
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "tank",
+      "id": "tank1",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": -15,
+            "y": 8,
+            "z": 0,
+            "yaw": 1.5707963267948966
+          },
+          "aim": {
+            "angleDeg": 45,
+            "power": 0.55,
+            "fire": false
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "tank",
+      "id": "tank2",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 15,
+            "y": 8,
+            "z": 0,
+            "yaw": -1.5707963267948966
+          },
+          "aim": {
+            "angleDeg": 45,
+            "power": 0.55,
+            "fire": false
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_left",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": -80.5,
+            "y": 24,
+            "z": -0.5692072323432242,
+            "scale": [
+              0.1,
+              48,
+              40
+            ]
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_right",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 80.5,
+            "y": 24,
+            "z": -0.5692072323432242,
+            "scale": [
+              0.1,
+              48,
+              40
+            ]
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_back",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 24,
+            "z": -20.5,
+            "scale": {
+              "x": 161,
+              "y": 48,
+              "z": 0.1
+            }
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_front",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 24,
+            "z": 20.5,
+            "scale": [
+              160,
+              48,
+              0.1
+            ]
+          },
+          "render": {
+            "material": "glass_front"
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "battlefield_camera",
+      "id": "battlefield_camera",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 12,
+            "z": 0
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "ui_top_panel",
+      "id": "ui_top_panel",
+      "overrides": {
+        "components": {}
+      }
+    }
+  ],
+  "render": {
+    "post": {
+      "enabled": false
+    },
+    "shadows": {
+      "type": "PCFSoftShadowMap"
+    }
+  },
+  "scatter": {
+    "layers": []
+  }
+}

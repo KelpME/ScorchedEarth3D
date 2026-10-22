@@ -1,0 +1,36 @@
+{
+  "_source": "W2-I (plan SE-COMPLETE-1012): voxel trees — scatter + debris tuning are DATA (doctrine: no content literals in JS). Tree SHAPE/COLORS live on the archetype (assets/archetypes/tree.json); this file is the game-level scatter/debris tuning.",
+  "scatter": {
+    "densityMax": 0.0018,
+    "densityDefaultPct": 100,
+    "maxTrees": 100,
+    "minSeparation": 2.5,
+    "margin": 6,
+    "tries": 4000,
+    "_note": "densityMax = trees per world-u^2 of the margin-clipped field at treeDensity 100. P3 SETTLE-PACE-1015: raised 0.0006 -> 0.0018 (+maxTrees 20 -> 100) so 100% = a properly WOODED field (probe on the default 480x120u extents, flat-ground worst case: 91 trees at 100% vs 20 before — 4.5x, monotonic 0/45/91). C2 mapping rule: density = densityMax * clamp(treeDensity, 0, 100) / 100, with treeDensity read from se.settings (W1 row); an undefined setting reads as densityDefaultPct. 0 = zero trees; 100 = current max. Deterministic per terrain seed (mulberry32) at every density."
+  },
+  "debris": {
+    "speedScale": 5,
+    "falloffDist": 1.5,
+    "tumbleScale": 6,
+    "maxDebris": 2000,
+    "timeoutSeconds": 6,
+    "restSpeed": 0.4,
+    "restSeconds": 0.75,
+    "_note": "per-voxel speed = blastRadius * speedScale * 1/(1 + dist/falloffDist); tumble is angular (rad/s), never linear. Despawn on rest or timeout — no leaks. debrisPerStep (SETTLE-PACE P4): max debris records delivered per SIM step from the detach queue — a full-crown detach streams over ~N/120 frames instead of one frame spike; deterministic FIFO order, scrub-safe. maxDebris removed as a truncation cap: the W8-B full-crown rule is absolute (a full crown is never clipped); the detach queue holds every surviving voxel.",
+    "debrisPerStep": 120
+  },
+  "strike": {
+    "scorchFraction": 0.4,
+    "fireRadius": 4,
+    "_note": "W8-G (plan SE-COMPLETE-1012, user-directed): lightning strike -> tree fire. A bolt landing within fireRadius (world u, treeHit voxel test) of a tree ignites it through the weather fire seam, detaches scorchFraction of the in-radius leaf voxels through the EXISTING debris path, and swaps the trunk material to the archetype charColor (charred, standing)."
+  },
+  "foundationDropThreshold": 0.5,
+  "_foundationDropThreshold_note": "Internal tuning constant (NOT a player-facing settings row) — like debris/strike/driveOver. The foundation-loss check in stepTrees (src/voxel3d/treeProp.js) collapses a STANDING tree when the LIVE ground surface under its fixed origin drops by more than this many world units below the ground the tree was scattered on (a null surface = a carved void column also collapses it). Trees are scattered ground-checked ONCE (scatteredTrees) and mounted at that fixed origin forever (mountTree); a blast/settle mutates the field IN PLACE so the field-SWAP re-scatter never fires — this is the per-step catch that makes a tree fall with its ground instead of floating above the new lower terrain. Must be a positive finite number (fail-loud validation in treeProp.js mirrors systems/settle3d.js). ~0.5 world u (≈2 voxels at V=0.25): large enough to ignore sub-voxel jitter, small enough that a 1-voxel ground drop collapses the tree promptly.",
+  "driveOver": {
+    "speedThreshold": 3,
+    "radius": 1.6,
+    "impulseScale": 1,
+    "_source": "W2 (plan SE-FIXUP-1012 item 2, user-directed): driving the tank INTO a tree destroys it exactly like a shot. speedThreshold = tank speed (world u/s; maxSpeed is 6 in data/drive.json) above which contact destroys; radius = trunk-contact distance (world u, trunk center to tank center); impulseScale multiplies the blast power fed to the EXISTING explode/stepDebris path (no new debris system)."
+  }
+}

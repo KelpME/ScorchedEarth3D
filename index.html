@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HermesForge game</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #0a0e14; overflow: hidden; }
+    #game { display: block; width: 100vw; height: 100vh; }
+  </style>
+  <script type="importmap">{"imports":{"recast-navigation":"./vendor/recast-navigation/index.mjs","recast-navigation/generators":"./vendor/recast-navigation/generators.mjs","@recast-navigation/core":"./vendor/@recast-navigation/core/dist/index.mjs","@recast-navigation/generators":"./vendor/@recast-navigation/generators/dist/index.mjs","@recast-navigation/wasm":"./vendor/@recast-navigation/wasm/dist/recast-navigation.wasm-compat.js","hermesforge-engine":"./vendor/engine/src/index.js","three":"./vendor/three/build/three.module.js","three/":"./vendor/three/"}}</script>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <!-- W5-A ForgeEditor loading overlay — game-owned inline block, self-removing.
+       _source: font stack = the editor titlebar brand badge (.hf-brand,
+       hermesforge/editor/src/theme.css .hf-brand → var(--hf-font-display),
+       theme/design-tokens.css:94 'Space Grotesk'); colors = --hf-ink #14130f /
+       --hf-paper #fbfaf6 / --hf-accent-strong #8a4f12 (theme/design-tokens.css
+       :38-48). All values inlined below (data-tokens names the provenance) —
+       no network fetch. -->
+  <div id="se-load" data-timeout-ms="15000" role="status" aria-live="polite">
+    <span id="se-load-word">Forge<em>Editor</em></span>
+    <span id="se-load-sub">loading battlefield&hellip;</span>
+  </div>
+  <style id="se-load-style"
+    data-tokens='{"font":"--hf-font-display","bg":"--hf-ink","fg":"--hf-paper","accent":"--hf-accent-strong"}'>
+    /* Values mirror the token file named in data-tokens — editor-brand parity. */
+    #se-load { position:fixed; inset:0; z-index:200; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:10px;
+      background:#14130f; color:#fbfaf6;
+      font-family:'Space Grotesk', system-ui, sans-serif; }
+    #se-load-word { font-size:34px; font-weight:600; letter-spacing:-0.01em; }
+    #se-load-word em { font-style:normal; color:#8a4f12; }
+    #se-load-sub { font-size:13px; opacity:.7; }
+  </style>
+  <script>
+    // Self-removal: polls the game-boot signal main.js sets (window.__game =
+    // live Game) WITHOUT editing main.js. Safety timeout hides it anyway if
+    // boot stalls — fails LOUD via console.error (no silent hang).
+    (function () {
+      var el = document.getElementById('se-load');
+      if (!el) return;
+      var TIMEOUT_MS = Number(el.dataset.timeoutMs) || 15000;
+      var poll = setInterval(function () { if (window.__game) hide('booted'); }, 100);
+      var bail = setTimeout(function () {
+        if (!window.__game) {
+          console.error('[se-load] boot stalled after ' + TIMEOUT_MS + 'ms (window.__game still unset) — hiding loading overlay anyway');
+        }
+        hide('timeout');
+      }, TIMEOUT_MS);
+      function hide(why) {
+        clearInterval(poll); clearTimeout(bail);
+        if (el.parentNode) el.parentNode.removeChild(el);
+        console.info('[se-load] overlay removed (' + why + ')');
+      }
+    })();
+  </script>
+  <!-- S1 setup overlay mount (game-owned DOM; HUD must stay stacked above). -->
+  <div id="setup-layer"></div>
+  <!-- CANVAS-MIGRATION 2026-10: the top panel is a REAL canvas+widget tree
+       (assets/archetypes/ui_top_panel.json, entity 'ui_top_panel' in
+       scenes/level-01.json) painted by the ENGINE renderer — the static panel
+       markup is gone. #btn-follow stays as a standalone camera control (a
+       widget is pointer-events:none — interactive controls are game-owned DOM). -->
+  <button id="btn-follow" type="button" style="position:fixed; top:6px; right:8px; z-index:70;
+    pointer-events:auto; cursor:pointer; font:12px/1.4 ui-monospace,monospace; padding:0 8px;
+    background:#0f1620; color:#eef3ea; border:1px solid #3a4a5e;">Follow: OFF</button>
+  <script type="module" src="./src/main.js"></script>
+<script>
+(() => {
+  const session = new URLSearchParams(location.search).get('session');
+  if (!session) return;
+  function send(level, message, source, line) {
+    try {
+      navigator.sendBeacon(
+        '/api/play/log?session=' + encodeURIComponent(session),
+        JSON.stringify({ level, message: String(message), source: source || null, line: line == null ? null : Number(line) })
+      );
+    } catch (e) { /* best-effort */ }
+  }
+  function fmt(args) { return args.map((a) => (a instanceof Error ? (a.stack || a.message) : (typeof a === 'object' ? JSON.stringify(a) : String(a)))).join(' '); }
+  ['log', 'info', 'warn', 'error', 'debug'].forEach((m) => {
+    const orig = console[m];
+    console[m] = function (...args) { send(m, fmt(args)); return orig.apply(console, args); };
+  });
+  window.addEventListener('error', (e) => send('error', e.message || 'uncaught error', e.filename, e.lineno));
+  window.addEventListener('unhandledrejection', (e) => send('error', 'unhandled rejection: ' + (e.reason && (e.reason.stack || e.reason.message) || e.reason)));
+})();
+</script></body></html>

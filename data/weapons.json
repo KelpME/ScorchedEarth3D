@@ -1,0 +1,752 @@
+{
+  "_source": "manual:L959-L995",
+  "_note": "Available Weapons table (manual L961-L995) + one-line notes from the per-weapon description sections. blastRadius: N/A -> null; Leap Frog '20,25,30' -> [20,25,30]; Plasma Blast '10-75' -> {min,max}. Values transcribed exactly, including intentional quirks (Dirt Clod 5000 vs Ton of Dirt 6750). Table has 33 rows, L963-L995 inclusive.",
+  "weapons": [
+    {
+      "id": "baby_missile",
+      "name": "Baby Missile",
+      "cost": 400,
+      "bundleSize": 10,
+      "blastRadius": 10,
+      "armsLevel": 0,
+      "class": "standard",
+      "behavior": "ballistic",
+      "unlimited": true,
+      "model": "babyMissile",
+      "notes": "Earliest developed weapon; every player has an UNLIMITED supply.",
+      "_source": "manual:L963",
+      "_descSource": "manual:L1004-L1006",
+      "visual": {
+        "icon": "assets/ui/weapons/baby_missile.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": "unlimited"
+    },
+    {
+      "id": "missile",
+      "name": "Missile",
+      "cost": 1875,
+      "bundleSize": 5,
+      "blastRadius": 20,
+      "armsLevel": 0,
+      "class": "standard",
+      "behavior": "ballistic",
+      "model": "missile",
+      "notes": "Enhancement of the baby missile: larger blast radius and damage.",
+      "_source": "manual:L964",
+      "_descSource": "manual:L1008-L1009",
+      "visual": {
+        "icon": "assets/ui/weapons/missile.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 5
+    },
+    {
+      "id": "baby_nuke",
+      "name": "Baby Nuke",
+      "cost": 10000,
+      "bundleSize": 3,
+      "blastRadius": 40,
+      "armsLevel": 0,
+      "class": "standard",
+      "behavior": "nuke",
+      "notes": "Nuclear explosive capable of destroying a large region.",
+      "effect": {
+        "glowLifeS": 5,
+        "_src": "_placeholder: the lingering glow duration \u2014 manual L1011-1012 gives none."
+      },
+      "_source": "manual:L965",
+      "_descSource": "manual:L1011-L1012",
+      "visual": {
+        "icon": "assets/ui/weapons/baby_nuke.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "nuke",
+      "name": "Nuke",
+      "cost": 12000,
+      "bundleSize": 1,
+      "blastRadius": 75,
+      "armsLevel": 1,
+      "class": "standard",
+      "behavior": "nuke",
+      "model": "babyNuke",
+      "notes": "Large-scale nuclear weapon capable of mass destruction.",
+      "effect": {
+        "glowLifeS": 5,
+        "_src": "_placeholder (as baby_nuke \u2014 manual L1014-1015 gives none)."
+      },
+      "_source": "manual:L966",
+      "_descSource": "manual:L1014-L1015",
+      "visual": {
+        "icon": "assets/ui/weapons/nuke.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "leap_frog",
+      "name": "Leap Frog",
+      "cost": 10000,
+      "bundleSize": 2,
+      "blastRadius": [
+        20,
+        25,
+        30
+      ],
+      "armsLevel": 3,
+      "class": "standard",
+      "behavior": "hop",
+      "notes": "A single bullet that hops across the ground, destroying the terrain with a blast at each landing (three hops); the OG text (manual L1017-L1019) describes a three-warhead sequential launch, OUR interpretation of 'hop across the ground' is the single-projectile hop mechanic below.",
+      "effect": {
+        "hopSpeedU": 14,
+        "hopHeightU": 8,
+        "warheadCount": 3,
+        "_src": "hopSpeedU/hopHeightU: _placeholder — the manual (L1017-L1019) gives NO hop speed/height; brief-pinned (14u/s horizontal, 8u/s upward arc) so JS carries no literal. warheadCount: 3 == OG idx4 blastRadiusParam == manual:L1017-L1019 (three warheads) — here the HOP count (a single bullet hops three times). The hop mechanic itself (one projectile, hops across the ground, blast at each landing) is OUR interpretation of the user brief; the OG/OG-tables source is the sequential-launch reading the notes cite."
+      },
+      "_source": "manual:L967",
+      "_descSource": "manual:L1017-L1019",
+      "visual": {
+        "icon": "assets/ui/weapons/leap_frog.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "funky_bomb",
+      "name": "Funky Bomb",
+      "cost": 7000,
+      "bundleSize": 2,
+      "blastRadius": 80,
+      "armsLevel": 4,
+      "class": "standard",
+      "behavior": "chain",
+      "effect": {
+        "chainCount": 5,
+        "chainMinDistU": 3,
+        "chainMaxDistU": 12,
+        "chainRadiusMinU": 20,
+        "chainRadiusMaxU": 40,
+        "_src": "behavior: chain — the Funky Bomb splashes a chain reaction instead of a single blast (see notes). chainCount: 5 == USER directive ('in the old game the chain reaction was, when the initial projectile hits, there are 5 projectiles that bounce out'); manual L1021-L1024 gives no count. chainMinDistU/chainMaxDistU: _placeholder — manual L1021-L1024 ('generally confined to the area where they hit') pins no distance; brief-pinned 3..12 world units (modest, confined to the impact area). chainRadiusMinU/chainRadiusMaxU: _placeholder — manual/OG silent on the per-submunition radius; brief-pinned 20..40 RECORD-PIXELS (executor converts 0.2 -> world; smaller than the parent's blastRadius 80 — the chain IS the whole effect, the parent's big blast is NOT re-fired). blastRadius 80 kept on the record (chain radius band references it; the parent itself never fires it)."
+      },
+      "notes": "The Funky Bomb explodes in a multi-colored toxic chain reaction: on impact it splashes N projectiles that bounce out in random directions/distances, each carving a blast of random size; confined to the area where it hits.",
+      "_source": "manual:L968",
+      "_descSource": "manual:L1021-L1024",
+      "visual": {
+        "icon": "assets/ui/weapons/funky_bomb.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "mirv",
+      "name": "MIRV",
+      "cost": 10000,
+      "bundleSize": 3,
+      "blastRadius": 20,
+      "armsLevel": 2,
+      "class": "standard",
+      "behavior": "multiwarhead_apogee",
+      "model": "fallback",
+      "notes": "Five Missile warheads split apart at apogee; no explosion if it hits before apogee.",
+      "effect": {
+        "warheadCount": 5,
+        "splitAngleDeg": 20,
+        "splitAt": "apogee",
+        "_src": "warheadCount: manual:L1026-L1029 (five Missile warheads) == OG og-tables weaponTable idx6 (behaviorType 569 MIRV handler). splitAt: manual L1028. splitAngleDeg: _placeholder (manual/OG silent on the fan angle)."
+      },
+      "_source": "manual:L969",
+      "_descSource": "manual:L1026-L1029",
+      "visual": {
+        "icon": "assets/ui/weapons/mirv.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 3
+    },
+    {
+      "id": "deaths_head",
+      "name": "Death's Head",
+      "cost": 20000,
+      "bundleSize": 1,
+      "blastRadius": 35,
+      "armsLevel": 4,
+      "class": "standard",
+      "behavior": "multiwarhead_sequential",
+      "notes": "Most destructive weapon to date; nine large-scale warheads, MIRV-like.",
+      "effect": {
+        "warheadCount": 9,
+        "seqIntervalS": 1,
+        "release": "sequential",
+        "_src": "warheadCount: manual:L1031-L1033 (nine large scale explosive warheads) == OG idx7. release: manual L1030-1031 (functionally equivalent to MIRVs -> sequential). seqIntervalS: _placeholder (manual/OG silent on timing)."
+      },
+      "_source": "manual:L970",
+      "_descSource": "manual:L1031-L1033",
+      "visual": {
+        "icon": "assets/ui/weapons/deaths_head.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 1,
+      "startingStockNote": "DEATHS_HEAD _placeholder: task-directed (SE-COMPLETE-1012 W4-D brief pin) \u2014 no manual line or og-tables field pins a Death's Head starting count; 1 = one bundle (bundleSize 1). Reported, not silent."
+    },
+    {
+      "id": "napalm",
+      "name": "Napalm",
+      "cost": 10000,
+      "bundleSize": 10,
+      "blastRadius": null,
+      "armsLevel": 2,
+      "class": "standard",
+      "behavior": "napalm",
+      "spill": 1.0,
+      "effect": {
+        "burnRadius": 15,
+        "secondaries": 3,
+        "spreadMinU": 0.4,
+        "spreadMaxU": 2.0,
+        "_src": "burnRadius: OG weaponTable idx8 blastRadiusParam 15 (manual table N/A) \u2014 the OG napalm burn/destructive radius. secondaries/spread: _placeholder brief-pinned (manual L1035-1040 describes splash, no count/extent)."
+      },
+      "notes": "Splashes wherever it hits then bursts into flame; deeper pools burn hotter.",
+      "_source": "manual:L971",
+      "_descSource": "manual:L1035-L1040",
+      "visual": {
+        "icon": "assets/ui/weapons/napalm.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "hot_napalm",
+      "name": "Hot Napalm",
+      "cost": 20000,
+      "bundleSize": 2,
+      "blastRadius": null,
+      "armsLevel": 4,
+      "class": "standard",
+      "behavior": "napalm",
+      "spill": 1.6,
+      "effect": {
+        "burnRadius": 20,
+        "secondaries": 3,
+        "spreadMinU": 0.4,
+        "spreadMaxU": 2.0,
+        "_src": "burnRadius: OG weaponTable idx9 blastRadiusParam 20. Otherwise as Napalm (manual L1042-1044)."
+      },
+      "notes": "Much hotter, more powerful Napalm; otherwise functions like Napalm.",
+      "_source": "manual:L972",
+      "_descSource": "manual:L1042-L1044",
+      "visual": {
+        "icon": "assets/ui/weapons/hot_napalm.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "tracer",
+      "name": "Tracer",
+      "cost": 10,
+      "bundleSize": 20,
+      "blastRadius": 0,
+      "armsLevel": 0,
+      "class": "standard",
+      "behavior": "tracer",
+      "notes": "No destructive capability; useful for targeting without causing damage.",
+      "_source": "manual:L973",
+      "_descSource": "manual:L1046-L1048",
+      "visual": {
+        "icon": "assets/ui/weapons/tracer.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "smoke_tracer",
+      "name": "Smoke Tracer",
+      "cost": 500,
+      "bundleSize": 10,
+      "blastRadius": 0,
+      "armsLevel": 1,
+      "class": "standard",
+      "behavior": "smoke_tracer",
+      "notes": "Tracer that leaves a colored smoke trail; trails erasable via System Menu.",
+      "_source": "manual:L974",
+      "_descSource": "manual:L1055-L1058",
+      "visual": {
+        "icon": "assets/ui/weapons/smoke_tracer.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "baby_roller",
+      "name": "Baby Roller",
+      "cost": 5000,
+      "bundleSize": 10,
+      "blastRadius": 10,
+      "armsLevel": 2,
+      "class": "standard",
+      "behavior": "roller",
+      "notes": "Rolls downhill to a valley or tank, then explodes like a baby missile.",
+      "effect": {
+        "rollRunU": 12,
+        "craterEveryU": 1.5,
+        "_src": "_placeholder: manual L1060-1069 gives NO roll distance or crater cadence \u2014 brief-pinned values (12u run, craters every 1.5u, r*0.6)."
+      },
+      "_source": "manual:L975",
+      "_descSource": "manual:L1060-L1064",
+      "visual": {
+        "icon": "assets/ui/weapons/baby_roller.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "roller",
+      "name": "Roller",
+      "cost": 6000,
+      "bundleSize": 5,
+      "blastRadius": 20,
+      "armsLevel": 2,
+      "class": "standard",
+      "behavior": "roller",
+      "notes": "Same as Baby Roller with a standard-Missile warhead.",
+      "effect": {
+        "rollRunU": 12,
+        "craterEveryU": 1.5,
+        "_src": "_placeholder (as baby_roller \u2014 manual gives no roll distance/cadence)."
+      },
+      "_source": "manual:L976",
+      "_descSource": "manual:L1065-L1066",
+      "visual": {
+        "icon": "assets/ui/weapons/roller.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "heavy_roller",
+      "name": "Heavy Roller",
+      "cost": 6750,
+      "bundleSize": 2,
+      "blastRadius": 45,
+      "armsLevel": 3,
+      "class": "standard",
+      "behavior": "roller",
+      "notes": "Non-nuclear; more explosive than a Baby Nuke.",
+      "effect": {
+        "rollRunU": 12,
+        "craterEveryU": 1.5,
+        "_src": "_placeholder (as baby_roller \u2014 manual gives no roll distance/cadence)."
+      },
+      "_source": "manual:L977",
+      "_descSource": "manual:L1068-L1069",
+      "visual": {
+        "icon": "assets/ui/weapons/heavy_roller.svg",
+        "traceColor": "#e8c547"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "riot_charge",
+      "name": "Riot Charge",
+      "cost": 2000,
+      "bundleSize": 10,
+      "blastRadius": 36,
+      "armsLevel": 2,
+      "class": "earth_destroy",
+      "behavior": "riot",
+      "notes": "A big instant explosion at your own turret that carves a cone out of the barrel (apex at the turret, opening forward in the aim direction) and collapses the surrounding dirt to the ground — unbury yourself. TURRET-LOCAL INSTANT BLAST (no projectile): a cone carved DIRECTLY on the field at the barrel spawn point, mouth radius from blastRadius 36 + forward reach coneLength 14, applied directly on the field — no tank damage (manual L1094). The Riot Bomb / Heavy Riot Bomb stay the projectile+sphere carve. The bigger Riot Blast is a larger cone.",
+      "effect": {
+        "firingMode": "turret_wedge",
+        "coneLength": 14,
+        "_src": "firingMode 'turret_wedge': the Charge is a turret-local INSTANT BLAST (a big explosion at your own turret that carves a cone out of the barrel + triggers the settle cascade so the surrounding dirt collapses to the ground — manual L1084-1091; the manual's 'wedge-shaped section' wording describes the COLLAPSED RESULT, not a pre-carve) — NOT a projectile (the manual calls the Riot BOMB 'a projectile weapon', manual:L1093, implying Charge/Blast are not); the Riot Bomb / Heavy Riot Bomb carry NO firingMode and keep the projectile+sphere carve. The cone is DERIVED from blastRadius 36 (record-PIXELS -> world via SE_PX_TO_WORLD = mouth radius) + coneLength 14 (world u apex->base forward reach): half-angle = atan(mouthRadius/coneLength) ≈ 27.2°. The Charge's cone is STRICTLY SMALLER than the Blast's (blastRadius 36 < 60 AND coneLength 14 < 22), per manual L1089-L1091 'larger version'. The apex sits at the barrel and opens forward in the aim direction."
+      },
+      "_source": "manual:L978",
+      "_descSource": "manual:L1084-L1087",
+      "visual": {
+        "icon": "assets/ui/weapons/riot_charge.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "riot_blast",
+      "name": "Riot Blast",
+      "cost": 5000,
+      "bundleSize": 5,
+      "blastRadius": 60,
+      "armsLevel": 3,
+      "class": "earth_destroy",
+      "behavior": "riot",
+      "notes": "Larger Riot Charge: a bigger instant explosion at your own turret that carves a larger cone out of the barrel (apex at the turret, opening forward in the aim direction) and collapses more surrounding dirt to the ground. TURRET-LOCAL INSTANT BLAST (no projectile): a larger cone carved DIRECTLY on the field at the barrel spawn point, mouth radius from blastRadius 60 + forward reach coneLength 22, applied directly on the field — no tank damage (manual L1094). The Riot Bomb / Heavy Riot Bomb stay the projectile+sphere carve.",
+      "effect": {
+        "firingMode": "turret_wedge",
+        "coneLength": 22,
+        "_src": "firingMode 'turret_wedge': as riot_charge — the Blast is the LARGER version of the Charge (manual:L1089-L1091), so it is a BIGGER instant blast. The cone is DERIVED from blastRadius 60 (record-PIXELS -> world via SE_PX_TO_WORLD = mouth radius), strictly larger than the Charge's 36 (60 > 36) AND coneLength 22 strictly longer than the Charge's 14, per manual L1089-L1091 'larger version'. The apex sits at the barrel and opens forward in the aim direction. The Charge/Blast differ in blastRadius AND coneLength, not only blastRadius."
+      },
+      "_source": "manual:L979",
+      "_descSource": "manual:L1089-L1091",
+      "visual": {
+        "icon": "assets/ui/weapons/riot_blast.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "riot_bomb",
+      "name": "Riot Bomb",
+      "cost": 5000,
+      "bundleSize": 5,
+      "blastRadius": 30,
+      "armsLevel": 3,
+      "class": "earth_destroy",
+      "behavior": "riot",
+      "notes": "Projectile destroying a spherical section of dirt; no tank damage.",
+      "_source": "manual:L980",
+      "_descSource": "manual:L1093-L1096",
+      "visual": {
+        "icon": "assets/ui/weapons/riot_bomb.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "heavy_riot_bomb",
+      "name": "Heavy Riot Bomb",
+      "cost": 4750,
+      "bundleSize": 2,
+      "blastRadius": 45,
+      "armsLevel": 3,
+      "class": "earth_destroy",
+      "behavior": "riot",
+      "notes": "Scaled-up Riot Bomb.",
+      "_source": "manual:L981",
+      "_descSource": "manual:L1098",
+      "visual": {
+        "icon": "assets/ui/weapons/heavy_riot_bomb.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "baby_digger",
+      "name": "Baby Digger",
+      "cost": 3000,
+      "bundleSize": 10,
+      "blastRadius": null,
+      "armsLevel": 0,
+      "class": "earth_destroy",
+      "behavior": "digger",
+      "notes": "Removes small amounts of dirt; tunnels on impact, fizzles on a tank.",
+      "effect": {
+        "digTravelU": 10,
+        "detonationRadius": 15,
+        "_src": "digTravelU: OG weaponTable idx19 blastRadiusParam -10 — the tunnel TRAVEL distance (magnitude), NOT a blast radius (negative sign = digger's underground detonation profile). detonationRadius: pinned 15px — byte-identical to the prior fallback (recordRadius surfaceAtEnd=false => 15, zero gameplay change); the sandhog precedent sets a flat detonationRadius across all three sandhog tiers (see baby_sandhog/sandhog/heavy_sandhog in this file). The OG brp encodes tunnel travel, not a detonation radius, so there was no pinned value before. The digger is the terrain-only 'removes small amounts of dirt' weapon (manual:L1100-L1102) so it is intentionally smaller than the tank-destroying sandhog (20)."
+      },
+      "_source": "manual:L982",
+      "_descSource": "manual:L1100-L1102",
+      "visual": {
+        "icon": "assets/ui/weapons/baby_digger.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "digger",
+      "name": "Digger",
+      "cost": 2500,
+      "bundleSize": 5,
+      "blastRadius": null,
+      "armsLevel": 0,
+      "class": "earth_destroy",
+      "behavior": "digger",
+      "notes": "More powerful version of the Baby Digger.",
+      "effect": {
+        "digTravelU": 20,
+        "detonationRadius": 15,
+        "_src": "digTravelU: OG weaponTable idx20 blastRadiusParam -20 — the tunnel TRAVEL distance (magnitude), NOT a blast radius (underground profile). detonationRadius: pinned 15px — byte-identical to the prior fallback (recordRadius surfaceAtEnd=false => 15, zero gameplay change); the sandhog precedent sets a flat detonationRadius across all three sandhog tiers (see baby_sandhog/sandhog/heavy_sandhog in this file). The OG brp encodes tunnel travel, not a detonation radius, so there was no pinned value before. The digger is the terrain-only 'removes small amounts of dirt' weapon (manual:L1100-L1102) so it is intentionally smaller than the tank-destroying sandhog (20)."
+      },
+      "_source": "manual:L983",
+      "_descSource": "manual:L1104",
+      "visual": {
+        "icon": "assets/ui/weapons/digger.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "heavy_digger",
+      "name": "Heavy Digger",
+      "cost": 6750,
+      "bundleSize": 2,
+      "blastRadius": null,
+      "armsLevel": 1,
+      "class": "earth_destroy",
+      "behavior": "digger",
+      "notes": "Largest Digger; often fails to reach full potential.",
+      "effect": {
+        "digTravelU": 35,
+        "detonationRadius": 15,
+        "_src": "digTravelU: OG weaponTable idx21 blastRadiusParam -35 — the tunnel TRAVEL distance (magnitude), NOT a blast radius (underground profile). detonationRadius: pinned 15px — byte-identical to the prior fallback (recordRadius surfaceAtEnd=false => 15, zero gameplay change); the sandhog precedent sets a flat detonationRadius across all three sandhog tiers (see baby_sandhog/sandhog/heavy_sandhog in this file). The OG brp encodes tunnel travel, not a detonation radius, so there was no pinned value before. The digger is the terrain-only 'removes small amounts of dirt' weapon (manual:L1100-L1102) so it is intentionally smaller than the tank-destroying sandhog (20)."
+      },
+      "_source": "manual:L984",
+      "_descSource": "manual:L1106-L1107",
+      "visual": {
+        "icon": "assets/ui/weapons/heavy_digger.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "baby_sandhog",
+      "name": "Baby Sandhog",
+      "cost": 10000,
+      "bundleSize": 10,
+      "blastRadius": null,
+      "armsLevel": 0,
+      "class": "earth_destroy",
+      "behavior": "sandhog",
+      "notes": "Tunneling warhead with a charge that can destroy a tank from beneath.",
+      "effect": {
+        "digTravelU": 10,
+        "detonationRadius": 20,
+        "_src": "digTravelU: OG weaponTable idx22 blastRadiusParam 10 (positive sign = sandhog's surface detonation profile). detonationRadius: _placeholder 20px (manual table N/A; brief fallback \u2014 OG's single param is the tunnel distance)."
+      },
+      "_source": "manual:L985",
+      "_descSource": "manual:L1109-L1115",
+      "visual": {
+        "icon": "assets/ui/weapons/baby_sandhog.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "sandhog",
+      "name": "Sandhog",
+      "cost": 16750,
+      "bundleSize": 5,
+      "blastRadius": null,
+      "armsLevel": 0,
+      "class": "earth_destroy",
+      "behavior": "sandhog",
+      "notes": "More warheads than the Baby Sandhog.",
+      "effect": {
+        "digTravelU": 20,
+        "detonationRadius": 20,
+        "_src": "digTravelU: OG weaponTable idx23 blastRadiusParam 20 (surface profile). detonationRadius: _placeholder 20px (as baby_sandhog)."
+      },
+      "_source": "manual:L986",
+      "_descSource": "manual:L1117",
+      "visual": {
+        "icon": "assets/ui/weapons/sandhog.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "heavy_sandhog",
+      "name": "Heavy Sandhog",
+      "cost": 25000,
+      "bundleSize": 2,
+      "blastRadius": null,
+      "armsLevel": 1,
+      "class": "earth_destroy",
+      "behavior": "sandhog",
+      "notes": "Can potentially destroy the world; use with caution.",
+      "effect": {
+        "digTravelU": 35,
+        "detonationRadius": 20,
+        "_src": "digTravelU: OG weaponTable idx24 blastRadiusParam 35 (surface profile). detonationRadius: _placeholder 20px (as baby_sandhog)."
+      },
+      "_source": "manual:L987",
+      "_descSource": "manual:L1119-L1120",
+      "visual": {
+        "icon": "assets/ui/weapons/heavy_sandhog.svg",
+        "traceColor": "#ff8f5e"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "dirt_clod",
+      "name": "Dirt Clod",
+      "cost": 5000,
+      "bundleSize": 10,
+      "blastRadius": 20,
+      "armsLevel": 0,
+      "class": "earth_produce",
+      "behavior": "dirt",
+      "notes": "Small warhead that explodes into a sphere of dirt on impact.",
+      "_source": "manual:L988",
+      "_descSource": "manual:L1136-L1137",
+      "visual": {
+        "icon": "assets/ui/weapons/dirt_clod.svg",
+        "traceColor": "#8fd47f"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "dirt_ball",
+      "name": "Dirt Ball",
+      "cost": 5000,
+      "bundleSize": 5,
+      "blastRadius": 35,
+      "armsLevel": 0,
+      "class": "earth_produce",
+      "behavior": "dirt",
+      "notes": "Larger form of the Dirt Clod.",
+      "_source": "manual:L989",
+      "_descSource": "manual:L1139",
+      "visual": {
+        "icon": "assets/ui/weapons/dirt_ball.svg",
+        "traceColor": "#8fd47f"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "ton_of_dirt",
+      "name": "Ton of Dirt",
+      "cost": 6750,
+      "bundleSize": 2,
+      "blastRadius": 70,
+      "armsLevel": 1,
+      "class": "earth_produce",
+      "behavior": "dirt",
+      "notes": "Very large Dirt Ball; easily buries someone alive.",
+      "_source": "manual:L990",
+      "_descSource": "manual:L1141-L1142",
+      "visual": {
+        "icon": "assets/ui/weapons/ton_of_dirt.svg",
+        "traceColor": "#8fd47f"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "liquid_dirt",
+      "name": "Liquid Dirt",
+      "cost": 5000,
+      "bundleSize": 10,
+      "blastRadius": null,
+      "armsLevel": 2,
+      "class": "earth_produce",
+      "behavior": "liquid_dirt",
+      "notes": "Oozes wherever it lands, filling holes and smoothing terrain.",
+      "_source": "manual:L991",
+      "_descSource": "manual:L1144-L1146",
+      "visual": {
+        "icon": "assets/ui/weapons/liquid_dirt.svg",
+        "traceColor": "#8fd47f"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "dirt_charge",
+      "name": "Dirt Charge",
+      "cost": 5000,
+      "bundleSize": 5,
+      "blastRadius": null,
+      "armsLevel": 1,
+      "class": "earth_produce",
+      "behavior": "liquid_dirt",
+      "notes": "Expels a wedge-shaped cloud of dirt into the air.",
+      "_source": "manual:L992",
+      "_descSource": "manual:L1148-L1149",
+      "visual": {
+        "icon": "assets/ui/weapons/dirt_charge.svg",
+        "traceColor": "#8fd47f"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "earth_disrupter",
+      "name": "Earth Disrupter",
+      "cost": 5000,
+      "bundleSize": 10,
+      "blastRadius": null,
+      "armsLevel": 0,
+      "class": "earth_produce",
+      "behavior": "earth_disrupter",
+      "notes": "Forces suspended dirt to settle; only useful with Suspend Dirt > 0%.",
+      "effect": {
+        "carveRadiusU": 4,
+        "carveDurationS": 3,
+        "_src": "_placeholder: manual L1151-1155 gives no beam duration or carve radius \u2014 brief-pinned (3s, r=4u)."
+      },
+      "_source": "manual:L993",
+      "_descSource": "manual:L1151-L1155",
+      "visual": {
+        "icon": "assets/ui/weapons/earth_disrupter.svg",
+        "traceColor": "#8fd47f"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "plasma_blast",
+      "name": "Plasma Blast",
+      "cost": 9000,
+      "bundleSize": 5,
+      "blastRadius": {
+        "min": 10,
+        "max": 75
+      },
+      "armsLevel": 3,
+      "class": "energy",
+      "behavior": "plasma",
+      "notes": "Expels radioactive energy from the tank; turret direction irrelevant.",
+      "_source": "manual:L994",
+      "_descSource": "manual:L1171-L1173",
+      "visual": {
+        "icon": "assets/ui/weapons/plasma_blast.svg",
+        "traceColor": "#6fd4ff"
+      },
+      "startingStock": 0
+    },
+    {
+      "id": "laser",
+      "name": "Laser",
+      "cost": 5000,
+      "bundleSize": 5,
+      "blastRadius": null,
+      "armsLevel": 2,
+      "class": "energy",
+      "behavior": "laser",
+      "notes": "High-intensity straight-line beam cutting through mountains and shields.",
+      "effect": {
+        "cutRadius": 2,
+        "_src": "_placeholder: blastRadius N/A (manual table L995) \u2014 cutting beam, not a crater; brief-pinned r=2 RECORD-PIXELS (executor converts, FIX2 calibration)."
+      },
+      "_source": "manual:L995",
+      "_descSource": "manual:L1176-L1178",
+      "visual": {
+        "icon": "assets/ui/weapons/laser.svg",
+        "traceColor": "#6fd4ff"
+      },
+      "startingStock": 0
+    }
+  ],
+  "_visualsNote": "W2-E (plan SE-COMPLETE-1012): visual block per weapon is OUR OWN REDRAW asset set (16x16 SVG, class-colored glyphs inspired by the OG shareware icon reference in data/og-assets.json \u2014 NOT extracted PNGs; per the asset policy the default is rebuilding our own assets, so every icon here is an original redraw). traceColor: one color per weapon CLASS (data-driven trace-path color, systems/tracePaths.js).",
+  "_effectSource": "COMB (plan SE-COMPLETE-1012): per-weapon effect params are CATALOG DATA \u2014 the behavior layer (src/gameplay/behaviors/*) reads weapon.effect.*, never module constants, for: warheadCount (mirv 5 / deaths_head 9 / leap_frog 3 \u2014 manual text == OG weaponTable blastRadiusParam), splitAngleDeg/seqIntervalS (_placeholder, manual+OG silent), burnRadius (napalm 15 / hot 20 \u2014 OG weaponTable idx8/9 blastRadiusParam, manual table N/A), digTravelU (diggers -10/-20/-35, sandhogs +10/20/35 \u2014 OG weaponTable idx19-24; sign encodes underground-vs-surface detonation profile), rollRunU/craterEveryU (rollers, _placeholder), glowLifeS (nukes, _placeholder), cutRadiusU (laser, _placeholder), carveRadiusU/carveDurationS (earth_disrupter, _placeholder). Numbers sized to each weapon's OWN blast radius; every value cites its source in effect._src. chainCount/chainMinDistU/chainMaxDistU/chainRadiusMinU/chainRadiusMaxU (funky_bomb chain-reaction — USER directive: 5 projectiles bounce out at random direction/distance, each with a random-sized destruction; manual L1021-1024 'confined to the area where they hit' pins no count/distance/radius) drive the chain behavior: on impact the parent SPLASHES chainCount new ballistic submunitions (each with its own random blast radius) that bounce out in random directions/distances and carve on landing — the parent itself never fires its own blast (the chain IS the effect). Genuinely ambiguous (funky_bomb chain-reaction cluster count \u2014 manual L1021-1024 gives no count, OG idx5 bt=0 brp=80 blast only) gets NO invented params: funky_bomb stays behavior ballistic + blast 80. Riot variants: blastRadius 36/60/30/45 are manual-prose derived; manual L1094 'They do no damage to tanks' is encoded in the riot behavior (direct carve, no damage seam). Riot firingMode split: riot_charge + riot_blast carry effect.firingMode 'turret_wedge' (the OG turret-local INSTANT BLAST — a big explosion at your own turret that carves a CONE out of the barrel [apex at the turret, opening forward in the aim direction] + triggers the settle cascade so the surrounding dirt collapses to the ground, manual L1084-L1091; the manual's 'wedge-shaped section' wording is the COLLAPSED RESULT not a pre-carve, NO projectile), driven by instantRiotCone(ctx) in heavy.js + the projectiles3d.js spawn interception (no shell entity spawned, the cone is carved directly on the field at the barrel spawn point, then director.impact() ends the round so the turn advances); the cone is DERIVED from blastRadius (riot_charge 36 < riot_blast 60 — the Charge's cone is strictly smaller) + effect.coneLength (riot_charge 14 < riot_blast 22 — the forward reach), the mouth radius = blastRadius * SE_PX_TO_WORLD, half-angle = atan(mouth/coneLength); the Charge/Blast differ in blastRadius AND coneLength. riot_bomb + heavy_riot_bomb carry NO firingMode and keep the projectile+sphere carve byte-identical to before (the riot behavior's onTerrainHit is unchanged for them). Napalm spill flows to the weather sim via systems/projectiles3d (existing seam).",
+  "_stockNote": "Starting stock (W4-D, SE-COMPLETE-1012): battle creation seeds every player's inventory from startingStock. SOURCES: baby_missile 'unlimited' (manual:L774-L776); missile 5 + mirv 3 = the pre-W4-D defaultBattleGrant migrated to data (turnState.js doc-block citations manual:L964/L969); deaths_head 1 = task-directed _placeholder (see its startingStockNote) \u2014 no manual/og-tables source; all other rows 0 (the manual has NO per-weapon starting-ammo table and og-tables.json weaponTable carries price/bundle/armsLevel only; manual default Cash at Start is $0, manual:L1771). Values are whole bundleSize multiples. data/weapons-options.json weapon_* rows mirror these defaults as _derived settings rows.",
+  "dirtShapes": {
+    "_source": "manual:L1125-L1149",
+    "_placeholder": [
+      "ridge (geometry)",
+      "scaleLaw (law form, ratios manual-pinned)"
+    ],
+    "mound": {
+      "dirt_clod": 2,
+      "dirt_ball": 3.5,
+      "ton_of_dirt": 5
+    },
+    "moundBounds": {
+      "min": 2,
+      "max": 5
+    },
+    "scaleLawDivisor": 10,
+    "ridge": {
+      "r": 4,
+      "flatFrac": 0.5
+    },
+    "_note": "Mound radii: blastRadius scale law blastRadius/10 -> exactly 2 : 3.5 : 5 (Dirt Clod 20 / Dirt Ball 35 / Ton of Dirt 70, manual:L988-L990); bounds clamp the scale-law fallback. Ridge (liquid_dirt/dirt_charge): low wide fill, flatFrac caps the apex height (manual:L1144-L1149 prose pins no geometry \u2014 _placeholder shape)."
+  }
+}

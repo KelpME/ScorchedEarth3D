@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {
+      "source": "user-supplied (local Blender export)",
+      "dest": "tank.glb",
+      "sha256": "066fed1c95fa91870d7d303361cd6603dc4e83ec524f990d297d635be5b5bf0b",
+      "allow": true,
+      "note": "User-supplied tank model (Blender export; Hull root with Barrel/TrackL/TrackR children). Copied 2026-09-23."
+    }
+  ]
+}

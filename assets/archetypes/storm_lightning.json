@@ -1,0 +1,29 @@
+{
+  "id": "storm_lightning",
+  "name": "Storm Lightning (weather)",
+  "description": "W8-J (plan SE-COMPLETE-1012, user-directed); LIVE-WIRED (P5, plans/SETTLE-PACE-1015.md): the lightning VFX params as a registered weather object. systems/lightning.js liveLightningVfx() reads this component PER STRIKE (edited fields win over the presets.lightning.vfx base) and builds the bolt/flash geometry from it — editor edits apply to the NEXT strike. Strike timing/logic (hostileSkies cadence) stays in the data file. Defaults mirror lightning.vfx — the data file is the base of record.",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 60,
+      "z": 0
+    },
+    "stormLightning": {
+      "boltColor": "#cfe8ff",
+      "flashColor": "#eaf4ff",
+      "boltHeight": 30.0,
+      "boltWidth": 0.12,
+      "life": 0.35,
+      "levels": 5,
+      "roughness": 0.38,
+      "branchChance": 0.18,
+      "branchDecay": 0.55,
+      "segmentMinLen": 0.6,
+      "bias": 0.3,
+      "branchWidthFrac": 0.5,
+      "maxSegments": 96,
+      "_note": "W8-J: params mirror presets.lightning.vfx (W8-G Lichtenberg channel data). LIVE-WIRED (P5, plans/SETTLE-PACE-1015.md): systems/lightning.js liveLightningVfx() merges these over the preset base PER STRIKE \u2014 editing here changes the NEXT strike's bolt/flash visuals; strike timing/cadence is NOT here (hostileSkies stays in the data file)."
+    }
+  },
+  "tags": ["weather"]
+}

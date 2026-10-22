@@ -1,0 +1,26 @@
+{
+  "id": "battlefield_camera",
+  "name": "battlefield camera",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 12,
+      "z": 0
+    },
+    "scripts": [
+      {
+        "name": "camera-rig",
+        "params": {
+          "mode": "orbit",
+          "focus": "camera_anchor",
+          "active": true,
+          "radius": 168,
+          "theta": 1.5707963267948966,
+          "phi": 1.45,
+          "fov": 40
+        }
+      }
+    ]
+  },
+  "children": []
+}

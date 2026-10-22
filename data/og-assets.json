@@ -1,0 +1,96 @@
+{
+  "_note": "Reference extraction from Scorched Earth v1.5 (SCORCH.EXE et al.). Copyright (c) 1991-1995 Wendell Hicken. REFERENCE ONLY - the game rebuilds its own assets; nothing here is shipped or distributed.",
+  "sourceFiles": [
+    "SCORCH.EXE",
+    "SCORCH.MKT",
+    "SCORCH.CFG",
+    "TALK1.CFG",
+    "TALK2.CFG",
+    "SCORCH.ICO",
+    "SKIPPED: *.MTN (decoded by the since-retired src/terrain/mtn.js decoder)"
+  ],
+  "images": [
+    {
+      "id": "scorch_ico_32x32",
+      "path": "assets/og/images/scorch-ico-32x32.png",
+      "format": "Windows ICO 32x32 4bpp",
+      "source": "SCORCH.ICO",
+      "offset": 0,
+      "size": 766,
+      "role": "app icon / logo reference",
+      "confidence": "high",
+      "provenance": "Converted from SCORCH.ICO (c) Wendell Hicken",
+      "_placeholder": false
+    },
+    {
+      "id": "exe_bitmaps",
+      "status": "_placeholder",
+      "summary": "see scanResults.bitmaps",
+      "confidence": "high (negative)"
+    }
+  ],
+  "audio": [
+    {
+      "id": "digitized_sfx",
+      "status": "_placeholder",
+      "summary": "see scanResults.audio",
+      "confidence": "high (negative)"
+    }
+  ],
+  "scanResults": {
+    "audio": {
+      "conclusion": "NO raw PCM blocks in SCORCH.EXE. Digitized SFX are stored compressed or synthesized by proprietary code.",
+      "confidence": "high (negative result)",
+      "evidence": [
+        {
+          "check": "VOC signature",
+          "result": "absent"
+        },
+        {
+          "check": "RIFF signature",
+          "result": "absent"
+        },
+        {
+          "check": "CMF signature",
+          "result": "absent"
+        },
+        {
+          "check": "max-entropy 8KB chunk in load module",
+          "result": "0x4ea00 H=7.04 (code-shaped, not PCM: top-byte bimodal)"
+        },
+        {
+          "check": "RMS envelope uniformity of candidate region",
+          "result": "RMS 12..93 — flat; real SFX envelopes swing widely. NOT audio."
+        },
+        {
+          "check": "flat (silence-like) runs >=400B",
+          "result": "5 found, all 0x00 table padding, none centered on 0x80/DC"
+        }
+      ],
+      "candidateRegionForFutureWork": {
+        "fileOffset": "0x4ea00",
+        "note": "highest-entropy load-module chunk; disassemble sound code to find decode routine"
+      },
+      "_placeholder": true
+    },
+    "bitmaps": {
+      "conclusion": "No standalone bitmap blobs recoverable as images. OG art is procedural (framebuffer is the physics world; circles/lines/particles drawn at runtime via Fastgraph). Rebuild art from gameplay screenshots + manual, not byte extraction.",
+      "confidence": "high (negative result)",
+      "evidence": [
+        {
+          "check": "PCX 0x0A headers",
+          "result": "0 found"
+        },
+        {
+          "check": "6-bit VGA palettes (768B runs)",
+          "result": "none — sprites likely drawn with hardcoded color constants (matches pixel-collision framebuffer design)"
+        },
+        {
+          "check": "(u16 w,u16 h)+pixels candidates in data segment",
+          "result": "261 structural candidates, none validated as sprites (neighbors are tables/strings)"
+        }
+      ],
+      "_placeholder": true
+    }
+  }
+}

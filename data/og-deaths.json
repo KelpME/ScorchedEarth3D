@@ -1,0 +1,81 @@
+{
+  "count": 11,
+  "note": "ALL death animations are PROCEDURAL, not sprite-frame sequences — no death bitmaps exist in the binary to extract. Each entry is a behavior spec for a 3D rebuild. Roll = rand(11) per corpse at processing time (rerolled while roll==8 and Suspend-Dirt flag set). Cases 0-5 (and ascension) run a 40-tick flash + rising 1000->4000 Hz tone on the tank color first. Kill award + die taunt fire at roll time; dead-tank sweep re-runs until no chain kills.",
+  "roulette": {
+    "handler": "FUN_271b_0005 (file 0x1dbb5)",
+    "caller": "dead-tank sweep FUN_2a4a_23f8, far call at file 0x232e5",
+    "rollSite": "file 0x1dca4+ (reroll vs Suspend-Dirt flag DAT_5f38_50d8)",
+    "radiusWords": {
+      "small": "DS:0x1242",
+      "large": "DS:0x1276",
+      "cap": "DS:0x12aa"
+    },
+    "roll11": "dead table slot; never reached (rand max 10)"
+  },
+  "ascension": {
+    "id": "ascension_self_destruct",
+    "summary": "RETREAT/self-destruct path only (FUN_3ef5_029a, 'r' key + confirm): rising tone figure 0x60c3, tank ascends, then grave blast FUN_4d1e_015a(x, y, DS:0x120e, 1); collateral kills get their own roulette throes; the ascending tank gets NO award and NO throe.",
+    "_placeholder": false,
+    "confidence": "high"
+  },
+  "cases": [
+    {
+      "roll": 0,
+      "id": "thud",
+      "summary": "40-tick tank-color flash + 100 Hz thud tone; NO blast, no crater"
+    },
+    {
+      "roll": 1,
+      "id": "blast_small",
+      "summary": "single blast, radius word [0x1242] (small), tank color"
+    },
+    {
+      "roll": 2,
+      "id": "blast_double",
+      "summary": "two blasts: [0x1242] then [0x1276] (large)"
+    },
+    {
+      "roll": 3,
+      "id": "blast_triple",
+      "summary": "triple escalating blast [0x1242], [0x1276], [0x12aa] (cap)"
+    },
+    {
+      "roll": 4,
+      "id": "ball",
+      "summary": "expanding ball FX, rand(6)+5 steps, blue-white DAC swatch"
+    },
+    {
+      "roll": 5,
+      "id": "spiral",
+      "summary": "spiral: cos/sin vector-stroke draw + particles + tone ladder; NO damage"
+    },
+    {
+      "roll": 6,
+      "id": "sparkle",
+      "summary": "sparkle-dissolve: filled circle + RNG particle shower + sky-restore"
+    },
+    {
+      "roll": 7,
+      "id": "fireworks",
+      "summary": "fireworks: 6 launches + shimmer (2d4f:0258)"
+    },
+    {
+      "roll": 8,
+      "id": "sink",
+      "summary": "tank sinks: y+=1 per tick to a random depth, falling 5000->300 Hz tones"
+    },
+    {
+      "roll": 9,
+      "id": "ring",
+      "summary": "expanding trig rings (4451:016f)"
+    },
+    {
+      "roll": 10,
+      "id": "debris_cookoff",
+      "summary": "ammo cook-off: if armed weapon, tank stroke-table hull pieces scatter ballistically at the corpse; no projectile spawn, no ammo consume. Skipped when Suspend-Dirt mode rerolls"
+    }
+  ],
+  "provenance": "byte-verified decode (scorchedearth-html5 src/death.ts header, 're-verified from binary bytes 2026-07-07', scorched-re/notes_death_throe_roulette.md) + local SCORCH.EXE checks",
+  "confidence": "high",
+  "_placeholderNote": "Visual geometry of FX segments 2dce/25a0/2d4f/4451 is RECONSTRUCTED (flagged upstream); radii/rng/tone values are exact."
+}

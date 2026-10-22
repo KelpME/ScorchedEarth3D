@@ -1,0 +1,212 @@
+{
+  "_source": "manual:L1185-L1204",
+  "_note": "Available Accessories table (manual L1187-L1203) + one-line mechanical effect from each item's description section. kinds: guidance (L1208-L1294), defense (L1299-L1374), misc (L1384-L1401).",
+  "accessories": [
+    {
+      "id": "heat_guidance",
+      "name": "Heat Guidance",
+      "cost": 10000,
+      "bundleSize": 6,
+      "armsLevel": 2,
+      "kind": "guidance",
+      "effect": "Heat detector guides the weapon in a straight line to any enemy tank once in range.",
+      "_source": "manual:L1189",
+      "_descSource": "manual:L1249-L1253"
+    },
+    {
+      "id": "ballistic_guidance",
+      "name": "Ballistic Guidance",
+      "cost": 10000,
+      "bundleSize": 2,
+      "armsLevel": 2,
+      "kind": "guidance",
+      "effect": "Computes the power to hit a chosen target at your current angle; corrects any wind, not air viscosity; fires randomly if the shot is impossible.",
+      "_source": "manual:L1190",
+      "_descSource": "manual:L1259-L1268"
+    },
+    {
+      "id": "horz_guidance",
+      "name": "Horizontal Guidance",
+      "cost": 15000,
+      "bundleSize": 5,
+      "armsLevel": 1,
+      "kind": "guidance",
+      "effect": "Sends the weapon in a horizontal straight line once even with the chosen target.",
+      "_source": "manual:L1191",
+      "_descSource": "manual:L1270-L1273"
+    },
+    {
+      "id": "vert_guidance",
+      "name": "Vertical Guidance",
+      "cost": 20000,
+      "bundleSize": 5,
+      "armsLevel": 1,
+      "kind": "guidance",
+      "effect": "Once the warhead is above the chosen target, it heads straight down to it.",
+      "_source": "manual:L1192",
+      "_descSource": "manual:L1275-L1281"
+    },
+    {
+      "id": "lazy_boy",
+      "name": "Lazy Boy",
+      "cost": 20000,
+      "bundleSize": 2,
+      "armsLevel": 3,
+      "kind": "guidance",
+      "effect": "Ultimate guidance: hits the chosen target; explodes prematurely if it hits another tank first.",
+      "_source": "manual:L1193",
+      "_descSource": "manual:L1283-L1294"
+    },
+    {
+      "id": "parachute",
+      "name": "Parachute",
+      "cost": 10000,
+      "bundleSize": 8,
+      "armsLevel": 2,
+      "kind": "defense",
+      "effect": "Deployed before a damaging fall (threshold default 5) so the tank takes no fall damage.",
+      "_source": "manual:L1194",
+      "_descSource": "manual:L1313-L1330"
+    },
+    {
+      "id": "battery",
+      "name": "Battery",
+      "cost": 5000,
+      "bundleSize": 10,
+      "armsLevel": 2,
+      "kind": "defense",
+      "effect": "Energy source: one battery recharges 10% of tank energy (10 pts) or powers Plasma Blasts.",
+      "_source": "manual:L1195",
+      "_descSource": "manual:L1332-L1337"
+    },
+    {
+      "id": "mag_deflector",
+      "name": "Mag Deflector",
+      "cost": 10000,
+      "bundleSize": 2,
+      "armsLevel": 2,
+      "kind": "defense",
+      "effect": "Exerts upward force on nearby projectiles over the tank; fails on fast falls, absorbs few hits.",
+      "_source": "manual:L1196",
+      "_descSource": "manual:L1339-L1344"
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "cost": 20000,
+      "bundleSize": 3,
+      "armsLevel": 3,
+      "kind": "defense",
+      "effect": "Absorbs explosion damage; a direct hit does not explode but slightly damages the shield.",
+      "_source": "manual:L1197",
+      "_descSource": "manual:L1346-L1349"
+    },
+    {
+      "id": "force_shield",
+      "name": "Force Shield",
+      "cost": 25000,
+      "bundleSize": 3,
+      "armsLevel": 3,
+      "kind": "defense",
+      "effect": "Deflects projectiles away; sustains more damage than a normal shield.",
+      "_source": "manual:L1198",
+      "_descSource": "manual:L1351-L1353"
+    },
+    {
+      "id": "heavy_shield",
+      "name": "Heavy Shield",
+      "cost": 30000,
+      "bundleSize": 2,
+      "armsLevel": 4,
+      "kind": "defense",
+      "effect": "Immune to shield failures; sustains tremendous damage.",
+      "_source": "manual:L1199",
+      "_descSource": "manual:L1359-L1361"
+    },
+    {
+      "id": "super_mag",
+      "name": "Super Mag",
+      "cost": 40000,
+      "bundleSize": 2,
+      "armsLevel": 4,
+      "kind": "defense",
+      "effect": "Best shield: stronger than Heavy, immune to lasers, carries Mag Deflector side effects.",
+      "_source": "manual:L1200",
+      "_descSource": "manual:L1363-L1366"
+    },
+    {
+      "id": "auto_defense",
+      "name": "Auto Defense",
+      "cost": 1500,
+      "bundleSize": 1,
+      "armsLevel": 3,
+      "kind": "defense",
+      "effect": "Lets you enable any defense system each round pre-combat; one-time cost scaled to rounds left.",
+      "_source": "manual:L1201",
+      "_descSource": "manual:L1368-L1374"
+    },
+    {
+      "id": "fuel_tank",
+      "name": "Fuel Tank",
+      "cost": 10000,
+      "bundleSize": 10,
+      "armsLevel": 3,
+      "kind": "misc",
+      "effect": "Each tank gives 10 fuel units; 1 unit moves the tank 1 pixel (less uphill).",
+      "_source": "manual:L1202",
+      "_descSource": "manual:L1388-L1392"
+    },
+    {
+      "id": "armor",
+      "name": "Armor",
+      "cost": 5000,
+      "bundleSize": 1,
+      "armsLevel": 1,
+      "kind": "defense",
+      "effect": "Bolt-on plating: while ON it absorbs half of all incoming damage; TOGGLEABLE per player (hotkey V). Toggle ON shows the tank model's Armor1-4 plating nodes.",
+      "_source": "_placeholder \u2014 armor is NOT in the manual L1185-L1204 accessory table; cost/bundle/armsLevel/absorption unpinned (W2-C-sibling user directive)",
+      "_descSource": "_placeholder"
+    },
+    {
+      "id": "contact_trigger",
+      "name": "Contact Trigger",
+      "cost": 1000,
+      "bundleSize": 25,
+      "armsLevel": 3,
+      "kind": "misc",
+      "effect": "Projectile explodes the moment it touches something (tunneling off); one trigger covers all warheads of a multi-warhead shot.",
+      "_source": "manual:L1203",
+      "_descSource": "manual:L1394-L1401"
+    }
+  ],
+  "laws": {
+    "_source": "Accessory numeric laws. Manual describes behaviors, never percentages (shield L1346-L1366, battery L1332-L1337, parachute threshold IS manual-pinned L1194 default 5). Armor is NOT in the manual (L1185-L1204) \u2014 declared pin.",
+    "_placeholder": [
+      "shieldAbsorb",
+      "shieldDirectHitDamage",
+      "batteryPowerStep",
+      "batteryPowerCap",
+      "superMagPowerStep",
+      "armorAbsorb",
+      "magDeflectorAccel",
+      "magFallFailSpeed"
+    ],
+    "shieldAbsorb": {
+      "shield": 0.5,
+      "force_shield": 0.5,
+      "heavy_shield": 0.75,
+      "super_mag": 0.75
+    },
+    "shieldDirectHitDamage": 5,
+    "batteryPowerStep": 0.1,
+    "batteryPowerCap": 0.5,
+    "superMagPowerStep": 0.1,
+    "parachuteSafety": 5,
+    "armorAbsorb": 0.5,
+    "magDeflectorAccel": 20,
+    "magFallFailSpeed": 12,
+    "fuelTankUnitsValue": 10,
+    "fuelTankUnits": 10,
+    "_note": "fuelTankUnits: manual:L1388-L1392 pins each fuel tank = 10 units."
+  }
+}

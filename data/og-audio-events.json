@@ -1,0 +1,107 @@
+{
+  "note": "Role->game-event mapping draft. NO WAVs extracted (see og-assets.json audioScan: no raw PCM in binary). Roles to be fulfilled by rebuilt synth/sfx in the game's own assets.",
+  "events": [
+    {
+      "event": "fire.small",
+      "role": "fire",
+      "status": "_placeholder",
+      "note": "cannon shot; short noise burst + low thunk"
+    },
+    {
+      "event": "fire.large",
+      "role": "fire",
+      "status": "_placeholder",
+      "note": "big gun; longer boom"
+    },
+    {
+      "event": "explosion.small",
+      "role": "explosion",
+      "status": "_placeholder",
+      "note": "crisp decaying noise burst"
+    },
+    {
+      "event": "explosion.large",
+      "role": "explosion",
+      "status": "_placeholder",
+      "note": "long low rumble"
+    },
+    {
+      "event": "projectile.whistle",
+      "role": "whistle",
+      "status": "_placeholder",
+      "note": "falling shell; descending tone"
+    },
+    {
+      "event": "projectile.flight",
+      "role": "fly",
+      "status": "_placeholder",
+      "note": "FLY_SOUND cfg toggle; puttering loop"
+    },
+    {
+      "event": "bounce",
+      "role": "bounce",
+      "status": "_placeholder",
+      "note": "elastic wall bounce blip"
+    },
+    {
+      "event": "ui.select",
+      "role": "ui",
+      "status": "_placeholder",
+      "note": "menu click"
+    },
+    {
+      "event": "ui.accept",
+      "role": "ui",
+      "status": "_placeholder",
+      "note": "menu confirm"
+    },
+    {
+      "event": "shop.cash",
+      "role": "ui",
+      "status": "_placeholder",
+      "note": "purchase cha-ching"
+    },
+    {
+      "event": "tank.death.thud",
+      "role": "death",
+      "status": "_placeholder",
+      "note": "100 Hz thud (roulette case 0)"
+    },
+    {
+      "event": "tank.death.rising",
+      "role": "death",
+      "status": "_placeholder",
+      "note": "40-tick rising 1000->4000 Hz flash tone (cases 0-5 pre-roll)"
+    },
+    {
+      "event": "tank.death.sink",
+      "role": "death",
+      "status": "_placeholder",
+      "note": "falling 5000->300 Hz tones (case 8)"
+    },
+    {
+      "event": "tank.death.fireworks",
+      "role": "death",
+      "status": "_placeholder",
+      "note": "launch pops + shimmer (case 7)"
+    },
+    {
+      "event": "shield.hit",
+      "role": "defense",
+      "status": "_placeholder",
+      "note": "absorption buzz"
+    },
+    {
+      "event": "digging",
+      "role": "dig",
+      "status": "_placeholder",
+      "note": "digger/sandhog grinding"
+    },
+    {
+      "event": "laser",
+      "role": "fire",
+      "status": "_placeholder",
+      "note": "laser zap"
+    }
+  ]
+}

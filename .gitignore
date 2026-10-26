@@ -1,2 +1,26 @@
+# This repo is a self-contained PUBLISHABLE BUILD (editor export artifact).
+# The ignore list below is a guard rail: content a dev tree can contain is
+# rejected here, so a re-publish can never leak it. Source of truth for the
+# game's source, tests and tools is the private repo (KelpME/scorched-earth).
+
+# --- dev-tree content that must never appear here ---
+test/
+tools/
+.hermes/
+.hermesforge-export.json
+
+# --- dependencies & build intermediates ---
 node_modules/
+.vite/
+build/
+dist/
+
+# --- test / report artifacts ---
+test-results/
+playwright-report/
+
+# --- OS / editor / logs ---
 .DS_Store
+Thumbs.db
+*.log
+*.tmp

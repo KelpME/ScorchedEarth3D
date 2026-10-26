@@ -1,0 +1,32 @@
+{
+  "_source": "Camera rig limits + turn-start focus (SE-FIXUP-1012 W3, contract C3). The freecam zoom-out cap was previously a wheel-handler literal (336); every camera-radius writer now honors zoom.maxRadius via cam_rig.clampRadius. Turn-focus params are data per doctrine (nothing hidden in code); pins: camera-control.spec wheel clamp 84..336, follow backDist 5..40. 2026-10-13 user follow-up: zoom halved both ways (max 336->168, min 84->48).",
+  "_placeholder": [
+    "zoom.maxRadius (fire-drill: raise past the field span and the freecam escapes the arena)",
+    "turnFocus.radius / durationSec"
+  ],
+  "zoom": {
+    "minRadius": 48,
+    "maxRadius": 168,
+    "wheelStep": 0.08,
+    "followMinBackDist": 5,
+    "followMaxBackDist": 40
+  },
+  "turnFocus": {
+    "radius": 90,
+    "durationSec": 1.2,
+    "inputCancels": true
+  },
+  "shellTrack": {
+    "_source": "Shell follow-cam params (SE-CINEMATIC-1013, contract C6). Chase mode = follow toggle ON; track mode = follow toggle OFF (pan/zoom glide). Every value feeds src/gameplay/shell_cam.js (pure, unit-pinned); W2 wires main.js to read this block — zero literals in JS. backDist is additionally clamped by zoom.followMinBackDist/followMaxBackDist.",
+    "chase": {
+      "backDist": 9,
+      "height": 4.5,
+      "lookAhead": 0
+    },
+    "track": {
+      "panEase": 0.12,
+      "zoomRadius": 90,
+      "zoomEase": 0.10
+    }
+  }
+}

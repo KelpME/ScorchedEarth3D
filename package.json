@@ -1,0 +1,18 @@
+{
+  "name": "hermesforge-scorched-earth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "scorched-earth — a HermesForge game (scaffolded by the editor).",
+  "scripts": {
+    "dev": "node test/serve.js 8132",
+    "test": "playwright test",
+    "check": "playwright test"
+  },
+  "dependencies": {
+    "hermesforge-engine": "*"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "_source": "manual:L246-L292",
+  "_note": "Available Computer Opponents table. policy per brief mapping; targetPriority only for Cyborg (order per manual L285-L286: weakened, winning, attacked them in the past). aimNoiseHint = one-line reading of what noise the tier should inject; foreman will tune.",
+  "_aiSource": "ai (plan SE-COMPLETE-1012, plan SE-COMPLETE-1012 foreman tuning): per-tier decision-core knobs consumed by src/gameplay/ai.js + systems/ai_turn.js — angleErrorDeg/powerError are the seeded-noise bounds (aimNoiseHint transcribed to numbers), thinkDelayFrames paces the turn (sim frames), driveAffinity 0..1 scales per-turn driving, heavyCloserId/heavyRange/farWeaponId are the weapon prefs (heavy closer, lobber at range) constrained by affordability + arms level.",
+  "_aiTiers": "Per manual:L251-L292 mapping: moron full-range noise (30deg/0.35 power), shooter ~1-2deg jitter, poolshark as shooter, tosser large shrinking error (static large band, _placeholder per-shot refinement), chooser/spoiler near-zero, cyborg as spoiler, unknown mid-band.",
+  "personalities": [
+    {
+      "id": "moron",
+      "name": "Moron",
+      "policy": "random",
+      "description": "Picks an angle and power at random and shoots; for beginners only.",
+      "aimNoiseHint": "Full-range uniform noise: angle and power drawn uniformly from all legal values, no feedback.",
+      "_source": "manual:L251-L254",
+      "ai": {
+        "angleErrorDeg": 30,
+        "powerError": 0.35,
+        "thinkDelayFrames": 15,
+        "driveAffinity": 0.2,
+        "heavyCloserId": "baby_nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "shooter",
+      "name": "Shooter",
+      "policy": "straight_line",
+      "description": "Deadly only with a straight line of fire to the target.",
+      "aimNoiseHint": "Near-exact bearing toward target when visible; small angle jitter (~1-2 deg) so repeated shots do not stack.",
+      "_source": "manual:L256-L258",
+      "ai": {
+        "angleErrorDeg": 1.5,
+        "powerError": 0.02,
+        "thinkDelayFrames": 10,
+        "driveAffinity": 0.2,
+        "heavyCloserId": "baby_nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "poolshark",
+      "name": "Poolshark",
+      "policy": "rebound",
+      "description": "Like a Shooter, but with rebounding walls tries bank shots off walls and ceilings.",
+      "aimNoiseHint": "Straight-line jitter as Shooter, plus occasional wall-bank solution pick with mirrored-angle tolerance when wallMode is RUBBER/SPRING.",
+      "_source": "manual:L260-L263",
+      "ai": {
+        "angleErrorDeg": 2,
+        "powerError": 0.02,
+        "thinkDelayFrames": 10,
+        "driveAffinity": 0.2,
+        "heavyCloserId": "baby_nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "tosser",
+      "name": "Tosser",
+      "policy": "refine_aim",
+      "description": "Starts like a Moron, then refines aim shot by shot until it hits.",
+      "aimNoiseHint": "Large initial error (e.g. +-20 deg / big power band) shrinking geometrically with each miss based on impact offset.",
+      "_source": "manual:L265-L269",
+      "ai": {
+        "angleErrorDeg": 20,
+        "powerError": 0.15,
+        "thinkDelayFrames": 12,
+        "driveAffinity": 0.2,
+        "heavyCloserId": "baby_nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "chooser",
+      "name": "Chooser",
+      "policy": "meta",
+      "description": "Has all previous methods available and picks the most effective one.",
+      "aimNoiseHint": "No own noise: inherits the noise profile of the method chosen per turn (moron/shooter/poolshark/tosser).",
+      "_source": "manual:L271-L273",
+      "ai": {
+        "angleErrorDeg": 1.5,
+        "powerError": 0.02,
+        "thinkDelayFrames": 10,
+        "driveAffinity": 0.2,
+        "heavyCloserId": "nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "spoiler",
+      "name": "Spoiler",
+      "policy": "wind_compensate",
+      "description": "Accounts for wind and gravity for a near-perfect shot; cannot compensate for viscous air.",
+      "aimNoiseHint": "Near-zero noise analytic solution incl. wind; residual error grows when airViscosity > 0 (never models drag).",
+      "_source": "manual:L275-L280",
+      "ai": {
+        "angleErrorDeg": 0.5,
+        "powerError": 0.01,
+        "thinkDelayFrames": 4,
+        "driveAffinity": 0,
+        "heavyCloserId": "nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "cyborg",
+      "name": "Cyborg",
+      "policy": "target_priority",
+      "targetPriority": [
+        "weakened",
+        "winning",
+        "attacked_recent"
+      ],
+      "description": "Spoiler-like aim, but nastier target choice: prefers weakened tanks, winners, and tanks that attacked it.",
+      "aimNoiseHint": "Spoiler noise profile (near-zero, wind-aware); noise only used to spread fire when several equal-priority targets tie.",
+      "_source": "manual:L282-L286",
+      "ai": {
+        "angleErrorDeg": 0.5,
+        "powerError": 0.01,
+        "thinkDelayFrames": 8,
+        "driveAffinity": 0,
+        "heavyCloserId": "nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    },
+    {
+      "id": "unknown",
+      "name": "Unknown",
+      "policy": "random_tier",
+      "description": "One of the above personalities is chosen at random to control the tank, secretly.",
+      "aimNoiseHint": "Uniformly pick one of the 7 tiers at game start and adopt its noise silently for the whole game.",
+      "_source": "manual:L288-L291",
+      "ai": {
+        "angleErrorDeg": 8,
+        "powerError": 0.1,
+        "thinkDelayFrames": 10,
+        "driveAffinity": 0.2,
+        "heavyCloserId": "baby_nuke",
+        "heavyRange": 40,
+        "farWeaponId": "missile",
+        "approachRange": 80
+      }
+    }
+  ]
+}

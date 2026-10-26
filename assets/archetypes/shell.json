@@ -1,0 +1,36 @@
+{
+  "id": "shell",
+  "name": "shell",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "render": {
+      "mesh": "sphere",
+      "material": "proj",
+      "visible": true,
+      "scale": {
+        "x": 0.1,
+        "y": 0.1,
+        "z": 0.1
+      }
+    },
+    "projectile3d": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "vx": 0,
+      "vy": 0,
+      "vz": 0,
+      "tank": "",
+      "weapon": null,
+      "shot": null,
+      "state": null,
+      "t": 0,
+      "parent": false
+    }
+  },
+  "children": []
+}

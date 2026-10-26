@@ -1,0 +1,28 @@
+{
+  "id": "scorched-earth",
+  "name": "Scorched Earth",
+  "entryScene": "scenes/menu.json",
+  "scenes": [
+    {
+      "id": "level-01",
+      "path": "scenes/level-01.json",
+      "name": "level-01"
+    },
+    {
+      "id": "terrain-test",
+      "path": "scenes/terrain-test.json",
+      "name": "terrain-test"
+    },
+    {
+      "id": "menu",
+      "path": "scenes/menu.json",
+      "name": "menu"
+    }
+  ],
+  "archetypesDir": "assets/archetypes",
+  "gameLoop": {
+    "entryScene": "scenes/menu.json",
+    "fixedDt": 0.016666666666666666,
+    "maxDelta": 0.1
+  }
+}

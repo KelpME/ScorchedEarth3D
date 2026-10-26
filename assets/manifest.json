@@ -1,0 +1,20 @@
+{
+  "game": "scorched-earth",
+  "version": 1,
+  "assets": {
+    "model/tank": {
+      "kind": "model",
+      "src": "assets/models/tank.glb",
+      "format": "glb",
+      "hash": null,
+      "type": "glb"
+    },
+    "model/projectiles": {
+      "kind": "model",
+      "src": "assets/models/projectiles.glb",
+      "format": "glb",
+      "hash": null,
+      "type": "glb"
+    }
+  }
+}

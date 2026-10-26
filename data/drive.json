@@ -1,0 +1,13 @@
+{
+  "_source": "Tank drive mechanics (T-G1 pins, 4x arena scaled). The manual publishes no drive numbers \u2014 these magnitudes are the documented build pins; editor-editable per doctrine (nothing hidden in code).",
+  "_placeholder": [
+    "maxSpeed",
+    "turnBudget",
+    "maxSlopeDeg",
+    "slopeLookahead"
+  ],
+  "maxSpeed": 6,
+  "turnBudget": 24,
+  "maxSlopeDeg": 35,
+  "slopeLookahead": 0.5
+}

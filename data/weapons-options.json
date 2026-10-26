@@ -1,0 +1,707 @@
+{
+  "_source": "manual:L2069-L2142 + data/weapons.json",
+  "_note": "Weapons Menu options (manual L2074-L2142 table) + per-weapon starting-count rows DERIVED from the real weapons catalog (data/weapons.json, manual:L959-L995). The per-weapon rows have no manual definition (the manual filters availability via Arms Level/Useless Items only) \u2014 they are task-directed, marked _derived, never presented as manual transcriptions. STORAGE-ONLY this leaf (T-UI-2): wiring (blast radius, trails, projectile visuals) is a later leaf; every row carries wired:false. Note: armsLevel here (range 0-4, default 4, manual:L2077) is the Weapons Menu OPTION; the weapons.json per-weapon armsLevel column is catalog data and is NOT duplicated as a setting.",
+  "options": {
+    "armsLevel": {
+      "label": "Arms Level",
+      "range": {
+        "min": 0,
+        "max": 4
+      },
+      "default": 4,
+      "wired": true,
+      "description": "Disallow the use of items above this Arms Level. 0 = beginners, fewer options.",
+      "_wired": "T-UI-3: consumer = createBattle economy.armsLevel (inventory.buy + checkChoose 'arms' gate) + store open playOptions; read from stored 'se.settings' at battle creation",
+      "_source": "manual:L2077-L2086",
+      "consumer": "src/gameplay/turnState.js:armsLevelForRound"
+    },
+    "bombIcon": {
+      "label": "Bomb icon",
+      "enum": [
+        "INVISIBLE",
+        "SMALL",
+        "BIG"
+      ],
+      "default": "BIG",
+      "wired": true,
+      "visual": {
+        "icon": "assets/ui/weapons/_bomb.svg",
+        "sizesPx": {
+          "INVISIBLE": 0,
+          "SMALL": 12,
+          "BIG": 22
+        }
+      },
+      "description": "Projectile look when fired: no dot, slightly larger dot, or no dot at all.",
+      "_wired": "W2-E: consumer = src/ui/weaponVisuals.js applyBombIcon \u2014 the enum drives the #top-weapon bomb icon element's size from visual.sizesPx (INVISIBLE hides it). Wired at weaponPicker mount + settings APPLY.",
+      "_source": "manual:L2088-L2093",
+      "consumer": "src/ui/weaponVisuals.js:applyBombIcon"
+    },
+    "tunneling": {
+      "label": "Tunneling",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "wired": true,
+      "description": "OFF: weapons explode on hitting dirt. ON: they tunnel in, maybe out the other side.",
+      "_wired": "T-UI-3: consumer = makeTunnelBehavior.onTerrainHit (src/gameplay/behaviors/heavy.js) \u2014 OFF detonates at first dirt contact",
+      "_source": "manual:L2095-L2105",
+      "consumer": "src/gameplay/behaviors/heavy.js:settings?.tunneling"
+    },
+    "scale": {
+      "label": "Scale",
+      "enum": [
+        "NORMAL",
+        "MEDIUM",
+        "LARGE"
+      ],
+      "default": "NORMAL",
+      "wired": true,
+      "description": "Scale up so weapons are more destructive than usual.",
+      "_wired": "T-UI-3 + W5 purge: consumer = projectiles3d blast conversion (rWorld multiplier read from THIS magnitudes block; MEDIUM 1.5 / LARGE 2 _placeholder \u2014 manual pins none)",
+      "_source": "manual:L2107-L2114",
+      "magnitudes": {
+        "NORMAL": 1,
+        "MEDIUM": 1.5,
+        "LARGE": 2
+      },
+      "consumer": "systems/projectiles3d.js:SCALE_MULT"
+    },
+    "tracePaths": {
+      "label": "Trace Paths",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "wired": true,
+      "description": "Each projectile leaves a trail in the firing tank's color.",
+      "_wired": "W2-E: consumer = systems/tracePaths.js (registered at runtime by src/ui/weaponVisuals.ensureTracePathsSystem). ON = every airborne projectile3d entity spawns throttled trace fx entities, color = data/weapons.json visual.traceColor (per weapon class), decay via the fx_decay script pattern. OFF = zero trace entities (pinned).",
+      "_source": "manual:L2120-L2129",
+      "consumer": "systems/tracePaths.js:settings?.tracePaths"
+    },
+    "extraDirt": {
+      "label": "Extra Dirt",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "wired": true,
+      "description": "Controls how much dirt Dirt Charges let out. Fun but can slow the game down.",
+      "_wired": "T-UI-3: consumer = earthHit -> dirtDeposit scale (dirt_charge ridge radius x2, _placeholder magnitude; manual pins none)",
+      "_source": "manual:L2131-L2136",
+      "consumer": "src/gameplay/behaviors/heavy.js:settings?.extraDirt"
+    },
+    "uselessItems": {
+      "label": "Useless Items",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "wired": true,
+      "description": "If OFF, items with no effect on the game (given current options) are hidden from the buying menu.",
+      "_wired": "W2-E: consumer = src/ui/store.js + src/ui/weaponPicker.js filter (filterUselessWeapons). OFF = weapons the current player CANNOT use (arms-level gating, buyBlock 'arms') are HIDDEN from the store weapon column and the picker; ON = all rows shown (blocked rows greyed with the reason). Cash-blocked rows are never hidden by this filter.",
+      "_source": "manual:L2138-L2142",
+      "consumer": "src/main.js:currentOwned"
+    },
+    "weapon_baby_missile": {
+      "label": "Baby Missile \u2014 starting count",
+      "enum": [
+        "unlimited",
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "unlimited",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#baby_missile",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": true
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_missile": {
+      "label": "Missile \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#missile",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_baby_nuke": {
+      "label": "Baby Nuke \u2014 starting count",
+      "enum": [
+        "0",
+        "3",
+        "6",
+        "9"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (3/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#baby_nuke",
+      "_derived": {
+        "bundleSize": 3,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_nuke": {
+      "label": "Nuke \u2014 starting count",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (1/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#nuke",
+      "_derived": {
+        "bundleSize": 1,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_leap_frog": {
+      "label": "Leap Frog \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#leap_frog",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_funky_bomb": {
+      "label": "Funky Bomb \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#funky_bomb",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_mirv": {
+      "label": "MIRV \u2014 starting count",
+      "enum": [
+        "0",
+        "3",
+        "6",
+        "9"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (3/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#mirv",
+      "_derived": {
+        "bundleSize": 3,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_deaths_head": {
+      "label": "Death's Head \u2014 starting count",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (1/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#deaths_head",
+      "_derived": {
+        "bundleSize": 1,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_napalm": {
+      "label": "Napalm \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#napalm",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_hot_napalm": {
+      "label": "Hot Napalm \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#hot_napalm",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_tracer": {
+      "label": "Tracer \u2014 starting count",
+      "enum": [
+        "0",
+        "20",
+        "40",
+        "60"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (20/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#tracer",
+      "_derived": {
+        "bundleSize": 20,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_smoke_tracer": {
+      "label": "Smoke Tracer \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#smoke_tracer",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_baby_roller": {
+      "label": "Baby Roller \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#baby_roller",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_roller": {
+      "label": "Roller \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#roller",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_heavy_roller": {
+      "label": "Heavy Roller \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#heavy_roller",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_riot_charge": {
+      "label": "Riot Charge \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#riot_charge",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_riot_blast": {
+      "label": "Riot Blast \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#riot_blast",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_riot_bomb": {
+      "label": "Riot Bomb \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#riot_bomb",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_heavy_riot_bomb": {
+      "label": "Heavy Riot Bomb \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#heavy_riot_bomb",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_baby_digger": {
+      "label": "Baby Digger \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#baby_digger",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_digger": {
+      "label": "Digger \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#digger",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_heavy_digger": {
+      "label": "Heavy Digger \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#heavy_digger",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_baby_sandhog": {
+      "label": "Baby Sandhog \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#baby_sandhog",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_sandhog": {
+      "label": "Sandhog \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#sandhog",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_heavy_sandhog": {
+      "label": "Heavy Sandhog \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#heavy_sandhog",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_dirt_clod": {
+      "label": "Dirt Clod \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#dirt_clod",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_dirt_ball": {
+      "label": "Dirt Ball \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#dirt_ball",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_ton_of_dirt": {
+      "label": "Ton of Dirt \u2014 starting count",
+      "enum": [
+        "0",
+        "2",
+        "4",
+        "6"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (2/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#ton_of_dirt",
+      "_derived": {
+        "bundleSize": 2,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_liquid_dirt": {
+      "label": "Liquid Dirt \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#liquid_dirt",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_dirt_charge": {
+      "label": "Dirt Charge \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#dirt_charge",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_earth_disrupter": {
+      "label": "Earth Disrupter \u2014 starting count",
+      "enum": [
+        "0",
+        "10",
+        "20",
+        "30"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (10/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#earth_disrupter",
+      "_derived": {
+        "bundleSize": 10,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_plasma_blast": {
+      "label": "Plasma Blast \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#plasma_blast",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    },
+    "weapon_laser": {
+      "label": "Laser \u2014 starting count",
+      "enum": [
+        "0",
+        "5",
+        "10",
+        "15"
+      ],
+      "default": "0",
+      "wired": false,
+      "description": "Rounds each player starts with. Choices are bundle multiples (5/bundle, manual:L936-L937) derived from data/weapons.json \u2014 catalog data, NOT a manual Weapons Menu row (per-weapon starting counts have no manual definition; task-directed, reported not silent).",
+      "_source": "catalog:data/weapons.json#laser",
+      "_derived": {
+        "bundleSize": 5,
+        "unlimited": false
+      },
+      "storage_reason": "Starting-stock SETTINGS row: battle creation seeds from data/weapons.json startingStock (W4-D COMB); the row persists user edits with no live consumer yet (named gap)."
+    }
+  }
+}

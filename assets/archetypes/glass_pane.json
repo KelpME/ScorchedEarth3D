@@ -1,0 +1,22 @@
+{
+  "id": "glass_pane",
+  "name": "glass pane",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "scale": [
+        0.1,
+        26,
+        2.5
+      ]
+    },
+    "render": {
+      "mesh": "box",
+      "material": "glass",
+      "visible": true
+    }
+  },
+  "children": []
+}

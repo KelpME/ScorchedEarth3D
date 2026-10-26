@@ -1,0 +1,34 @@
+{
+  "id": "storm_front",
+  "name": "Storm Front (weather)",
+  "description": "W8-J (plan SE-COMPLETE-1012, user-reported); P5 role note (plans/SETTLE-PACE-1015.md): the storm-front EVENT PARAMS object (fog density/color escalation, rise/hold/fall ramp timings, AREA span, exterior fog) — NOT a duplicate of the storm_front volumetric-cloud REGION, which is the ramp's WRITE TARGET (weather.js T8 writes the region's density/litColor live). systems/weather.js consumes this entity's params at runtime (resolveFront, frontEvent); the per-round seed roll and WALL clock stay deterministic. Defaults mirror dressing.fog.stormEvent + area \u2014 the data file is the source of record.",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 60,
+      "z": 0
+    },
+    "stormFront": {
+      "style": "STORMY",
+      "riseSeconds": 8.0,
+      "holdSeconds": 20.0,
+      "fallSeconds": 12.0,
+      "densityStorm": 0.045,
+      "colorStorm": "#5a636e",
+      "chancePerRound": 0.34,
+      "startMaxSeconds": 25.0,
+      "areaSpanXZ": 520.0,
+      "billboardCount": 6,
+      "billboardAltitudeMin": 55.0,
+      "billboardAltitudeMax": 80.0,
+      "billboardSpeed": 1.0,
+      "billboardColor": "#23272e",
+      "exteriorAlwaysOn": false,
+      "exteriorDensity": 0.5,
+      "exteriorSpan": 720.0,
+      "exteriorSourceNote": "W8-K (user-directed): the persistent EXTERIOR fog layer's editor-visible params — mirrors dressing.fog.exterior (alwaysOn/density/span; entity edit wins via frontEvent). FOG-ALWAYS-ON-FIX (plans/FOG-ALWAYS-ON-FIX.md, user-reported 2026-10-14): alwaysOn defaults FALSE — the exterior haze is opt-in; clear skies mount zero exterior boxes.",
+      "_note": "Defaults == dressing.fog.stormEvent (+ .area.spanXZ); billboardColor matches the volumetric slab's stormColor #23272e so front + clouds read as ONE storm. _placeholder: the manual pins no storm numbers. Calm fog is NOT here by design \u2014 it rides the mounted per-style sky fog (dressing.fog + skybox seam); this object is the STORM escalation only."
+    }
+  },
+  "tags": ["weather"]
+}

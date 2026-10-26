@@ -1,0 +1,3581 @@
+{
+  "id": "ui_top_panel",
+  "name": "ui_top_panel",
+  "description": "FULL-SCREEN HUD ROOT as a REAL canvas+widget tree (WEAPON-BAR-FOLD 2026-10-20): the root carries a screen-mode `canvas` (1280x720) + the ui_top_panel_bind script, and EVERY element — HUD values/statuses AND the bottom weapon bar + FULL ARMORY overlay — is a CHILD WIDGET ENTITY. Groups: hud_group (anchored top — the classic HUD rows), weapon_group (anchored bottom — the folded-in weapon bar: 9 interactive quick-pick slot panels, prev/next page arrows, page indicator, +N armory affordance, [STORE] button, status line), armory_group (anchored center — the full-armory overlay: 33 interactive row panels; open/close = the bind script writing render.visible on the REAL panels). Every button carries its behavior as a VISIBLE script: the generic ui_weapon_action with its action/slot/row as declared params (WAVE-3 widget interaction seam; clicks dispatch onPointerClick through window.__se.weaponActions, which main.js wires). NO hidden data carriers: the ONLY authored render.visible is the armory_group backdrop itself - a REAL panel subtree whose closed state is its resting state (a closed dialog), opened/closed by the bind script from the feed. The bind script writes LIVE values (aim row, statuses, wind, paged weapon slots, overlay rows) into the widgets each step; labels/colors/layout live ONLY on the entities.",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "canvas": {
+      "renderMode": "screen",
+      "resolution": [
+        1280,
+        720
+      ],
+      "width": 8,
+      "height": 4.5
+    },
+    "scripts": [
+      {
+        "name": "ui_top_panel_bind",
+        "params": {
+          "accent": "#e8c547",
+          "status": "#9fdc7f",
+          "dim": "#4c5a48",
+          "noWindText": "No Wind",
+          "weaponPageSize": 9,
+          "headWord": "weapons",
+          "armedMark": "→",
+          "pagePrefix": "p",
+          "armoryPrefix": "+",
+          "storeColor": "#cfe6c0",
+          "storeDimColor": "#4c5a48",
+          "armoryRowColor": "#e6efe2",
+          "armorySelColor": "#e8c547",
+          "accessoryIds": {
+            "battery": [
+              "battery"
+            ],
+            "parachute": [
+              "parachute"
+            ],
+            "shield": [
+              "shield",
+              "force_shield",
+              "heavy_shield",
+              "super_mag",
+              "mag_deflector"
+            ],
+            "guidance": [
+              "heat_guidance",
+              "ballistic_guidance",
+              "horz_guidance",
+              "vert_guidance",
+              "lazy_boy"
+            ],
+            "trigger": [
+              "contact_trigger"
+            ],
+            "fuel": [
+              "fuel_tank"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "children": [
+    {
+      "name": "hud_group",
+      "parent": "ui_top_panel",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.1,
+          "anchor": "top-center"
+        },
+        "panel": {
+          "backColor": "rgba(10,14,20,0.85)",
+          "borderColor": "rgba(0,0,0,0)",
+          "borderWidth": 0,
+          "cornerRadius": 0,
+          "interactive": false
+        }
+      },
+      "children": [
+        {
+          "name": "panel_label_power",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.01,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "POWER",
+              "color": "#e8c547",
+              "size": 13,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_value_power",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.075,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "1000",
+              "color": "#e6efe2",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_label_angle",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.16,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "ANGLE",
+              "color": "#e8c547",
+              "size": 13,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_value_angle",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.222,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "45°",
+              "color": "#e6efe2",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_label_bearing",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.29,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "BEARING",
+              "color": "#e8c547",
+              "size": 13,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_value_bearing",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.365,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "0°",
+              "color": "#e6efe2",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_player",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.47,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "PLAYER 1",
+              "color": "#e8c547",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_weapon",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.62,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "→",
+              "color": "#e8c547",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_value_weapon",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.645,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_label_dist_left",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": -0.15,
+              "anchorX": 1,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "DIST LEFT",
+              "color": "#e8c547",
+              "size": 13,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_value_dist",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": -0.05,
+              "anchorX": 1,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "0.00",
+              "color": "#e6efe2",
+              "size": 13,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_divider_a",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.452,
+              "y": 0.02,
+              "w": 0.0016,
+              "h": 0.62
+            },
+            "panel": {
+              "backColor": "#4c5a48",
+              "borderWidth": 0
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_divider_b",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.592,
+              "y": 0.02,
+              "w": 0.0016,
+              "h": 0.62
+            },
+            "panel": {
+              "backColor": "#4c5a48",
+              "borderWidth": 0
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_max",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.01,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "MAX",
+              "color": "#e8c547",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_battery",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.07,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "BAT",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_parachute",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.13,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "PARA",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_armor",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.19,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "ARM",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_shield",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.25,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "SHLD",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_guidance",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.325,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "GUID",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_trigger",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.415,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "TRIG",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_fuel",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.475,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "FUEL",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_status_hull",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.535,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "HEALTH",
+              "color": "#4c5a48",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_wind",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": -0.01,
+              "anchorX": 1,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "WIND",
+              "color": "#e8c547",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "panel_hint",
+          "parent": "hud_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.005,
+              "y": 0.68,
+              "w": 0.99,
+              "h": 0.05
+            },
+            "text": {
+              "string": "W/S drive · A/D bearing · Q/E angle · R/F power · SPACE fire · ↑/↓/←/→ camera pan · drag pan/tilt · ,/. weapon pages · I full armory",
+              "color": "#4c5a48",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "weapon_group",
+      "parent": "ui_top_panel",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.075,
+          "anchor": "bottom-center",
+          "marginY": 6
+        },
+        "panel": {
+          "backColor": "rgba(0,0,0,0)",
+          "borderColor": "rgba(0,0,0,0)",
+          "borderWidth": 0,
+          "cornerRadius": 0,
+          "interactive": false
+        }
+      },
+      "children": [
+        {
+          "name": "wp_backdrop",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 1,
+              "h": 1,
+              "anchor": "bottom-center"
+            },
+            "panel": {
+              "backColor": "rgba(10,14,20,0.85)",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 2,
+              "cornerRadius": 0,
+              "interactive": false
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_head",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.008,
+              "y": 0.04,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "PLAYER 1 weapons",
+              "color": "#e8c547",
+              "size": 12,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_status",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.4,
+              "y": 0.04,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "",
+              "color": "#ff6b6b",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_page_indicator",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.92,
+              "y": 0.04,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "p1/1",
+              "color": "#4c5a48",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_page_prev",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.005,
+              "y": 0.52,
+              "w": 0.018,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "page_prev"
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_page_prev_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.007,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "◀",
+              "color": "#e6efe2",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_1",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.028,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 1
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_1_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.033,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_2",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.113,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 2
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_2_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.118,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_3",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.198,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 3
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_3_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.203,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_4",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.283,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 4
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_4_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.288,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_5",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.368,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 5
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_5_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.373,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_6",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.453,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 6
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_6_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.458,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_7",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.538,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 7
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_7_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.543,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_8",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.623,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 8
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_8_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.628,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_9",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.708,
+              "y": 0.52,
+              "w": 0.081,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "quick_pick",
+                  "slot": 9
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_slot_9_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.713,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "— ×0",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_page_next",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.797,
+              "y": 0.52,
+              "w": 0.018,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "page_next"
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_page_next_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.799,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "▶",
+              "color": "#e6efe2",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_more",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.821,
+              "y": 0.52,
+              "w": 0.034,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_open"
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_more_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.827,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "+0",
+              "color": "#e6efe2",
+              "size": 12,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "wp_store",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.863,
+              "y": 0.52,
+              "w": 0.05,
+              "h": 0.44
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "store"
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "wp_store_text",
+          "parent": "weapon_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.871,
+              "y": 0.64,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "[STORE]",
+              "color": "#cfe6c0",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "armory_group",
+      "parent": "ui_top_panel",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0.62,
+          "h": 0.85,
+          "anchor": "center"
+        },
+        "panel": {
+          "backColor": "rgba(10,14,20,0.92)",
+          "borderColor": "#3a5a3a",
+          "borderWidth": 2,
+          "cornerRadius": 0,
+          "interactive": false
+        },
+        "render": {
+          "visible": false
+        }
+      },
+      "children": [
+        {
+          "name": "arm_title",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.02,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "FULL ARMORY",
+              "color": "#e8c547",
+              "size": 14,
+              "font": "ui-monospace, monospace",
+              "weight": "bold"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_close",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.94,
+              "y": 0.02,
+              "w": 0.04,
+              "h": 0.05
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_close"
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_close_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.25,
+              "y": 0.08,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "X",
+              "color": "#e6efe2",
+              "size": 12,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_1",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.1,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 1
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_1_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.112,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_2",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.1,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 2
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_2_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.112,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_3",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.152,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 3
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_3_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.164,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_4",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.152,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 4
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_4_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.164,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_5",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.204,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 5
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_5_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.216,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_6",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.204,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 6
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_6_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.216,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_7",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.256,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 7
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_7_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.268,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_8",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.256,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 8
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_8_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.268,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_9",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.308,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 9
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_9_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_10",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.308,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 10
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_10_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.32,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_11",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.36,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 11
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_11_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.372,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_12",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.36,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 12
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_12_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.372,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_13",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.412,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 13
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_13_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.424,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_14",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.412,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 14
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_14_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.424,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_15",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.464,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 15
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_15_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.476,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_16",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.464,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 16
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_16_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.476,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_17",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.516,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 17
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_17_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.528,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_18",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.516,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 18
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_18_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.528,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_19",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.568,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 19
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_19_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.58,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_20",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.568,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 20
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_20_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.58,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_21",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.62,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 21
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_21_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.632,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_22",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.62,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 22
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_22_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.632,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_23",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.672,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 23
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_23_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.684,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_24",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.672,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 24
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_24_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.684,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_25",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.724,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 25
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_25_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.736,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_26",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.724,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 26
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_26_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.736,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_27",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.776,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 27
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_27_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.788,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_28",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.776,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 28
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_28_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.788,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_29",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.828,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 29
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_29_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.84,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_30",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.828,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 30
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_30_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.84,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_31",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.88,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 31
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_31_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.892,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_32",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.51,
+              "y": 0.88,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 32
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_32_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.522,
+              "y": 0.892,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_33",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.02,
+              "y": 0.932,
+              "w": 0.47,
+              "h": 0.048
+            },
+            "panel": {
+              "backColor": "#182512",
+              "borderColor": "#3a5a3a",
+              "borderWidth": 1,
+              "cornerRadius": 0,
+              "interactive": true
+            },
+            "scripts": [
+              {
+                "name": "ui_weapon_action",
+                "params": {
+                  "action": "armory_pick",
+                  "row": 33
+                }
+              }
+            ]
+          },
+          "children": []
+        },
+        {
+          "name": "arm_row_33_text",
+          "parent": "armory_group",
+          "components": {
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "rect": {
+              "x": 0.032,
+              "y": 0.944,
+              "w": 0,
+              "h": 0.05
+            },
+            "text": {
+              "string": "—",
+              "color": "#e6efe2",
+              "size": 11,
+              "font": "ui-monospace, monospace"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

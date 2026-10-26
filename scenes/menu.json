@@ -1,0 +1,613 @@
+{
+  "version": 3,
+  "nextEntityId": 78,
+  "materials": {
+    "glass": {
+      "type": "physical",
+      "color": "#cfe8f7",
+      "roughness": 0.1,
+      "metalness": 0.1,
+      "transparent": true,
+      "opacity": 0.2
+    },
+    "glass_front": {
+      "type": "physical",
+      "color": "#cfe8f7",
+      "roughness": 0.1,
+      "metalness": 0.1,
+      "transparent": true,
+      "opacity": 0.08
+    },
+    "proj": {
+      "type": "standard",
+      "color": "#101010",
+      "roughness": 0.5,
+      "metalness": 0.2
+    },
+    "fx": {
+      "type": "basic",
+      "color": "#ffcf6e",
+      "emissive": "#ffcf6e",
+      "emissiveIntensity": 1.5
+    },
+    "tank": {
+      "type": "standard",
+      "color": "#8a8f72",
+      "roughness": 0.6,
+      "metalness": 0
+    },
+    "fx_blast": {
+      "type": "basic",
+      "color": "#ffffff",
+      "transparent": true,
+      "opacity": 1,
+      "_note": "SE-FX blast-series base: per-sphere COLOR comes from data/blast-fx.json via render.materialParams at spawn; the render hook (main.js) drives opacity + additive blending."
+    }
+  },
+  "systems": [
+    {
+      "name": "projectiles3d",
+      "params": {
+        "gravity": 9.8
+      }
+    },
+    {
+      "name": "turn_director",
+      "params": {
+        "settleTimeout": 600
+      }
+    }
+  ],
+  "entities": [
+    {
+      "id": "camera_anchor",
+      "name": "camera_anchor",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 12,
+          "z": 0
+        },
+        "director": {
+          "turn": "tank1",
+          "phase": "aim"
+        }
+      }
+    },
+    {
+      "id": "voxel_terrain",
+      "name": "voxel_terrain",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "voxelTerrain": {
+          "seed": 1936,
+          "blastRadius": 2,
+          "mapSize": "default",
+          "terrainType": "rocky",
+          "rockAmount": 100,
+          "bumpiness": 20,
+          "slope": 20,
+          "flattenPeaks": false,
+          "mountainPercent": 20
+        }
+      }
+    },
+    {
+      "archetypeId": "tank",
+      "id": "tank1",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": -15,
+            "y": 8,
+            "z": 0,
+            "yaw": 1.5707963267948966
+          },
+          "aim": {
+            "angleDeg": 45,
+            "power": 0.55,
+            "fire": false
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "tank",
+      "id": "tank2",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 15,
+            "y": 8,
+            "z": 0,
+            "yaw": -1.5707963267948966
+          },
+          "aim": {
+            "angleDeg": 45,
+            "power": 0.55,
+            "fire": false
+          }
+        }
+      }
+    },
+    {
+      "id": "arena_wall",
+      "name": "arena_wall",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scripts": [
+          {
+            "name": "wall_band",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_left",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": -80.5,
+            "y": 120,
+            "z": 0,
+            "scale": [
+              0.1,
+              240,
+              41
+            ]
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 120
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_right",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 80.5,
+            "y": 120,
+            "z": 0,
+            "scale": [
+              0.1,
+              240,
+              41
+            ]
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 120
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_back",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 120,
+            "z": -20.5,
+            "scale": {
+              "x": 161,
+              "y": 240,
+              "z": 0.1
+            }
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 120
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "glass_pane",
+      "id": "pane_front",
+      "parent": "arena_wall",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 120,
+            "z": 20.5,
+            "scale": [
+              161,
+              240,
+              0.1
+            ]
+          },
+          "render": {
+            "material": "glass_front"
+          },
+          "scripts": [
+            {
+              "name": "pane_drop",
+              "params": {
+                "restY": 120
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "archetypeId": "battlefield_camera",
+      "id": "battlefield_camera",
+      "overrides": {
+        "components": {
+          "transform": {
+            "x": 0,
+            "y": 12,
+            "z": 0
+          }
+        }
+      }
+    },
+    {
+      "archetypeId": "ui_top_panel",
+      "id": "ui_top_panel",
+      "overrides": {
+        "components": {},
+        "children": {}
+      }
+    },
+    {
+      "archetypeId": "ui_menu",
+      "id": "ui_menu",
+      "overrides": {
+        "components": {},
+        "children": {}
+      }
+    },
+    {
+      "id": "weather_storm_front",
+      "name": "weather_storm_front",
+      "archetypeId": "storm_front",
+      "overrides": {},
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "storm_front",
+      "name": "storm_front",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 67.5,
+          "z": 0,
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "scripts": [
+          {
+            "name": "volumetric-cloud",
+            "params": {
+              "sizeX": 520,
+              "sizeY": 120,
+              "sizeZ": 520,
+              "density": 1,
+              "noiseScale": 0.045,
+              "detailOctaves": 3,
+              "litColor": "#23272e",
+              "driftSpeedX": 1,
+              "windCoupling": 1,
+              "_source": "CLOUD-TOOL T7 (plans/CLOUD-MIGRATION.md): moved VERBATIM from dressing.fog.stormEvent + weather.volumetric (both retired in data/physics-presets.json with pointer notes). sizeX/Z = stormEvent.area.spanXZ 520 (W8-J footprint, square centered on the field); sizeY 25 = billboard altitude band 55-80 centered (transform y 67.5); density 1.0 = weather.volumetric.stormDensity; noiseScale 0.045 + detailOctaves 3 = volumetric.noiseScale/noiseOctaves; litColor #23272e = W8-J dark storm gray (billboards.color + volumetric.stormColor); driftSpeedX 1.0 = billboards.speed; windCoupling 1.0 = weather.wind.coupling.",
+              "renderer": "none"
+            }
+          }
+        ],
+        "tags": [
+          "weather"
+        ]
+      },
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "clouds_calm",
+      "name": "clouds_calm",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 33,
+          "z": 0,
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "scripts": [
+          {
+            "name": "volumetric-cloud",
+            "params": {
+              "sizeX": 304,
+              "sizeY": 120,
+              "sizeZ": 124,
+              "density": 0.3,
+              "noiseScale": 0.045,
+              "detailOctaves": 3,
+              "litColor": "#e8eef6",
+              "driftSpeedX": 0.6,
+              "windCoupling": 1,
+              "_source": "CLOUD-TOOL T7 (plans/CLOUD-MIGRATION.md): moved VERBATIM from weather.volumetric (retired in data/physics-presets.json). sizeX 304 = default field span 240 + 2x slabPad 32; sizeZ 124 = field span 60 + 2x slabPad 32; sizeY 14 = slabYMin 26..slabYMax 40 band centered (transform y 33); density 0.3 = calmDensity; litColor #e8eef6 = calmColor; noiseScale 0.045; detailOctaves 3 = noiseOctaves; driftSpeedX 0.6 = driftSpeed; windCoupling 1.0 = weather.wind.coupling.",
+              "renderer": "none"
+            }
+          }
+        ],
+        "tags": [
+          "weather"
+        ]
+      },
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "weather_storm_lightning",
+      "name": "weather_storm_lightning",
+      "archetypeId": "storm_lightning",
+      "overrides": {
+        "components": {}
+      },
+      "tags": [
+        "weather"
+      ]
+    },
+    {
+      "id": "intro_title",
+      "name": "intro_title",
+      "components": {
+        "transform": {
+          "x": -32,
+          "y": 30,
+          "z": 300
+        },
+        "render": {
+          "visible": true
+        },
+        "canvas": {
+          "renderMode": "world",
+          "resolution": [
+            2048,
+            512
+          ],
+          "width": 64,
+          "height": 16,
+          "_source": "W5 (SE-CINEMATIC-1013 C9): the intro title canvas — a world-space surface on the flight path the camera passes mid-flight (Rescuers Down Under title-sequence feel). Text/color/size are the CHILD widget entities below (doctrine: content is data); the title_canvas script on this root owns only the show/hide lifecycle."
+        },
+        "scripts": [
+          {
+            "name": "title_canvas",
+            "params": {
+              "enabled": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "title_shadow_1_copy_77",
+      "name": "title_shadow_1 (copy)",
+      "parent": "intro_title",
+      "components": {
+        "rect": {
+          "x": 0.027114,
+          "y": 0.147152,
+          "w": 0.94,
+          "h": 0.4
+        },
+        "text": {
+          "string": "3D",
+          "color": "#1a0d05",
+          "size": 500,
+          "font": "Georgia, 'Times New Roman', serif",
+          "weight": "bold",
+          "align": "center"
+        }
+      }
+    },
+    {
+      "id": "title_shadow_2",
+      "name": "title_shadow_2",
+      "parent": "intro_title",
+      "components": {
+        "rect": {
+          "x": 0.027114,
+          "y": 0.13,
+          "w": 0.94,
+          "h": 0.4
+        },
+        "text": {
+          "string": "SCORCHED",
+          "color": "#1a0d05",
+          "size": 200,
+          "font": "Georgia, 'Times New Roman', serif",
+          "weight": "bold",
+          "align": "center"
+        },
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "id": "title_shadow_1",
+      "name": "title_shadow_1",
+      "parent": "intro_title",
+      "components": {
+        "rect": {
+          "x": 0.027114,
+          "y": 0.56,
+          "w": 0.94,
+          "h": 0.4
+        },
+        "text": {
+          "string": "EARTH",
+          "color": "#1a0d05",
+          "size": 200,
+          "font": "Georgia, 'Times New Roman', serif",
+          "weight": "bold",
+          "align": "center"
+        }
+      }
+    },
+    {
+      "id": "title_line_1_copy_76",
+      "name": "title_line_1 (copy)",
+      "parent": "intro_title",
+      "components": {
+        "rect": {
+          "x": 0.03,
+          "y": 0.127152,
+          "w": 0.94,
+          "h": 0.4
+        },
+        "text": {
+          "string": "3D",
+          "color": "#a11f12",
+          "size": 500,
+          "font": "Georgia, 'Times New Roman', serif",
+          "weight": "bold",
+          "align": "center",
+          "lineHeight": 3
+        }
+      }
+    },
+    {
+      "id": "title_line_1",
+      "name": "title_line_1",
+      "parent": "intro_title",
+      "components": {
+        "rect": {
+          "x": 0.03,
+          "y": 0.54,
+          "w": 0.94,
+          "h": 0.4
+        },
+        "text": {
+          "string": "EARTH",
+          "color": "#c9622a",
+          "size": 200,
+          "font": "Georgia, 'Times New Roman', serif",
+          "weight": "bold",
+          "align": "center"
+        }
+      }
+    },
+    {
+      "id": "title_line_2",
+      "name": "title_line_2",
+      "parent": "intro_title",
+      "components": {
+        "rect": {
+          "x": 0.03,
+          "y": 0.11,
+          "w": 0.94,
+          "h": 0.4
+        },
+        "text": {
+          "string": "SCORCHED",
+          "color": "#c9622a",
+          "size": 200,
+          "font": "Georgia, 'Times New Roman', serif",
+          "weight": "bold",
+          "align": "center"
+        }
+      }
+    },
+    {
+      "id": "intro_flyover",
+      "name": "intro_flyover",
+      "components": {
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "scripts": [
+          {
+            "name": "intro_flyover",
+            "params": {
+              "enabled": false,
+              "seed": 2026,
+              "cameraSpeed": 45,
+              "cameraHeight": 20,
+              "cameraStartOffset": 14,
+              "lookAhead": 14,
+              "fov": 40,
+              "handoffDist": 30,
+              "fallLead": 0.5,
+              "fallDuration": 1,
+              "fallDepth": 48,
+              "paneIds": [
+                "pane_left",
+                "pane_right",
+                "pane_back",
+                "pane_front"
+              ],
+              "paneDropLeadSec": 1.2,
+              "paneDropHeight": 600,
+              "paneFadeMaterial": "glass",
+              "skipOnAny": true,
+              "skipKeys": [
+                "Escape"
+              ],
+              "terrainShape": null
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "render": {
+    "post": {
+      "enabled": false
+    },
+    "shadows": {
+      "type": "PCFSoftShadowMap"
+    }
+  },
+  "scatter": {
+    "layers": []
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "_source": "SE-FIXUP-1012 user follow-up (2026-10-13): player colors tint ONLY the hull — the old apply tinted every node-scoped child (Armor, Barrel, TrackPlayerColor, gears), which read as 'messed up'. tintNodes = the model node names that receive the player color; matched as the tank child entity id's node suffix (`tank1_tankV3_Scene_Hull` ends with `_Hull`). Everything else keeps its authored material.",
+  "tintNodes": ["Hull"]
+}

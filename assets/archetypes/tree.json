@@ -1,0 +1,54 @@
+{
+  "id": "tree",
+  "name": "Voxel Tree",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "tree": {
+      "voxelSize": 0.3,
+      "trunkHeight": 8,
+      "trunkRadius": 1,
+      "crownLayers": 3,
+      "crownRadius": 12,
+      "crownClumps": {
+        "count": 5,
+        "dominantScale": 0.35,
+        "satelliteScale": 0.22,
+        "gap": 2
+      },
+      "limbCount": 3,
+      "limbLength": 6,
+      "tintDrift": {
+        "hue": 0.06,
+        "value": 0.12
+      },
+      "swayAmp": 0.35,
+      "swayHz": 0.6,
+      "swayIdleFloor": 0.15,
+      "swayWindCoupling": 0.85,
+      "swayClumpPhaseSeed": 7,
+      "swayClumpAmpJitter": 0.5,
+      "rotationDeg": {
+        "min": -180,
+        "max": 180
+      },
+      "trunkColor": "#6b4a2f",
+      "charColor": "#1a1512",
+      "trunkHardness": 0.9,
+      "leafColors": [
+        "#2f9e44",
+        "#e9c46a",
+        "#e76f51"
+      ],
+      "leafOpacity": 0.55,
+      "leafTransparent": true,
+      "leafDamageable": false,
+      "colorSeed": 3,
+      "_note": "W8-G: charColor = the charred-trunk material a lightning strike swaps in (recolor, never carve \u2014 the blackened tree remains standing)."
+    }
+  },
+  "children": []
+}

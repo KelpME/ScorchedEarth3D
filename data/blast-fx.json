@@ -1,0 +1,16 @@
+{
+  "_source": "SE-FX task (user brief 2026-10-11, verbatim): 'a series of expanding spheres, as they expand they turn more transparent until they reach their max size (the size of the explosion) and fully disappear, colors will be orange, yellow and red spheres'.",
+  "_note": "Doctrine: blast FX shape is ONE mechanism (scripts/fx_blast_sphere.js, spawner in systems/projectiles3d.js); colors/timing/sizes are DATA. delay staggers the series (lead orange, then yellow, then red). maxScale per sphere = the blast's rWorld, passed by the spawner at spawn time — NOT stored here (it is per-weapon runtime data).",
+  "spheres": [
+    { "color": "#ff7a00", "delay": 0.0, "_note": "lead orange" },
+    { "color": "#ffd400", "delay": 0.07, "_note": "yellow follows" },
+    { "color": "#ff2200", "delay": 0.14, "_note": "red closes the shockwave" }
+  ],
+  "growSeconds": 0.5,
+  "minScale": 0.05,
+  "rendering": {
+    "material": "fx_blast",
+    "blending": "additive",
+    "_note": "MeshBasicMaterial (unlit, reads on the voxel field) + additive blending, applied by the render-owner hook in main.js — the engine material def has no blending field, so the def carries the intent and the hook implements it."
+  }
+}

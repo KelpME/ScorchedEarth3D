@@ -1,0 +1,22 @@
+{
+  "id": "terrain",
+  "name": "terrain",
+  "components": {
+    "transform": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "terrain": {
+      "seed": 1234,
+      "voxelSize": 0.25,
+      "width": 160,
+      "height": 96,
+      "depth": 4,
+      "chunk": 32,
+      "fallEvery": 2,
+      "blastRadius": 2
+    }
+  },
+  "children": []
+}

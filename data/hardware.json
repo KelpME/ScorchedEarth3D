@@ -1,0 +1,30 @@
+{
+  "_source": "manual:L1665-L1748",
+  "_note": "Hardware Menu (manual L1665-L1748). Plan open-question #2 (ANSWERED 2026-10-11): the five DOS-only rows \u2014 Graphics Mode (L1686-L1698), Bios Keyboard (L1699-L1706), Small Memory (L1708-L1714), Pointer (L1721-L1732), Mouse Rate (L1734-L1737) \u2014 are OMITTED as anachronisms; documented here so the omission is visible, never silent. Ranges/defaults verbatim from the manual. W3-A (plan SE-COMPLETE-1012): both rows are WIRED \u2014 they route through settingsApply (typed se.settings store, validated 0..500 / 0..1000) and pace the sim in frame counts: firingDelay holds the director between requestFire and flight entry (manual L1739-L1744); fallingDelay holds the settle start (director settle clock + settle3d slump drain, manual L1746-L1748). UNSET = 0 steps = the pre-W3A behavior byte-identical (boot never pre-applies JSON defaults; the dialog defaults 100/10 apply only on APPLY).",
+  "options": {
+    "firingDelay": {
+      "label": "Firing Delay",
+      "range": {
+        "min": 0,
+        "max": 500
+      },
+      "default": 100,
+      "wired": true,
+      "description": "How long the computer takes to draw projectiles when fired. High = suspenseful/slow, low = fast.",
+      "_source": "manual:L1739-L1744",
+      "consumer": "src/gameplay/director.js:firingDelay"
+    },
+    "fallingDelay": {
+      "label": "Falling Delay",
+      "range": {
+        "min": 0,
+        "max": 1000
+      },
+      "default": 10,
+      "wired": true,
+      "description": "How fast tanks fall on screen. Set to zero to not wait.",
+      "_source": "manual:L1746-L1748",
+      "consumer": "src/gameplay/director.js:fallingDelay"
+    }
+  }
+}

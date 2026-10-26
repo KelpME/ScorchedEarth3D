@@ -1,0 +1,118 @@
+{
+  "_source": "manual:L1754-L1822",
+  "_note": "Economics Menu options, exact ranges/defaults from the label/range/default table L1759-L1818.",
+  "options": {
+    "interestRate": {
+      "label": "Interest Rate",
+      "range": {
+        "min": 0,
+        "max": 0.3
+      },
+      "default": 0.05,
+      "description": "Unspent money in the bank earns interest each round; rate also affects the cost of repeated-use items such as Auto-Defense.",
+      "_source": "manual:L1762-L1768",
+      "consumer": "src/gameplay/economy.js:export function roundBoundary"
+    },
+    "cashAtStart": {
+      "label": "Cash at Start",
+      "range": {
+        "min": 0,
+        "max": 1000000
+      },
+      "default": 1000000,
+      "description": "Starting money per player; non-zero gives a buying pass before round 1.",
+      "_source": "manual:L1770-L1774",
+      "_defaultNote": "OG INITIAL_CASH = 1000000 (data/og-defaults.json) — the original game seeded each player with $1,000,000 to start; the manual's default column lists $0 but the OG defaults file is the real intended value, so players can buy ammo/accessories from round 1. Editor-tunable; range max matches this value.",
+      "consumer": "src/main.js:economySettings.cashAtStart"
+    },
+    "computersBuy": {
+      "label": "Computers Buy",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "description": "Whether computer-controlled tanks may buy items.",
+      "_source": "manual:L1776-L1780",
+      "consumer": "src/gameplay/economy.js:computerBuyPlan"
+    },
+    "freeMarket": {
+      "label": "Free Market",
+      "enum": [
+        "on",
+        "off"
+      ],
+      "default": "off",
+      "description": "Supply-and-demand pricing: frequently-bought items get pricier, ignored items cheaper; state persisted in scorch.mkt.",
+      "_source": "manual:L1782-L1795",
+      "consumer": "src/main.js:createMarketState"
+    },
+    "scoringMode": {
+      "label": "Scoring Mode",
+      "enum": [
+        "BASIC",
+        "STANDARD",
+        "GREEDY"
+      ],
+      "default": "STANDARD",
+      "description": "BASIC: points only for kills and surviving. STANDARD: fewer kill points, points for damage. GREEDY: like STANDARD but round rankings by Net Worth (cash + depreciated stock).",
+      "_source": "manual:L1802-L1818",
+      "consumer": "src/gameplay/battleLoop.js:SCORING_MODE_DEFAULT"
+    }
+  },
+  "selling": {
+    "_source": "manual:L858-L890",
+    "baseFactor": null,
+    "baseFactorNote": "The manual gives NO exact sell formula or fixed percentage \u2014 only 'you must usually accept a loss' (L877) and per-quantity computer offers (L865-L867). null = unknowable from source; do not invent.",
+    "rules": [
+      {
+        "rule": "Computer makes an offer per selected quantity; price per item may vary with quantity sold.",
+        "_source": "manual:L862-L867"
+      },
+      {
+        "rule": "Offers persist until the next round (possibly longer).",
+        "_source": "manual:L874-L875"
+      },
+      {
+        "rule": "Selling usually incurs a loss (depreciation), except with Free Market on, where buy-low/sell-high profit is possible.",
+        "_source": "manual:L877-L879"
+      },
+      {
+        "rule": "Free-market prices follow supply/demand with damped oscillation ('bouncing') toward a new equilibrium.",
+        "_source": "manual:L881-L887"
+      }
+    ],
+    "interestDrift": {
+      "_source": "manual:L1813-L1816",
+      "note": "Only quantitative depreciation hint in the manual: GREEDY rankings use 'the depreciated value of all weapons, etc. in stock'; the rate is never specified."
+    },
+    "buyBackMarkup": {
+      "_source": "manual:L765-L772",
+      "note": "Related buying rule: at the 99-per-item cap, partial bundles are remade at ~20% markup (e.g. $5,000/5 becomes $6,000/5)."
+    }
+  },
+  "battle": {
+    "_source": "manual:L2070",
+    "_note": "Battle creation cash seed (pre-W4-D documented seed; the manual pins no starting-cash default \u2014 Cash at Start default is a separate settings row). W5 purge: turnState.js reads this; no JS fallback exists.",
+    "_placeholder": [
+      "cashSeed"
+    ],
+    "cashSeed": 20000
+  },
+  "freeMarketDrift": {
+    "_source": "manual:L1782-L1800",
+    "_note": "Free Market drift magnitudes (manual pins DIRECTIONS only). Derived from the observed SCORCH.MKT fieldA/fieldB ranges; _placeholder, never presented as manual values. W5 purge: economy.js reads this; no JS fallback exists.",
+    "_placeholder": [
+      "pressureDefault",
+      "sensitivityDefault",
+      "decay",
+      "floor",
+      "ceil"
+    ],
+    "pressureDefault": 0.05,
+    "sensitivityDefault": 0.05,
+    "decay": 0.02,
+    "floor": 0.25,
+    "ceil": 8
+  }
+}

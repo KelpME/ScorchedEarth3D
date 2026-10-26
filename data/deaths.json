@@ -1,0 +1,343 @@
+{
+  "note": "W2-J (plan SE-COMPLETE-1012): the 11 procedural OG death cases (+ ascension) rebuilt as DATA-described 3D stage scripts. deaths.js is the pure MECHANISM (a stage sequencer); every visual number lives here and is editor-tunable. Times are seconds, angles deg, radii world units. Source of truth for behaviors: data/og-deaths.json (byte-verified).",
+  "source": "data/og-deaths.json — ogRoll maps 1:1 (parity pinned in test/unit/deaths.test.js)",
+  "blasts": {
+    "small": {
+      "rWorld": 1.4,
+      "note": "OG radius word DS:0x1242"
+    },
+    "large": {
+      "rWorld": 2.2,
+      "note": "OG radius word DS:0x1276"
+    },
+    "cap": {
+      "rWorld": 3.0,
+      "note": "OG radius word DS:0x12aa"
+    }
+  },
+  "cases": [
+    {
+      "id": "thud",
+      "ogRoll": 0,
+      "summary": "40-tick tank-color flash + thud tone; NO blast, no crater",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.8,
+          "params": {
+            "rateHz": 24
+          }
+        }
+      ]
+    },
+    {
+      "id": "blast_small",
+      "ogRoll": 1,
+      "summary": "single small blast, tank color",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.6,
+          "params": {
+            "rateHz": 24
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.8,
+          "params": {
+            "blasts": "small"
+          }
+        }
+      ]
+    },
+    {
+      "id": "blast_double",
+      "ogRoll": 2,
+      "summary": "two blasts: small then large",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.6,
+          "params": {
+            "rateHz": 24
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.7,
+          "params": {
+            "blasts": "small"
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.9,
+          "params": {
+            "blasts": "large"
+          }
+        }
+      ]
+    },
+    {
+      "id": "blast_triple",
+      "ogRoll": 3,
+      "summary": "triple escalating blast small, large, cap",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.5,
+          "params": {
+            "rateHz": 24
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.6,
+          "params": {
+            "blasts": "small"
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.7,
+          "params": {
+            "blasts": "large"
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.9,
+          "params": {
+            "blasts": "cap"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ball",
+      "ogRoll": 4,
+      "summary": "expanding ball FX: lift + spin then drop (blue-white)",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.5,
+          "params": {
+            "rateHz": 20
+          }
+        },
+        {
+          "primitive": "lift",
+          "duration": 0.9,
+          "params": {
+            "riseSpeed": 2.2
+          }
+        },
+        {
+          "primitive": "spin",
+          "duration": 0.9,
+          "params": {
+            "degPerSec": 300
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.7,
+          "params": {
+            "rWorld": 1.8,
+            "color": "#cfe0ff",
+            "offsetY": 1.2
+          }
+        },
+        {
+          "primitive": "lift",
+          "duration": 0.6,
+          "params": {
+            "riseSpeed": -3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "spiral",
+      "ogRoll": 5,
+      "summary": "spiral: cos/sin vector-stroke draw + particles; NO damage",
+      "stages": [
+        {
+          "primitive": "spin",
+          "duration": 1.4,
+          "params": {
+            "degPerSec": 540
+          }
+        },
+        {
+          "primitive": "sparkle",
+          "duration": 1.4,
+          "params": {
+            "perSecond": 14,
+            "radius": 1.6,
+            "rWorld": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "sparkle",
+      "ogRoll": 6,
+      "summary": "sparkle-dissolve: RNG particle shower",
+      "stages": [
+        {
+          "primitive": "sparkle",
+          "duration": 1.6,
+          "params": {
+            "perSecond": 20,
+            "radius": 2.0,
+            "rWorld": 0.45
+          }
+        },
+        {
+          "primitive": "flash",
+          "duration": 0.4,
+          "params": {
+            "rateHz": 30
+          }
+        }
+      ]
+    },
+    {
+      "id": "fireworks",
+      "ogRoll": 7,
+      "summary": "6 launches + shimmer: staggered blast-spheres at apex",
+      "stages": [
+        {
+          "primitive": "lift",
+          "duration": 0.8,
+          "params": {
+            "riseSpeed": 3.0
+          }
+        },
+        {
+          "primitive": "fireworks",
+          "duration": 1.6,
+          "params": {
+            "count": 6,
+            "stagger": 0.18,
+            "rWorld": 0.9,
+            "offsetY": 2.2,
+            "spread": 1.4
+          }
+        }
+      ]
+    },
+    {
+      "id": "sink",
+      "ogRoll": 8,
+      "summary": "tank sinks below ground (falling tones in OG)",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.4,
+          "params": {
+            "rateHz": 16
+          }
+        },
+        {
+          "primitive": "sink",
+          "duration": 1.8,
+          "params": {
+            "sinkSpeed": 1.6
+          }
+        }
+      ]
+    },
+    {
+      "id": "ring",
+      "ogRoll": 9,
+      "summary": "expanding trig rings",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.4,
+          "params": {
+            "rateHz": 20
+          }
+        },
+        {
+          "primitive": "ring",
+          "duration": 0.9,
+          "params": {
+            "blasts": "large",
+            "flat": 0.12
+          }
+        },
+        {
+          "primitive": "ring",
+          "duration": 1.1,
+          "params": {
+            "blasts": "cap",
+            "flat": 0.08
+          }
+        }
+      ]
+    },
+    {
+      "id": "debris_cookoff",
+      "ogRoll": 10,
+      "summary": "ammo cook-off: tank hull pieces scatter ballistically (treeDebris-style radial impulse)",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.4,
+          "params": {
+            "rateHz": 28
+          }
+        },
+        {
+          "primitive": "cookoff",
+          "duration": 0.5,
+          "params": {
+            "count": 14,
+            "speed": 5.5,
+            "upBias": 0.7,
+            "life": 2.4
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 0.9,
+          "params": {
+            "blasts": "large"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ascension_self_destruct",
+      "ogRoll": -1,
+      "summary": "RETREAT/self-destruct: tank ascends, then grave blast at apex (no award, no throe)",
+      "stages": [
+        {
+          "primitive": "flash",
+          "duration": 0.5,
+          "params": {
+            "rateHz": 18
+          }
+        },
+        {
+          "primitive": "lift",
+          "duration": 1.2,
+          "params": {
+            "riseSpeed": 3.5
+          }
+        },
+        {
+          "primitive": "blastSphere",
+          "duration": 1.0,
+          "params": {
+            "blasts": "cap"
+          }
+        }
+      ]
+    }
+  ]
+}
